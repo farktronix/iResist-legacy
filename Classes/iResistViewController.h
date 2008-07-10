@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResistorColorPicker.h"
 
 @interface iResistViewController : UIViewController {
+    IBOutlet ResistorColorPicker *_colorPicker;
 }
 
 @end
