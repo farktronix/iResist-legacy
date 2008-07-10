@@ -9,6 +9,14 @@
 #import "iResistViewController.h"
 
 @implementation iResistViewController
+
+- (void) viewDidLoad
+{
+    [_colorPickerView selectRow:4 inComponent:0 animated:NO];
+    [_colorPickerView selectRow:2 inComponent:1 animated:NO];
+    [_colorPickerView selectRow:0 inComponent:2 animated:NO];
+    [_colorPickerView selectRow:4 inComponent:3 animated:NO];
+}
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ResistorColorPicker : NSObject <UIPickerViewDataSource, UIPickerViewDelegate> {
-
+    NSArray *_colorViews;
+    IBOutlet UILabel *_ohms;
 }
 
 @end
