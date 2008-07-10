@@ -30,7 +30,7 @@
 					<object class="IBUIPickerView" id="946886542">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 264}, {320, 216}}</string>
+						<string key="NSFrame">{{0, 244}, {320, 216}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -144,8 +144,8 @@
 						<reference key="object" ref="191373211"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="946886542"/>
 							<reference ref="901574963"/>
+							<reference ref="946886542"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
