@@ -9,21 +9,7 @@
 #import "iResistViewController.h"
 
 @implementation iResistViewController
-
-/*
- Implement loadView if you want to create a view hierarchy programmatically
-- (void)loadView {
-}
- */
-
-/*
- Implement viewDidLoad if you need to do additional setup after loading the view.
-- (void)viewDidLoad {
-	[super viewDidLoad];
-}
- */
-
-
+ 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);

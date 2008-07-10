@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface iResistViewController : UIViewController {
-
 }
 
 @end
