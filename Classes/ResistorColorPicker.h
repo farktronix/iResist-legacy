@@ -10,7 +10,9 @@
 
 @interface ResistorColorPicker : NSObject <UIPickerViewDataSource, UIPickerViewDelegate> {
     NSArray *_colorViews;
+	UIImage *_endImg;
     IBOutlet UILabel *_ohms;
+	IBOutlet UILabel *_tolerance;
 }
 
 @end

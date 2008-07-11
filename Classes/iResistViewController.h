@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ResistorColorPicker.h"
 
-@interface iResistViewController : UIViewController {
+@interface iResistViewController : UIViewController <UISearchBarDelegate> {
     IBOutlet UIPickerView *_colorPickerView;
+	IBOutlet UISearchBar *_searchBar;
+	IBOutlet UIButton *_expandSearchButton;
     IBOutlet ResistorColorPicker *_colorPicker;
 }
+
+- (IBAction) _expandButtonPressed: (id) sender;
+
 
 @end
 

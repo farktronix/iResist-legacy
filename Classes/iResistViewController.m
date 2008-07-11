@@ -12,10 +12,12 @@
 
 - (void) viewDidLoad
 {
-    [_colorPickerView selectRow:4 inComponent:0 animated:NO];
-    [_colorPickerView selectRow:2 inComponent:1 animated:NO];
-    [_colorPickerView selectRow:0 inComponent:2 animated:NO];
-    [_colorPickerView selectRow:4 inComponent:3 animated:NO];
+	_searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+	
+    [_colorPickerView selectRow:5 inComponent:0 animated:YES];
+    [_colorPickerView selectRow:3 inComponent:1 animated:YES];
+    [_colorPickerView selectRow:1 inComponent:2 animated:YES];
+    [_colorPickerView selectRow:1 inComponent:3 animated:YES];
 }
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -34,4 +36,39 @@
 	[super dealloc];
 }
 
+
+- (IBAction) _expandButtonPressed: (id) sender;
+{
+	_searchBar.hidden = NO;	
+	_expandSearchButton.enabled = NO;
+	_expandSearchButton.hidden = YES;
+}
+
+//// search bar delegate functions
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+	float flVal = [searchBar.text floatValue];
+	
+	if (flVal != HUGE_VAL && flVal != -HUGE_VAL && flVal != 0.0)
+	{
+		NSLog(@"%0.5f", flVal);
+	}
+	
+	[searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
+{
+	//CGRect curFrame = [searchBar frame];
+	_searchBar.hidden = YES;	
+	_expandSearchButton.enabled = YES;
+	_expandSearchButton.hidden = NO;
+	
+	[searchBar resignFirstResponder];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;
+{
+	[searchBar resignFirstResponder];
+}
 @end
