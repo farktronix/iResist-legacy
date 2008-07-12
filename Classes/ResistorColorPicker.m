@@ -134,6 +134,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
 	if (row == 0 || row == (component < 2 ? 11 : 10)) {
+		// if the user selects one of the end-component sentinel images, just slide them to the one they really wanted
 		NSInteger nRow = row + (!row ? 1 : -1);
 		
 		[pickerView selectRow: nRow inComponent: component animated: NO];

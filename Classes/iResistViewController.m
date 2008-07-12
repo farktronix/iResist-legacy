@@ -47,19 +47,11 @@
 //// search bar delegate functions
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-	float flVal = [searchBar.text floatValue];
-	
-	if (flVal != HUGE_VAL && flVal != -HUGE_VAL && flVal != 0.0)
-	{
-		NSLog(@"%0.5f", flVal);
-	}
-	
 	[searchBar resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
 {
-	//CGRect curFrame = [searchBar frame];
 	_searchBar.hidden = YES;	
 	_expandSearchButton.enabled = YES;
 	_expandSearchButton.hidden = NO;
