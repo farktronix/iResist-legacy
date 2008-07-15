@@ -17,6 +17,7 @@
 		430B96FF0E2695AF001F33CC /* ResistorColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 430B96FE0E2695AF001F33CC /* ResistorColorPicker.m */; };
 		940D4C370E280A9C003733D4 /* checker.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 940D4C360E280A9C003733D4 /* checker.bmp */; };
 		940D4D730E282F3C003733D4 /* blackmag.png in Resources */ = {isa = PBXBuildFile; fileRef = 940D4D720E282F3C003733D4 /* blackmag.png */; };
+		94148A580E2C0E1B00986196 /* resistor_320.png in Resources */ = {isa = PBXBuildFile; fileRef = 94148A570E2C0E1B00986196 /* resistor_320.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		940D4C360E280A9C003733D4 /* checker.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = checker.bmp; sourceTree = "<group>"; };
 		940D4D720E282F3C003733D4 /* blackmag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackmag.png; sourceTree = "<group>"; };
+		94148A570E2C0E1B00986196 /* resistor_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resistor_320.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				94148A570E2C0E1B00986196 /* resistor_320.png */,
 				940D4D720E282F3C003733D4 /* blackmag.png */,
 				940D4C360E280A9C003733D4 /* checker.bmp */,
 				2899E5210DE3E06400AC0155 /* iResistViewController.xib */,
@@ -160,6 +163,7 @@
 				2899E5220DE3E06400AC0155 /* iResistViewController.xib in Resources */,
 				940D4C370E280A9C003733D4 /* checker.bmp in Resources */,
 				940D4D730E282F3C003733D4 /* blackmag.png in Resources */,
+				94148A580E2C0E1B00986196 /* resistor_320.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,12 +214,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ryan Joseph";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4597A260-9E8A-4E23-B80C-EFFE898C49B1";
 				SDKROOT = iphoneos2.0;
 			};
 			name = Debug;

@@ -7,18 +7,70 @@
 //
 
 #import "ResistorColorPicker.h"
-
+#import "iResistViewController.h"
 
 @implementation ResistorColorPicker
-
-- (UIView *) _colorViewWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue
+- (UIView*) _colorViewWithRect:(CGRect)rect andColor: (UIColor*)color;
 {
     UIView *view = [[UIView alloc] init];
-    UIColor *color = [[UIColor alloc] initWithRed:red green:green blue:blue alpha:1.0];
     view.backgroundColor = color;
-    [color release];
-    view.frame = CGRectMake(0, 0, 70, 40);
+    view.frame = rect;
     return [view autorelease];
+}
+
+- (void) _drawResistorBarWithColorName: (NSString*)cName andComponent: (int)component;
+{	
+	// imgView y 44 -> yCoord 57; (13 difference)
+	CGFloat xCoord = 125.0, yCoord = 28.0, height = 38.0;
+	
+	xCoord += (20 * component);
+	
+	if (component == 0 || component == 3) {
+		xCoord += (component == 0 ? -10.0 : 14.0);
+		yCoord -= (component == 0 ? 5.5 : 6.0);
+		height += (component == 0 ? 9.0 : 9.5);
+	}
+	
+	[_viewController _drawResistorBarWithColor: [_colors objectForKey: cName] 
+										atRect: CGRectMake(xCoord, yCoord, 7, height)
+									   withTag: component];
+}
+
+- (void) _randomSpin:(UIPickerView*)pView;
+{
+	int c;
+	
+	for (c = 0; c < 4; c++)
+	{
+		int r = (rand() % [self pickerView: pView numberOfRowsInComponent: c]);
+		[pView selectRow: r inComponent: c animated: YES];
+		[self pickerView: pView didSelectRow: r inComponent: c];
+	}
+}
+
+- (void) _setupColorDictionary;
+{
+	NSMutableDictionary *tDict = [[NSMutableDictionary alloc] init];
+	
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:@"black"];
+	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:@"gray"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:@"white"];
+	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:@"brown"];
+	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:@"red"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:@"orange"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:@"yellow"];
+	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:@"green"];
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:@"blue"];
+	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:@"violet"];
+	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:@"gold"];
+	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:@"silver"];
+	
+	_colors = tDict;
+}
+
+- (UIView *) _colorViewWithColor: (UIColor*)color;
+{
+	return [self _colorViewWithRect: CGRectMake(0, 0, 70, 40) andColor: color];
 }
 
 - (UIImageView*) _endPickerImageView;
@@ -33,16 +85,16 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.000]]; //black
-    [colors addObject:[self _colorViewWithRed:0.396 green:0.263 blue:0.129]]; //brown
-    [colors addObject:[self _colorViewWithRed:0.878 green:0.141 blue:0.063]]; //red
-    [colors addObject:[self _colorViewWithRed:1.000 green:0.500 blue:0.000]]; //orange
-    [colors addObject:[self _colorViewWithRed:1.000 green:1.000 blue:0.000]]; //yellow
-    [colors addObject:[self _colorViewWithRed:0.133 green:0.545 blue:0.133]]; //green
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.804]]; //blue
-    [colors addObject:[self _colorViewWithRed:0.580 green:0.000 blue:0.827]]; //violet
-    [colors addObject:[self _colorViewWithRed:0.500 green:0.500 blue:0.500]]; //gray
-    [colors addObject:[self _colorViewWithRed:1.000 green:1.000 blue:1.000]]; //white
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"orange"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"yellow"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"violet"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gray"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"white"]]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -51,15 +103,15 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.000]]; //black
-    [colors addObject:[self _colorViewWithRed:0.396 green:0.263 blue:0.129]]; //brown
-    [colors addObject:[self _colorViewWithRed:0.878 green:0.141 blue:0.063]]; //red
-    [colors addObject:[self _colorViewWithRed:0.133 green:0.545 blue:0.133]]; //green
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.804]]; //blue
-    [colors addObject:[self _colorViewWithRed:0.580 green:0.000 blue:0.827]]; //violet
-    [colors addObject:[self _colorViewWithRed:0.500 green:0.500 blue:0.500]]; //gray
-    [colors addObject:[self _colorViewWithRed:0.780 green:0.603 blue:0.235]]; //gold
-    [colors addObject:[self _colorViewWithRed:0.750 green:0.750 blue:0.750]]; //silver
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"violet"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gray"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gold"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"silver"]]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -68,15 +120,15 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.000]]; //black
-    [colors addObject:[self _colorViewWithRed:0.396 green:0.263 blue:0.129]]; //brown
-    [colors addObject:[self _colorViewWithRed:0.878 green:0.141 blue:0.063]]; //red
-    [colors addObject:[self _colorViewWithRed:1.000 green:0.500 blue:0.000]]; //orange
-    [colors addObject:[self _colorViewWithRed:1.000 green:1.000 blue:0.000]]; //yellow
-    [colors addObject:[self _colorViewWithRed:0.133 green:0.545 blue:0.133]]; //green
-    [colors addObject:[self _colorViewWithRed:0.000 green:0.000 blue:0.804]]; //blue
-    [colors addObject:[self _colorViewWithRed:0.780 green:0.603 blue:0.235]]; //gold
-    [colors addObject:[self _colorViewWithRed:0.750 green:0.750 blue:0.750]]; //silver
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"orange"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"yellow"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gold"]]];
+    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"silver"]]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -84,6 +136,8 @@
 - (id) init
 {
     if ((self = [super init])) {
+		[self _setupColorDictionary];
+		
         NSMutableArray *colors = [[NSMutableArray alloc] init];
 		
 		_endImg = [[UIImage imageNamed: @"checker.bmp"] retain];
@@ -95,6 +149,7 @@
         
         _colorViews = colors;
     }
+	
     return self;
 }
 
@@ -102,7 +157,32 @@
 {
     [_colorViews release];
 	[_endImg release];
+	[_colors release];
+	
     [super dealloc];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+	NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+							@"green", @"blue", @"violet", @"gray", @"white", nil];
+	NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
+						@"gold", @"silver", nil];
+	NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+						@"green", @"blue", @"gold", @"silver", nil];
+	
+	row -= 1;
+	if (component < 2) {
+		return [firstTwo objectAtIndex: row];
+	}
+	else if (component == 2) {
+		return [mult objectAtIndex: row];
+	}
+	else if (component == 3) {
+		return [tol objectAtIndex: row];
+	}
+	
+	return @"NotATitle";
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -145,6 +225,9 @@
 		// who can write a better prettyprinter
 		double ohms = (([pickerView selectedRowInComponent:0] - 1) * 10) + ([pickerView selectedRowInComponent:1] - 1);
 		NSUInteger mult = ([pickerView selectedRowInComponent:2] - 1);
+		
+		NSString* rowTitle = [self pickerView: pickerView titleForRow: row forComponent: component];
+		[self _drawResistorBarWithColorName: rowTitle andComponent: component];
 		
 		if (mult < 7) {
 			ohms *= pow(10, mult);
