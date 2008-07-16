@@ -25,4 +25,8 @@
 - (UIView*) _colorViewWithRect:(CGRect)rect andColor: (UIColor*)color;
 - (void) _drawResistorBarWithColorName: (NSString*)cName andComponent: (int)component;
 - (void) _randomSpin:(UIPickerView*)pView;
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
+- (void)setOhmsText:(NSString*)text;
+- (void)setToleranceText:(NSString*)text;
 @end
