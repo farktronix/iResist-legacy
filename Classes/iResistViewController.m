@@ -8,6 +8,8 @@
 
 #import "iResistViewController.h"
 
+CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
+
 @implementation iResistViewController
 
 - (void) _loadBarImages;
@@ -63,14 +65,35 @@
 	_colorBars = [[NSMutableArray alloc] initWithObjects: n, n, n, n, nil];
 	_searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
 	
-    [_colorPickerView selectRow:5 inComponent:0 animated:YES];
-    [_colorPickerView selectRow:3 inComponent:1 animated:YES];
-    [_colorPickerView selectRow:1 inComponent:2 animated:YES];
-    [_colorPickerView selectRow:1 inComponent:3 animated:YES];
-	[_colorPicker _drawResistorBarWithColorName: @"yellow" andComponent: 0];
-	[_colorPicker _drawResistorBarWithColorName: @"red" andComponent: 1];
-	[_colorPicker _drawResistorBarWithColorName: @"black" andComponent: 2];
-	[_colorPicker _drawResistorBarWithColorName: @"black" andComponent: 3];
+	int compRows[4] = {5, 3, 1, 1};
+	int count = 0;
+	NSString* tmpVal = nil;
+	
+	if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)@"ohms", g_AppIDString))
+	{
+		[_colorPicker setOhmsText: tmpVal];
+		CFRelease(tmpVal);
+	}
+	
+	if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)@"tolerance", g_AppIDString))
+	{
+		[_colorPicker setToleranceText: tmpVal];
+		CFRelease(tmpVal);
+	}
+	
+	for (; count < 4; count++)
+	{
+		if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)[NSString stringWithFormat:@"%d", count], g_AppIDString))
+		{
+			compRows[count] = [(NSString*)tmpVal intValue];
+			CFRelease(tmpVal);
+		}
+		
+		[_colorPickerView selectRow:compRows[count] inComponent:count animated:YES];
+		
+		NSString* rowTitle = [_colorPicker pickerView: _colorPickerView titleForRow: compRows[count] forComponent: count];
+		[_colorPicker _drawResistorBarWithColorName: rowTitle andComponent: count];
+	}
 }
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -94,7 +117,7 @@
 
 - (void) _doRandomSpin;
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		[_colorPicker _randomSpin: _colorPickerView];
 	}

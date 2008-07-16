@@ -31,6 +31,7 @@
 		94176FCD0E2E65A100763E7A /* silver.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC10E2E65A100763E7A /* silver.png */; };
 		94176FCE0E2E65A100763E7A /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC20E2E65A100763E7A /* orange.png */; };
 		94176FCF0E2E65A100763E7A /* gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC30E2E65A100763E7A /* gray.png */; };
+		948515260E2E882A00523A66 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 948515250E2E882A00523A66 /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		94176FC10E2E65A100763E7A /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = silver.png; path = bar_images/silver.png; sourceTree = "<group>"; };
 		94176FC20E2E65A100763E7A /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = bar_images/orange.png; sourceTree = "<group>"; };
 		94176FC30E2E65A100763E7A /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gray.png; path = bar_images/gray.png; sourceTree = "<group>"; };
+		948515250E2E882A00523A66 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				2899E5210DE3E06400AC0155 /* iResistViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				948515250E2E882A00523A66 /* Default.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				94176FCE0E2E65A100763E7A /* orange.png in Resources */,
 				94176FCF0E2E65A100763E7A /* gray.png in Resources */,
 				43EC44830E2EA2A10035DD57 /* iResist-icon.png in Resources */,
+				948515260E2E882A00523A66 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +274,59 @@
 			};
 			name = Release;
 		};
+		941F9C940E2E7EA600C7E635 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ryan Joseph";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DE6879B7-EFB1-4A1A-BA52-ADE5B0A56C65";
+				SDKROOT = iphoneos2.0;
+			};
+			name = Distribution;
+		};
+		941F9C950E2E7EA600C7E635 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iResist_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = iResist;
+			};
+			name = Distribution;
+		};
+		941F9C960E2E7EAA00C7E635 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ryan Joseph";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				PROVISIONING_PROFILE = DefaultProfileUuid;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "87677CFB-38D6-4A50-932D-03D1BAD44415";
+				SDKROOT = iphoneos2.0;
+			};
+			name = AdHoc;
+		};
+		941F9C970E2E7EAA00C7E635 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iResist_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = iResist;
+			};
+			name = AdHoc;
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -289,11 +346,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ryan Joseph";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4597A260-9E8A-4E23-B80C-EFFE898C49B1";
 				SDKROOT = iphoneos2.0;
 			};
 			name = Release;
@@ -306,6 +364,8 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				941F9C950E2E7EA600C7E635 /* Distribution */,
+				941F9C970E2E7EAA00C7E635 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -315,6 +375,8 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				941F9C940E2E7EA600C7E635 /* Distribution */,
+				941F9C960E2E7EAA00C7E635 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

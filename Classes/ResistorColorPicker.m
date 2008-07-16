@@ -9,6 +9,8 @@
 #import "ResistorColorPicker.h"
 #import "iResistViewController.h"
 
+extern CFStringRef g_AppIDString;
+
 @implementation ResistorColorPicker
 - (UIView*) _colorViewWithRect:(CGRect)rect andColor: (UIColor*)color;
 {
@@ -291,6 +293,22 @@
 		{
 			_tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolPercent];
 		}
+		
+		CFPreferencesSetAppValue((CFStringRef)[NSString stringWithFormat:@"%d", component],
+								 (CFStringRef)[NSString stringWithFormat:@"%d", row], g_AppIDString);
+		CFPreferencesSetAppValue((CFStringRef)@"ohms", (CFStringRef)_ohms.text, g_AppIDString);
+		CFPreferencesSetAppValue((CFStringRef)@"tolerance", (CFStringRef)_tolerance.text, g_AppIDString);
+		CFPreferencesAppSynchronize(g_AppIDString);
 	}
+}
+
+- (void)setOhmsText:(NSString*)text;
+{
+	_ohms.text = text;
+}
+
+- (void)setToleranceText:(NSString*)text;
+{
+	_tolerance.text = text;
 }
 @end
