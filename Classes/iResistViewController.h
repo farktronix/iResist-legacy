@@ -16,10 +16,11 @@
     IBOutlet ResistorColorPicker *_colorPicker;
 	
 	NSMutableArray *_colorBars;
+	NSDictionary *_barImages;
 }
 
 - (IBAction) _expandButtonPressed: (id) sender;
 
-- (void) _drawResistorBarWithColor: (UIColor*)color atRect: (CGRect)rect withTag: (int)tag;
+- (void) _drawResistorBarWithColor: (NSString*)color atRect: (CGRect)rect withTag: (int)tag;
 @end
 

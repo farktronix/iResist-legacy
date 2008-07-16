@@ -18,21 +18,22 @@
     return [view autorelease];
 }
 
+// This method is only tasked with calculating the correct CGRect for a color bar;
+// currently it's obviously done "by hand," but the idea was that since this class has
+// the ref to _resistor (the UIImageView), it should calculate rects programmatically. Should.
 - (void) _drawResistorBarWithColorName: (NSString*)cName andComponent: (int)component;
 {	
-	// imgView y 44 -> yCoord 57; (13 difference)
-	CGFloat xCoord = 125.0, yCoord = 28.0, height = 38.0;
+	CGFloat xCoord = 125.0, yCoord = 23.0, height = 48.0, width = 10;
 	
 	xCoord += (20 * component);
 	
 	if (component == 0 || component == 3) {
-		xCoord += (component == 0 ? -10.0 : 14.0);
-		yCoord -= (component == 0 ? 5.5 : 6.0);
-		height += (component == 0 ? 9.0 : 9.5);
+		xCoord += (component == 0 ? -5.0 : 5.0);
+		width += 3;
 	}
 	
-	[_viewController _drawResistorBarWithColor: [_colors objectForKey: cName] 
-										atRect: CGRectMake(xCoord, yCoord, 7, height)
+	[_viewController _drawResistorBarWithColor: cName 
+										atRect: CGRectMake(xCoord, yCoord, width, height)
 									   withTag: component];
 }
 
