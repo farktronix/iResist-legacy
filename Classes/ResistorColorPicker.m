@@ -43,7 +43,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.text = text;
         label.frame = view.frame;
-        if ([text isEqualToString:@"White"] || [text isEqualToString:@"Silver"]) {
+        if ([text isEqualToString:@"White"] || [text isEqualToString:@"Silver"] || [text isEqualToString:@"Yellow"]) {
             label.textColor = [UIColor blackColor];
         } else {
             label.textColor = [UIColor whiteColor];

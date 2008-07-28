@@ -16,7 +16,17 @@
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {	
-	
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults valueForKey:@"components"] == nil) {
+        NSArray *componentValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:5],
+                                    [NSNumber numberWithInt:3],
+                                    [NSNumber numberWithInt:1],
+                                    [NSNumber numberWithInt:7],
+                                    nil];
+        [defaults setValue:componentValues forKey:@"components"];
+    }
+    
 	// Override point for customization after app launch	
     [window addSubview:viewController.view];
 	[window makeKeyAndVisible];
