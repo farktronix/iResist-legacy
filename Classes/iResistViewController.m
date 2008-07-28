@@ -16,6 +16,11 @@
         [_colorPickerView reloadAllComponents];
     } else if ([keyPath isEqualToString:@"UseAccelerometer"]) {
         _useAccel = [[[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"] boolValue];
+        if (_useAccel) {
+            [UIAccelerometer sharedAccelerometer].delegate = self;
+        } else {
+            [UIAccelerometer sharedAccelerometer].delegate = nil;
+        }
     }
 }
 
@@ -24,9 +29,15 @@
     _resistorViewController = [[ResistorValueViewController alloc] initWithNibName:@"ResistorValueView" bundle:nil];
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
 	
+    _useAccel = YES;
+    NSNumber *useAccel = [[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"];
+    if (useAccel != nil) {
+        _useAccel = [useAccel boolValue];
+    }
+    
 	UIAccelerometer* sAccel = [UIAccelerometer sharedAccelerometer];
 	sAccel.updateInterval = 0.5;
-	sAccel.delegate = self;
+    if (_useAccel) sAccel.delegate = self;
 	
 	_searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     
@@ -40,11 +51,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
     
     [self _toggleSettingsButtonPressed:self];
-    
-    NSNumber *useAccel = [[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"];
-    if (useAccel != nil) {
-        _useAccel = [useAccel boolValue];
-    }
     
     [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"ShowLabels" options:0 context:nil];
     [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"UseAccelerometer" options:0 context:nil];
