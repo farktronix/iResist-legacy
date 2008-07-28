@@ -8,9 +8,16 @@
 
 #import "iResistViewController.h"
 
-CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
-
 @implementation iResistViewController
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"ShowLabels"]) {
+        [_colorPickerView reloadAllComponents];
+    } else if ([keyPath isEqualToString:@"UseAccelerometer"]) {
+        _useAccel = [[[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"] boolValue];
+    }
+}
 
 - (void) viewDidLoad
 {    
@@ -33,6 +40,14 @@ CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
     [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
     
     [self _toggleSettingsButtonPressed:self];
+    
+    NSNumber *useAccel = [[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"];
+    if (useAccel != nil) {
+        _useAccel = [useAccel boolValue];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"ShowLabels" options:0 context:nil];
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"UseAccelerometer" options:0 context:nil];
 }
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -102,12 +117,14 @@ CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
 //// accel delegate
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acc
 {
-	float add = (acc.y < 0 ? -acc.y : acc.y) + (acc.x < 0 ? -acc.x : acc.x) + (acc.z < 0 ? -acc.z : acc.z);
-	
-	if (add > 5.0)
-	{
-		[self _doRandomSpin];
-	}
+    if (_useAccel) {
+        float add = (acc.y < 0 ? -acc.y : acc.y) + (acc.x < 0 ? -acc.x : acc.x) + (acc.z < 0 ? -acc.z : acc.z);
+        
+        if (add > 5.0)
+        {
+            [self _doRandomSpin];
+        }
+    }
 }
 
 //// search bar delegate functions

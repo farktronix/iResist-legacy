@@ -13,7 +13,12 @@
 
 - (IBAction) showLabelsValueChanged
 {
-    
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_showLabelsSwitch.on] forKey:@"ShowLabels"];
+}
+
+- (IBAction) useAccelerometerSwitchChanged
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_useAccelerometerSwitch.on] forKey:@"UseAccelerometer"];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -23,30 +28,20 @@
 	return self;
 }
 
-/*
- Implement loadView if you want to create a view hierarchy programmatically
-- (void)loadView {
+- (void)viewDidLoad 
+{
+    BOOL showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
+    _showLabelsSwitch.on = showLabels;
+    BOOL accel = YES;
+    NSNumber *useAccel = [[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"];
+    if (useAccel) accel = [useAccel boolValue];
+    _useAccelerometerSwitch.on = accel;
 }
- */
-
-/*
- If you need to do additional setup after loading the view, override viewDidLoad.
-- (void)viewDidLoad {
-}
- */
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
-
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-	// Release anything that's not essential, such as cached data
-}
-
 
 - (void)dealloc {
 	[super dealloc];

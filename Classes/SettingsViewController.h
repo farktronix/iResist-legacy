@@ -11,8 +11,10 @@
 
 @interface SettingsViewController : UIViewController {
     IBOutlet UISwitch *_showLabelsSwitch;
+    IBOutlet UISwitch *_useAccelerometerSwitch;
 }
 
 - (IBAction) showLabelsValueChanged;
+- (IBAction) useAccelerometerSwitchChanged;
 
 @end

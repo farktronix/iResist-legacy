@@ -10,11 +10,50 @@
 #import "iResistViewController.h"
 
 @implementation ResistorColorPicker
-- (UIView*) _colorViewWithRect:(CGRect)rect andColor: (UIColor*)color;
++ (NSString *) colorNameForRow:(int)row inComponent:(int)component
+{
+    NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+                         @"green", @"blue", @"violet", @"gray", @"white", nil];
+    NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
+                    @"gold", @"silver", nil];
+    NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+                     @"green", @"blue", @"gold", @"silver", nil];
+    
+	if (component < 2) {
+		return [firstTwo objectAtIndex: row];
+	}
+	else if (component == 2) {
+		return [mult objectAtIndex: row];
+	}
+	else if (component == 3) {
+		return [tol objectAtIndex: row];
+	}
+	
+	return @"NotATitle";
+}
+
+
+- (UIView*) _colorViewWithRect:(CGRect)rect color: (UIColor*)color label:(NSString *)text;
 {
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = color;
     view.frame = rect;
+
+    if (_showLabels) {
+        UILabel *label = [[UILabel alloc] init];
+        label.text = text;
+        label.frame = view.frame;
+        if ([text isEqualToString:@"White"] || [text isEqualToString:@"Silver"]) {
+            label.textColor = [UIColor blackColor];
+        } else {
+            label.textColor = [UIColor whiteColor];
+        }
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = UITextAlignmentCenter;
+        [view addSubview:label];
+        [label release];
+    }
+    
     return [view autorelease];
 }
 
@@ -34,25 +73,25 @@
 {
 	NSMutableDictionary *tDict = [[NSMutableDictionary alloc] init];
 	
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:@"black"];
-	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:@"gray"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:@"white"];
-	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:@"brown"];
-	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:@"red"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:@"orange"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:@"yellow"];
-	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:@"green"];
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:@"blue"];
-	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:@"violet"];
-	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:@"gold"];
-	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:@"silver"];
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:@"Black"];
+	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:@"Gray"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:@"White"];
+	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:@"Brown"];
+	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:@"Red"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:@"Orange"];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:@"Yellow"];
+	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:@"Green"];
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:@"Blue"];
+	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:@"Violet"];
+	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:@"Gold"];
+	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:@"Silver"];
 	
 	_colors = tDict;
 }
 
-- (UIView *) _colorViewWithColor: (UIColor*)color;
+- (UIView *) _colorViewWithColorString: (NSString*)color;
 {
-	return [self _colorViewWithRect: CGRectMake(0, 0, 70, 40) andColor: color];
+	return [self _colorViewWithRect: CGRectMake(0, 0, 70, 40) color: [_colors objectForKey:color] label:color];
 }
 
 - (UIImageView*) _endPickerImageView;
@@ -67,16 +106,16 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"orange"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"yellow"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"violet"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gray"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"white"]]];
+    [colors addObject: [self _colorViewWithColorString:@"Black"]];
+    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
+    [colors addObject: [self _colorViewWithColorString:@"Red"]];
+    [colors addObject: [self _colorViewWithColorString:@"Orange"]];
+    [colors addObject: [self _colorViewWithColorString:@"Yellow"]];
+    [colors addObject: [self _colorViewWithColorString:@"Green"]];
+    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
+    [colors addObject: [self _colorViewWithColorString:@"Violet"]];
+    [colors addObject: [self _colorViewWithColorString:@"Gray"]];
+    [colors addObject: [self _colorViewWithColorString:@"White"]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -85,15 +124,15 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"violet"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gray"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gold"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"silver"]]];
+    [colors addObject: [self _colorViewWithColorString:@"Black"]];
+    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
+    [colors addObject: [self _colorViewWithColorString:@"Red"]];
+    [colors addObject: [self _colorViewWithColorString:@"Green"]];
+    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
+    [colors addObject: [self _colorViewWithColorString:@"Violet"]];
+    [colors addObject: [self _colorViewWithColorString:@"Gray"]];
+    [colors addObject: [self _colorViewWithColorString:@"Gold"]];
+    [colors addObject: [self _colorViewWithColorString:@"Silver"]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -102,34 +141,47 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"black"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"brown"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"red"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"orange"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"yellow"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"green"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"blue"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"gold"]]];
-    [colors addObject: [self _colorViewWithColor: [_colors objectForKey: @"silver"]]];
+    [colors addObject: [self _colorViewWithColorString:@"Black"]];
+    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
+    [colors addObject: [self _colorViewWithColorString:@"Red"]];
+    [colors addObject: [self _colorViewWithColorString:@"Orange"]];
+    [colors addObject: [self _colorViewWithColorString:@"Yellow"]];
+    [colors addObject: [self _colorViewWithColorString:@"Green"]];
+    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
+    [colors addObject: [self _colorViewWithColorString:@"Gold"]];
+    [colors addObject: [self _colorViewWithColorString:@"Silver"]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
+}
+
+- (void) _setupColorViews
+{
+    NSMutableArray *colors = [[NSMutableArray alloc] init];
+    [colors addObject:[self _colorViewsForComponent]];
+    [colors addObject:[self _colorViewsForComponent]];
+    [colors addObject:[self _colorViewsForMultiplierComponent]];
+    [colors addObject:[self _colorViewsForToleranceComponent]];
+    [_colorViews release];
+    _colorViews = colors;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
+    [self _setupColorViews];
 }
 
 - (id) init
 {
     if ((self = [super init])) {
+        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"ShowLabels" options:0 context:nil];
+        
 		[self _setupColorDictionary];
 		
-        NSMutableArray *colors = [[NSMutableArray alloc] init];
-		
 		_endImg = [[UIImage imageNamed: @"checker.bmp"] retain];
-		
-        [colors addObject:[self _colorViewsForComponent]];
-        [colors addObject:[self _colorViewsForComponent]];
-        [colors addObject:[self _colorViewsForMultiplierComponent]];
-        [colors addObject:[self _colorViewsForToleranceComponent]];
         
-        _colorViews = colors;
+        [self _setupColorViews];
     }
 	
     return self;
@@ -137,6 +189,7 @@
 
 - (void) dealloc
 {
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowLabels"];
     [_colorViews release];
 	[_endImg release];
 	[_colors release];

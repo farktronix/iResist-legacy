@@ -16,7 +16,11 @@
 	UIImage *_endImg;
 	
 	IBOutlet iResistViewController *_viewController;
+    
+    BOOL _showLabels;
 }
+
++ (NSString *) colorNameForRow:(int)row inComponent:(int)component;
 
 - (void) _randomSpin:(UIPickerView*)pView;
 

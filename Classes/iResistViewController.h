@@ -23,6 +23,8 @@
     
     ResistorValueViewController *_resistorViewController;
     SettingsViewController *_settingsViewController;
+    
+    BOOL _useAccel;
 }
 
 - (IBAction) _expandButtonPressed: (id) sender;

@@ -7,7 +7,7 @@
 //
 
 #import "ResistorValueViewController.h"
-
+#import "ResistorColorPicker.h"
 
 @implementation ResistorValueViewController
 
@@ -105,28 +105,6 @@
     }    
 }
 
-- (NSString *) _colorNameForRow:(int)row inComponent:(int)component
-{
-	NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-                         @"green", @"blue", @"violet", @"gray", @"white", nil];
-	NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
-                    @"gold", @"silver", nil];
-	NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-                     @"green", @"blue", @"gold", @"silver", nil];
-    
-	if (component < 2) {
-		return [firstTwo objectAtIndex: row];
-	}
-	else if (component == 2) {
-		return [mult objectAtIndex: row];
-	}
-	else if (component == 3) {
-		return [tol objectAtIndex: row];
-	}
-	
-	return @"NotATitle";
-}
-
 // This method is only tasked with calculating the correct CGRect for a color bar;
 // currently it's obviously done "by hand," but the idea was that since this class has
 // the ref to _resistor (the UIImageView), it should calculate rects programmatically. Should.
@@ -169,7 +147,7 @@
     
     int component = 0;
     for (NSNumber *rowNum in components) {
-        [self _drawResistorBarWithColorName:[self _colorNameForRow:([rowNum intValue] - 1) inComponent:component] andComponent:component];
+        [self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([rowNum intValue] - 1) inComponent:component] andComponent:component];
         component++;
     }
 }
