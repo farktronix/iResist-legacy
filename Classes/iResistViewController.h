@@ -8,19 +8,25 @@
 
 #import <UIKit/UIKit.h>
 #import "ResistorColorPicker.h"
+#import "ResistorValueViewController.h"
+#import "SettingsViewController.h"
 
 @interface iResistViewController : UIViewController <UISearchBarDelegate, UIAccelerometerDelegate> {
     IBOutlet UIPickerView *_colorPickerView;
+    IBOutlet ResistorColorPicker *_colorPicker;
+    
 	IBOutlet UISearchBar *_searchBar;
 	IBOutlet UIButton *_expandSearchButton;
-    IBOutlet ResistorColorPicker *_colorPicker;
-	
-	NSMutableArray *_colorBars;
-	NSDictionary *_barImages;
+    
+    IBOutlet UIButton *_toggleSettingsButton;
+    IBOutlet UIView *_contentView;
+    
+    ResistorValueViewController *_resistorViewController;
+    SettingsViewController *_settingsViewController;
 }
 
 - (IBAction) _expandButtonPressed: (id) sender;
+- (IBAction) _toggleSettingsButtonPressed: (id) sender;
 
-- (void) _drawResistorBarWithColor: (NSString*)color atRect: (CGRect)rect withTag: (int)tag;
 @end
 

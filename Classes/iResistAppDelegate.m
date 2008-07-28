@@ -20,10 +20,14 @@
 	// Override point for customization after app launch	
     [window addSubview:viewController.view];
 	[window makeKeyAndVisible];
-	
-	[[UIApplication sharedApplication] setStatusBarStyle:2];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:2];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (void)dealloc {
     [viewController release];

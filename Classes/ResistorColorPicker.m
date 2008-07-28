@@ -9,8 +9,6 @@
 #import "ResistorColorPicker.h"
 #import "iResistViewController.h"
 
-extern CFStringRef g_AppIDString;
-
 @implementation ResistorColorPicker
 - (UIView*) _colorViewWithRect:(CGRect)rect andColor: (UIColor*)color;
 {
@@ -18,25 +16,6 @@ extern CFStringRef g_AppIDString;
     view.backgroundColor = color;
     view.frame = rect;
     return [view autorelease];
-}
-
-// This method is only tasked with calculating the correct CGRect for a color bar;
-// currently it's obviously done "by hand," but the idea was that since this class has
-// the ref to _resistor (the UIImageView), it should calculate rects programmatically. Should.
-- (void) _drawResistorBarWithColorName: (NSString*)cName andComponent: (int)component;
-{	
-	CGFloat xCoord = 125.0, yCoord = 23.0, height = 48.0, width = 10;
-	
-	xCoord += (20 * component);
-	
-	if (component == 0 || component == 3) {
-		xCoord += (component == 0 ? -5.0 : 5.0);
-		width += 3;
-	}
-	
-	[_viewController _drawResistorBarWithColor: cName 
-										atRect: CGRectMake(xCoord, yCoord, width, height)
-									   withTag: component];
 }
 
 - (void) _randomSpin:(UIPickerView*)pView;
@@ -165,29 +144,6 @@ extern CFStringRef g_AppIDString;
     [super dealloc];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-	NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-							@"green", @"blue", @"violet", @"gray", @"white", nil];
-	NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
-						@"gold", @"silver", nil];
-	NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-						@"green", @"blue", @"gold", @"silver", nil];
-	
-	row -= 1;
-	if (component < 2) {
-		return [firstTwo objectAtIndex: row];
-	}
-	else if (component == 2) {
-		return [mult objectAtIndex: row];
-	}
-	else if (component == 3) {
-		return [tol objectAtIndex: row];
-	}
-	
-	return @"NotATitle";
-}
-
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 4;
@@ -223,92 +179,16 @@ extern CFStringRef g_AppIDString;
 		[pickerView selectRow: nRow inComponent: component animated: NO];
 		[self pickerView: pickerView didSelectRow: nRow inComponent: component];
 	}
-	else {
-		// be ye warned: there be rounding errors ahead. there be pirate booty awarded to he
-		// who can write a better prettyprinter
-		double ohms = (([pickerView selectedRowInComponent:0] - 1) * 10) + ([pickerView selectedRowInComponent:1] - 1);
-		NSUInteger mult = ([pickerView selectedRowInComponent:2] - 1);
-		
-		NSString* rowTitle = [self pickerView: pickerView titleForRow: row forComponent: component];
-		[self _drawResistorBarWithColorName: rowTitle andComponent: component];
-		
-		if (mult < 7) {
-			ohms *= pow(10, mult);
-		} 
-		else if (mult == 7) {
-			ohms *= 0.1;
-		} 
-		else if (mult == 8) {
-			ohms *= 0.01;
-		}
-		
-		if (ohms < 1000) {
-			_ohms.text = [NSString stringWithFormat:(ohms < 1 ? @"%.2f Ω" : (ohms < 10 ? @"%.1f Ω" : @"%.0f Ω")), ohms];
-		}
-		else if (ohms < 1000000) {
-			_ohms.text = [NSString stringWithFormat:@"%.1f KΩ", ohms/1000.0];
-		}
-		else if (ohms < 1000000000) {
-			_ohms.text = [NSString stringWithFormat:@"%.1f MΩ", ohms/1000000.0];
-		}
-		else {
-			_ohms.text = [NSString stringWithFormat:@"%.1f GΩ", ohms/1000000000.0];
-		}
-		
-		NSUInteger tol = ([pickerView selectedRowInComponent: 3] - 1);
-		float tolPercent = 0.0f;
-		
-		switch (tol) {
-			case 1:		// brown, 1%
-			case 2:		// red, 2%
-				tolPercent = (float)tol;
-				break;
-				
-			case 3:		// green, 0.5%
-				tolPercent = 0.5f;
-				break;
-				
-			case 4:		// blue, 0.25%
-				tolPercent = 0.25f;
-				break;
-				
-			case 5:		// violet, 0.10%
-				tolPercent = 0.10f;
-				break;
-				
-			case 6:		// grey, 0.05%
-				tolPercent = 0.05f;
-				break;
-				
-			case 7:		// gold
-				tolPercent = 5;
-				break;
-				
-			case 8:		// silver
-				tolPercent = 10;
-				break;
-		}
-		
-		if (tolPercent)
-		{
-			_tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolPercent];
-		}
-		
-		CFPreferencesSetAppValue((CFStringRef)[NSString stringWithFormat:@"%d", component],
-								 (CFStringRef)[NSString stringWithFormat:@"%d", row], g_AppIDString);
-		CFPreferencesSetAppValue((CFStringRef)@"ohms", (CFStringRef)_ohms.text, g_AppIDString);
-		CFPreferencesSetAppValue((CFStringRef)@"tolerance", (CFStringRef)_tolerance.text, g_AppIDString);
-		CFPreferencesAppSynchronize(g_AppIDString);
+	else {        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSArray *componentValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:[pickerView selectedRowInComponent:0]],
+                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:1]],
+                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:2]],
+                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:3]],
+                                                             nil];
+        [defaults setValue:componentValues forKey:@"components"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
 	}
-}
-
-- (void)setOhmsText:(NSString*)text;
-{
-	_ohms.text = text;
-}
-
-- (void)setToleranceText:(NSString*)text;
-{
-	_tolerance.text = text;
 }
 @end

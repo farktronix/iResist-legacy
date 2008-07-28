@@ -12,88 +12,27 @@ CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
 
 @implementation iResistViewController
 
-- (void) _loadBarImages;
-{
-	NSMutableDictionary *bi =  [[NSMutableDictionary alloc] init];
-	
-	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:@"black"];
-	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:@"blue"];
-	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:@"brown"];
-	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:@"gold"];
-	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:@"gray"];
-	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:@"green"];
-	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:@"orange"];
-	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:@"red"];
-	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:@"silver"];
-	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:@"violet"];
-	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:@"white"];
-	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:@"yellow"];
-	
-	_barImages = (NSDictionary*)bi;
-}
-
-// This is called from -[ResistorColorPicker _drawResistorBarWithColorName], because it calculates the correct
-// CGRect... horrible way to do it, I know, but on first writing it seemed like the way to go.
-- (void) _drawResistorBarWithColor: (NSString*)color atRect: (CGRect)rect withTag: (int)tag;
-{
-	UIImage* img = [_barImages valueForKey: color];	
-	id tView = nil;
-	
-	if (img && tag < [_colorBars count] && ![[_colorBars objectAtIndex: tag] isKindOfClass: [NSNull class]])
-	{
-		tView = [_colorBars objectAtIndex: tag];
-		[_colorBars removeObjectAtIndex: tag];
-		[tView removeFromSuperview];
-		[tView release];
-	}
-	
-	tView = [[UIImageView alloc] initWithImage: img];
-	((UIView*)tView).frame = rect;
-	[_colorBars insertObject:tView atIndex:tag];
-	[self.view addSubview: tView];
-}
-
 - (void) viewDidLoad
-{
-	[self _loadBarImages];
+{    
+    _resistorViewController = [[ResistorValueViewController alloc] initWithNibName:@"ResistorValueView" bundle:nil];
+    _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
 	
 	UIAccelerometer* sAccel = [UIAccelerometer sharedAccelerometer];
 	sAccel.updateInterval = 0.5;
 	sAccel.delegate = self;
 	
-	NSNull* n = [NSNull null];
-	_colorBars = [[NSMutableArray alloc] initWithObjects: n, n, n, n, nil];
 	_searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-	
-	int compRows[4] = {5, 3, 1, 1};
-	int count = 0;
-	NSString* tmpVal = nil;
-	
-	if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)@"ohms", g_AppIDString))
-	{
-		[_colorPicker setOhmsText: tmpVal];
-		CFRelease(tmpVal);
-	}
-	
-	if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)@"tolerance", g_AppIDString))
-	{
-		[_colorPicker setToleranceText: tmpVal];
-		CFRelease(tmpVal);
-	}
-	
-	for (; count < 4; count++)
-	{
-		if (tmpVal = (NSString*)CFPreferencesCopyAppValue((CFStringRef)[NSString stringWithFormat:@"%d", count], g_AppIDString))
-		{
-			compRows[count] = [(NSString*)tmpVal intValue];
-			CFRelease(tmpVal);
-		}
-		
-		[_colorPickerView selectRow:compRows[count] inComponent:count animated:YES];
-		
-		NSString* rowTitle = [_colorPicker pickerView: _colorPickerView titleForRow: compRows[count] forComponent: count];
-		[_colorPicker _drawResistorBarWithColorName: rowTitle andComponent: count];
-	}
+    
+    NSArray *components = [[NSUserDefaults standardUserDefaults] objectForKey:@"components"];
+    if (components == nil) components = [NSArray arrayWithObjects:[NSNumber numberWithInt:5], [NSNumber numberWithInt:3], [NSNumber numberWithInt:1], [NSNumber numberWithInt:1], nil];
+    int component = 0;
+    for (NSNumber *row in components) {
+        [_colorPickerView selectRow:[row intValue] inComponent:component animated:YES];
+        component++;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
+    
+    [self _toggleSettingsButtonPressed:self];
 }
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -109,8 +48,6 @@ CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
 
 
 - (void)dealloc {
-	[_colorBars release];
-	[_barImages release];
 	[super dealloc];
 }
 
@@ -130,6 +67,35 @@ CFStringRef g_AppIDString = (CFStringRef)@"us.seph.iResist";
 	//_expandSearchButton.enabled = NO;
 	//_expandSearchButton.hidden = YES;
 	[self _doRandomSpin];
+}
+
+- (IBAction) _toggleSettingsButtonPressed: (id) sender
+{
+    UIView *resistorView = _resistorViewController.view;
+    UIView *settingsView = _settingsViewController.view;
+
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [UIView setAnimationTransition:([resistorView superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:_contentView cache:YES];
+
+    if ([resistorView superview] != nil) {
+        [_settingsViewController viewWillAppear:YES];
+        [_resistorViewController viewWillDisappear:YES];
+        [resistorView removeFromSuperview];
+        [_contentView insertSubview:settingsView belowSubview:_toggleSettingsButton];
+        [_resistorViewController viewDidDisappear:YES];
+        [_settingsViewController viewDidAppear:YES];
+        
+    } else {
+        [_resistorViewController viewWillAppear:YES];
+        [_settingsViewController viewWillDisappear:YES];
+        [settingsView removeFromSuperview];
+        [_contentView insertSubview:resistorView belowSubview:_toggleSettingsButton];
+        [_settingsViewController viewDidDisappear:YES];
+        [_resistorViewController viewDidAppear:YES];
+    }
+    [UIView commitAnimations];
+
 }
 
 
