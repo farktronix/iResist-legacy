@@ -190,6 +190,7 @@
 - (void) dealloc
 {
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowLabels"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_colorViews release];
 	[_endImg release];
 	[_colors release];

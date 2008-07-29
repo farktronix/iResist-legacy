@@ -152,6 +152,59 @@
     }
 }
 
+- (IBAction) _expandButtonPressed: (id) sender;
+{
+	_searchBar.hidden = !_searchBar.hidden;
+    CGFloat searchBarHeight = 25.0 * (_searchBar.hidden ? -1 : 1);
+    _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
+    _ohms.frame = CGRectMake(_ohms.frame.origin.x, _ohms.frame.origin.y + searchBarHeight, _ohms.frame.size.width, _ohms.frame.size.height);
+    _tolerance.frame = CGRectMake(_tolerance.frame.origin.x, _tolerance.frame.origin.y + searchBarHeight, _tolerance.frame.size.width, _tolerance.frame.size.height);
+    
+    if (_searchBar.hidden) {
+        [_searchBar resignFirstResponder];
+    }
+    
+    [self _resistorValueChanged:nil];
+}
+
+//// search bar delegate functions
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+	[searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
+{
+	_searchBar.hidden = YES;
+	
+	[searchBar resignFirstResponder];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;
+{
+	[searchBar resignFirstResponder];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    static BOOL _updatingText;
+    static NSCharacterSet *invalidChars = nil;
+    
+    if (invalidChars == nil) {
+        invalidChars = [[[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet] retain];
+    }
+    
+    if (_updatingText == NO) {
+        _updatingText = YES;
+        if ([searchText length]) {
+            _searchBar.text = [[searchText stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
+        }
+        _updatingText = NO;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchTextChanged" object:nil userInfo:[NSDictionary dictionaryWithObject:searchText forKey:@"SearchText"]];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -159,8 +212,21 @@
 
 - (void) viewDidLoad
 {
+    _searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+//    _searchBar.returnKeyType = UIReturnKeyDone;
+    _searchBar.delegate = self;
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
     [self _resistorValueChanged:nil];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    for (UITouch *touch in touches) {
+        if (![_searchBar hitTest:[touch locationInView:self.view] withEvent:event]) {
+            [_searchBar resignFirstResponder];
+        }
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {

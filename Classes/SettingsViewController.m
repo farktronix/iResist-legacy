@@ -21,19 +21,14 @@
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_useAccelerometerSwitch.on] forKey:@"UseAccelerometer"];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		// Initialization code
-	}
-	return self;
-}
-
 - (void)viewDidLoad 
 {
-    BOOL showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL showLabels = [[defaults valueForKey:@"ShowLabels"] boolValue];
     _showLabelsSwitch.on = showLabels;
+    
     BOOL accel = YES;
-    NSNumber *useAccel = [[NSUserDefaults standardUserDefaults] valueForKey:@"UseAccelerometer"];
+    NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
     if (useAccel) accel = [useAccel boolValue];
     _useAccelerometerSwitch.on = accel;
 }
@@ -42,10 +37,5 @@
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
-- (void)dealloc {
-	[super dealloc];
-}
-
 
 @end

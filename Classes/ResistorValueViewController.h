@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-
-@interface ResistorValueViewController : UIViewController {
+@interface ResistorValueViewController : UIViewController <UISearchBarDelegate> {
     IBOutlet UILabel *_ohms;
 	IBOutlet UILabel *_tolerance;
 	IBOutlet UIImageView *_resistor;
-    
+
+	IBOutlet UISearchBar *_searchBar;
+	IBOutlet UIButton *_expandSearchButton;
+
 	NSMutableArray *_colorBars;
 	NSDictionary *_barImages;
 }
+
+- (IBAction) _expandButtonPressed: (id) sender;
 
 @end

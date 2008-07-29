@@ -15,9 +15,6 @@
     IBOutlet UIPickerView *_colorPickerView;
     IBOutlet ResistorColorPicker *_colorPicker;
     
-	IBOutlet UISearchBar *_searchBar;
-	IBOutlet UIButton *_expandSearchButton;
-    
     IBOutlet UIButton *_toggleSettingsButton;
     IBOutlet UIView *_contentView;
     
@@ -27,7 +24,6 @@
     BOOL _useAccel;
 }
 
-- (IBAction) _expandButtonPressed: (id) sender;
 - (IBAction) _toggleSettingsButtonPressed: (id) sender;
 
 @end
