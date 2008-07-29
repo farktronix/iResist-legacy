@@ -27,7 +27,7 @@
     BOOL showLabels = [[defaults valueForKey:@"ShowLabels"] boolValue];
     _showLabelsSwitch.on = showLabels;
     
-    BOOL accel = YES;
+    BOOL accel = NO;
     NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
     if (useAccel) accel = [useAccel boolValue];
     _useAccelerometerSwitch.on = accel;

@@ -32,7 +32,7 @@
     _resistorViewController = [[ResistorValueViewController alloc] initWithNibName:@"ResistorValueView" bundle:nil];
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
 	
-    _useAccel = YES;
+    _useAccel = NO;
     NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
     if (useAccel != nil) {
         _useAccel = [useAccel boolValue];
@@ -73,7 +73,7 @@
 
 - (void) _doRandomSpin;
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		[_colorPicker _randomSpin: _colorPickerView];
 	}
@@ -188,7 +188,7 @@
     if (_useAccel) {
         float add = (acc.y < 0 ? -acc.y : acc.y) + (acc.x < 0 ? -acc.x : acc.x) + (acc.z < 0 ? -acc.z : acc.z);
         
-        if (add > 5.0)
+        if (add > 4.0)
         {
             [self _doRandomSpin];
         }

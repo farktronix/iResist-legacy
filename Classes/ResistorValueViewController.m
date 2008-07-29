@@ -121,18 +121,23 @@
 	UIImage* img = [_barImages valueForKey: color];	
 	id tView = nil;
 	
-	if (img && component < [_colorBars count] && ![[_colorBars objectAtIndex: component] isKindOfClass: [NSNull class]])
+	if (img && component < [_colorBars count])
 	{
 		tView = [_colorBars objectAtIndex: component];
+		
+		// if there was a color we need to replace, remove it from the superview
+		if (![tView isKindOfClass: [NSNull class]]) {
+			[tView removeFromSuperview];
+			[tView release];
+		}
+		
 		[_colorBars removeObjectAtIndex: component];
-		[tView removeFromSuperview];
-		[tView release];
+		
+		tView = [[UIImageView alloc] initWithImage: img];
+		((UIView*)tView).frame = cBarRect;
+		[_colorBars insertObject:tView atIndex:component];
+		[self.view addSubview: tView];
 	}
-	
-	tView = [[UIImageView alloc] initWithImage: img];
-	((UIView*)tView).frame = cBarRect;
-	[_colorBars insertObject:tView atIndex:component];
-	[self.view addSubview: tView];
 }
 
 - (void) _resistorValueChanged:(NSNotification *)notif

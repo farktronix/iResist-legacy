@@ -11,12 +11,10 @@
 
 @interface SettingsViewController : UIViewController {
     IBOutlet UISwitch *_showLabelsSwitch;
-    IBOutlet UISwitch *_useAccelerometerSwitch;
-    IBOutlet UISwitch *_showSearchSwitch;
+    IBOutlet UISwitch *_useAccelerometerSwitch;]
 }
 
 - (IBAction) showLabelsValueChanged;
 - (IBAction) useAccelerometerSwitchChanged;
-- (IBAction) showSearchBarChanged;
 
 @end
