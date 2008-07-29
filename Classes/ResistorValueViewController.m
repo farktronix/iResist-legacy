@@ -231,7 +231,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
-        if (![_searchBar hitTest:[touch locationInView:self.view] withEvent:event]) {
+        if (_searchBar.hidden == NO && ![_searchBar hitTest:[touch locationInView:self.view] withEvent:event]) {
             [self _toggleSearchBar];
         }
     }
