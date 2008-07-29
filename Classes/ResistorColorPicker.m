@@ -12,24 +12,27 @@
 @implementation ResistorColorPicker
 + (NSString *) colorNameForRow:(int)row inComponent:(int)component
 {
-    NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-                         @"green", @"blue", @"violet", @"gray", @"white", nil];
-    NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
-                    @"gold", @"silver", nil];
-    NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-                     @"green", @"blue", @"gold", @"silver", nil];
-    
-	if (component < 2) {
-		return [firstTwo objectAtIndex: row];
-	}
-	else if (component == 2) {
-		return [mult objectAtIndex: row];
-	}
-	else if (component == 3) {
-		return [tol objectAtIndex: row];
+	// sometimes the accel. randomizer will pick row -1 while "spinning", causing a crash
+	if (row >= 0) {
+		NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+							 @"green", @"blue", @"violet", @"gray", @"white", nil];
+		NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
+						@"gold", @"silver", nil];
+		NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
+						 @"green", @"blue", @"gold", @"silver", nil];
+		
+		if (component < 2) {
+			return [firstTwo objectAtIndex: row];
+		}
+		else if (component == 2) {
+			return [mult objectAtIndex: row];
+		}
+		else if (component == 3) {
+			return [tol objectAtIndex: row];
+		}
 	}
 	
-	return @"NotATitle";
+	return @"";
 }
 
 

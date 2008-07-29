@@ -76,6 +76,7 @@
 		94176FC20E2E65A100763E7A /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = bar_images/orange.png; sourceTree = "<group>"; };
 		94176FC30E2E65A100763E7A /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gray.png; path = bar_images/gray.png; sourceTree = "<group>"; };
 		948515250E2E882A00523A66 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		94EC96900E3F9AA9009A4CAF /* iResist-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iResist-large.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +143,7 @@
 			children = (
 				94176FB20E2E659300763E7A /* Bar Images */,
 				43EC44820E2EA2A10035DD57 /* iResist-icon.png */,
+				94EC96900E3F9AA9009A4CAF /* iResist-large.png */,
 				94148A570E2C0E1B00986196 /* resistor_320.png */,
 				940D4D720E282F3C003733D4 /* blackmag.png */,
 				940D4C360E280A9C003733D4 /* checker.bmp */,
