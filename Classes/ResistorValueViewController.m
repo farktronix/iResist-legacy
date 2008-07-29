@@ -199,6 +199,9 @@
         if ([searchText length]) {
             _searchBar.text = [[searchText stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
         }
+        if ([_searchBar.text length] > 8) {
+            _searchBar.text = [_searchBar.text substringToIndex:8];
+        }
         _updatingText = NO;
     }
     
