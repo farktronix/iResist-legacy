@@ -159,37 +159,35 @@
     _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
     _ohms.frame = CGRectMake(_ohms.frame.origin.x, _ohms.frame.origin.y + searchBarHeight, _ohms.frame.size.width, _ohms.frame.size.height);
     _tolerance.frame = CGRectMake(_tolerance.frame.origin.x, _tolerance.frame.origin.y + searchBarHeight, _tolerance.frame.size.width, _tolerance.frame.size.height);
+
+    if (_searchBar.hidden) {
+        [_searchBar resignFirstResponder];
+    } else {
+        [_searchBar becomeFirstResponder];
+    }
+
     [self _resistorValueChanged:nil];
 }
 
 - (IBAction) _expandButtonPressed: (id) sender;
 {
     [self _toggleSearchBar];
-    
-    if (_searchBar.hidden) {
-        [_searchBar resignFirstResponder];
-    } else {
-        [_searchBar becomeFirstResponder];
-    }
 }
 
 //// search bar delegate functions
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self _toggleSearchBar];
-	[searchBar resignFirstResponder];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
 {
-	_searchBar.hidden = YES;
-	
-	[searchBar resignFirstResponder];
+	[self _toggleSearchBar];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;
 {
-	[searchBar resignFirstResponder];
+	[self _toggleSearchBar];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -234,7 +232,7 @@
 {
     for (UITouch *touch in touches) {
         if (![_searchBar hitTest:[touch locationInView:self.view] withEvent:event]) {
-            [_searchBar resignFirstResponder];
+            [self _toggleSearchBar];
         }
     }
 }
