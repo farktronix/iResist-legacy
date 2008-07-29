@@ -152,24 +152,31 @@
     }
 }
 
-- (IBAction) _expandButtonPressed: (id) sender;
+- (void) _toggleSearchBar
 {
-	_searchBar.hidden = !_searchBar.hidden;
+    _searchBar.hidden = !_searchBar.hidden;
     CGFloat searchBarHeight = 25.0 * (_searchBar.hidden ? -1 : 1);
     _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
     _ohms.frame = CGRectMake(_ohms.frame.origin.x, _ohms.frame.origin.y + searchBarHeight, _ohms.frame.size.width, _ohms.frame.size.height);
     _tolerance.frame = CGRectMake(_tolerance.frame.origin.x, _tolerance.frame.origin.y + searchBarHeight, _tolerance.frame.size.width, _tolerance.frame.size.height);
+    [self _resistorValueChanged:nil];
+}
+
+- (IBAction) _expandButtonPressed: (id) sender;
+{
+    [self _toggleSearchBar];
     
     if (_searchBar.hidden) {
         [_searchBar resignFirstResponder];
+    } else {
+        [_searchBar becomeFirstResponder];
     }
-    
-    [self _resistorValueChanged:nil];
 }
 
 //// search bar delegate functions
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [self _toggleSearchBar];
 	[searchBar resignFirstResponder];
 }
 
