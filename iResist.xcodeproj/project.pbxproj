@@ -35,7 +35,8 @@
 		94176FCD0E2E65A100763E7A /* silver.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC10E2E65A100763E7A /* silver.png */; };
 		94176FCE0E2E65A100763E7A /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC20E2E65A100763E7A /* orange.png */; };
 		94176FCF0E2E65A100763E7A /* gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC30E2E65A100763E7A /* gray.png */; };
-		948515260E2E882A00523A66 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 948515250E2E882A00523A66 /* Default.png */; };
+		94B8E9250E403FAD00C1B620 /* iResist-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 94EC96900E3F9AA9009A4CAF /* iResist-large.png */; };
+		94EC97990E3FC06B009A4CAF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 94EC97980E3FC06B009A4CAF /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,8 +76,8 @@
 		94176FC10E2E65A100763E7A /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = silver.png; path = bar_images/silver.png; sourceTree = "<group>"; };
 		94176FC20E2E65A100763E7A /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = bar_images/orange.png; sourceTree = "<group>"; };
 		94176FC30E2E65A100763E7A /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gray.png; path = bar_images/gray.png; sourceTree = "<group>"; };
-		948515250E2E882A00523A66 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		94EC96900E3F9AA9009A4CAF /* iResist-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iResist-large.png"; sourceTree = "<group>"; };
+		94EC97980E3FC06B009A4CAF /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +153,7 @@
 				431ABB4B0E3D25CB009EE3DE /* SettingsView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				948515250E2E882A00523A66 /* Default.png */,
+				94EC97980E3FC06B009A4CAF /* Default.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -245,9 +246,10 @@
 				94176FCE0E2E65A100763E7A /* orange.png in Resources */,
 				94176FCF0E2E65A100763E7A /* gray.png in Resources */,
 				43EC44830E2EA2A10035DD57 /* iResist-icon.png in Resources */,
-				948515260E2E882A00523A66 /* Default.png in Resources */,
 				431ABB4C0E3D25CB009EE3DE /* SettingsView.xib in Resources */,
 				431ABB620E3D2728009EE3DE /* ResistorValueView.xib in Resources */,
+				94EC97990E3FC06B009A4CAF /* Default.png in Resources */,
+				94B8E9250E403FAD00C1B620 /* iResist-large.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +307,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				PROVISIONING_PROFILE = DefaultProfileUuid;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DE6879B7-EFB1-4A1A-BA52-ADE5B0A56C65";
 				SDKROOT = iphoneos2.0;
 			};
