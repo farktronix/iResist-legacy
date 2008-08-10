@@ -15,11 +15,14 @@
 
 	IBOutlet UISearchBar *_searchBar;
 	IBOutlet UIButton *_expandSearchButton;
+    
+    UIPickerView *_picker;
 
 	NSMutableArray *_colorBars;
 	NSDictionary *_barImages;
 }
 
+@property (nonatomic, retain) UIPickerView *picker;
 @property (readonly) UISearchBar *searchBar;
 
 - (IBAction) _expandButtonPressed: (id) sender;

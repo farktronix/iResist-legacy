@@ -11,4 +11,6 @@
 
 @implementation ResistorSMTViewController
 
+@synthesize picker = _picker;
+
 @end

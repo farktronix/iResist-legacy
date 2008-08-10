@@ -11,100 +11,46 @@
 
 @implementation ResistorColorViewController
 
+@synthesize picker = _picker;
 @synthesize searchBar = _searchBar;
 
-- (void) _loadBarImages;
-{
-    // this could probably all be done with gradients instead of images...
-	NSMutableDictionary *bi =  [[NSMutableDictionary alloc] init];
-	
-	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:@"black"];
-	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:@"blue"];
-	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:@"brown"];
-	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:@"gold"];
-	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:@"gray"];
-	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:@"green"];
-	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:@"orange"];
-	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:@"red"];
-	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:@"silver"];
-	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:@"violet"];
-	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:@"white"];
-	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:@"yellow"];
-	
-	_barImages = (NSDictionary*)bi;
-}
+#pragma mark -
+#pragma mark Ohm Display
 
-- (void) _updateOhmsStringForSelectedComponents:(NSArray *)components
+- (void) _updateOhmsString:(double)ohms
 {
-    // be ye warned: there be rounding errors ahead. there be pirate booty awarded to he
-    // who can write a better prettyprinter
-    double ohms = (([[components objectAtIndex:0] intValue] - 1) * 10) + ([[components objectAtIndex:1] intValue] - 1);
-    NSUInteger mult = ([[components objectAtIndex:2] intValue] - 1);
+    // this is bad. copied from ResistorColorPicker
+    int exp = (int)log10(ohms);
+    double displayOhms = ohms;
     
-    if (mult < 7) {
-        ohms *= pow(10, mult);
+    if (ohms < 1.0) {
+        displayOhms = ((int)(ohms * 100) / 100.0);
+    }
+    else if (ohms < 10) {
+        displayOhms = ((int)(ohms * 10) / 10.0);
     } 
-    else if (mult == 7) {
-        ohms *= 0.1;
-    } 
-    else if (mult == 8) {
-        ohms *= 0.01;
+    else {
+        double power = pow(10, exp - 1);
+        displayOhms = ((int)(ohms / power) * power);  
     }
     
     if (ohms < 1000) {
-        _ohms.text = [NSString stringWithFormat:(ohms < 1 ? @"%.2f Ω" : (ohms < 10 ? @"%.1f Ω" : @"%.0f Ω")), ohms];
+        _ohms.text = [NSString stringWithFormat:(ohms < 1 ? @"%.2f Ω" : (ohms < 10 ? @"%.1f Ω" : @"%.0f Ω")), displayOhms];
     }
     else if (ohms < 1000000) {
-        _ohms.text = [NSString stringWithFormat:@"%.1f KΩ", ohms/1000.0];
+        _ohms.text = [NSString stringWithFormat:@"%.1f KΩ", displayOhms/1000.0];
     }
     else if (ohms < 1000000000) {
-        _ohms.text = [NSString stringWithFormat:@"%.1f MΩ", ohms/1000000.0];
+        _ohms.text = [NSString stringWithFormat:@"%.1f MΩ", displayOhms/1000000.0];
     }
     else {
-        _ohms.text = [NSString stringWithFormat:@"%.1f GΩ", ohms/1000000000.0];
+        _ohms.text = [NSString stringWithFormat:@"%.1f GΩ", displayOhms/1000000000.0];
     }
 }
 
-- (void) _updateToleranceStringForSelectedComponents:(NSArray *)components
+- (void) _updateToleranceString:(double)tolerance
 {
-    NSUInteger tol = ([[components objectAtIndex:3] intValue] - 1);
-    float tolPercent = 0.0f;
-    
-    switch (tol) {
-        case 1:		// brown, 1%
-        case 2:		// red, 2%
-            tolPercent = (float)tol;
-            break;
-            
-        case 3:		// green, 0.5%
-            tolPercent = 0.5f;
-            break;
-            
-        case 4:		// blue, 0.25%
-            tolPercent = 0.25f;
-            break;
-            
-        case 5:		// violet, 0.10%
-            tolPercent = 0.10f;
-            break;
-            
-        case 6:		// grey, 0.05%
-            tolPercent = 0.05f;
-            break;
-            
-        case 7:		// gold
-            tolPercent = 5;
-            break;
-            
-        case 8:		// silver
-            tolPercent = 10;
-            break;
-    }
-    
-    if (tolPercent)
-    {
-        _tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolPercent];
-    }    
+    _tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolerance];    
 }
 
 // This method is only tasked with calculating the correct CGRect for a color bar;
@@ -146,20 +92,23 @@
 
 - (void) _resistorValueChanged:(NSNotification *)notif
 {
-    NSArray *components = [[NSUserDefaults standardUserDefaults] valueForKey:@"components"];
-    if ([components count] < 4) {
-        NSLog(@"Error: not enough components have been selected!");
-        return;
-    }
-    [self _updateOhmsStringForSelectedComponents:components];
-    [self _updateToleranceStringForSelectedComponents:components];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *ohmsNum = [defaults valueForKey:kOhmsKey];
+    NSNumber *toleranceNum = [defaults valueForKey:kToleranceKey];
+    double ohms = 0.0;
+    double tolerance = 0.0;
+    if (ohmsNum) ohms = [ohmsNum doubleValue];
+    if (toleranceNum) tolerance = [toleranceNum doubleValue];
+    [self _updateOhmsString:ohms];
+    [self _updateToleranceString:tolerance];
     
-    int component = 0;
-    for (NSNumber *rowNum in components) {
-        [self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([rowNum intValue] - 1) inComponent:component] andComponent:component];
-        component++;
+    for (int ii = 0; ii < 4; ii++) {
+        [self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([_picker selectedRowInComponent:ii] - 1) inComponent:ii] andComponent:ii];
     }
 }
+
+#pragma mark -
+#pragma mark Search Bar
 
 - (void) _toggleSearchBar
 {
@@ -170,7 +119,7 @@
     _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
     _ohms.frame = CGRectMake(_ohms.frame.origin.x, _ohms.frame.origin.y + searchBarHeight, _ohms.frame.size.width, _ohms.frame.size.height);
     _tolerance.frame = CGRectMake(_tolerance.frame.origin.x, _tolerance.frame.origin.y + searchBarHeight, _tolerance.frame.size.width, _tolerance.frame.size.height);
-
+    
     if (_searchBar.hidden) {
         [_searchBar resignFirstResponder];
     } else {
@@ -186,14 +135,6 @@
     [self _toggleSearchBar];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    if (_searchBar.hidden == NO) {
-        [self _toggleSearchBar];
-    }
-}
-
-//// search bar delegate functions
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self _toggleSearchBar];
@@ -220,35 +161,23 @@
     
     if (_updatingText == NO) {
         _updatingText = YES;
-        if ([_searchBar.text doubleValue] == 0.0 && [_searchBar.text length] > 1) {
+        if ([_searchBar.text doubleValue] == 0.0 && [_searchBar.text length] > 3) {
             _searchBar.text = [_searchBar.text substringToIndex:[_searchBar.text length] - 1];
         }
         
-        if ([searchText length]) {
-            _searchBar.text = [[searchText stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
+        if ([_searchBar.text length]) {
+            _searchBar.text = [[_searchBar.text stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
         }
         if ([_searchBar.text doubleValue] > 99000000.0) {
             _searchBar.text = [_searchBar.text substringToIndex:[_searchBar.text length] - 1];
         }
+        
+        NSLog(@"Search bar updated to %@ (%f)", _searchBar.text, [_searchBar.text doubleValue]);
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithDouble:[_searchBar.text doubleValue]] forKey:kOhmsKey]; 
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
+        
         _updatingText = NO;
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchTextChanged" object:nil userInfo:[NSDictionary dictionaryWithObject:_searchBar.text forKey:@"SearchText"]];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void) viewDidLoad
-{
-    _searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-//    _searchBar.returnKeyType = UIReturnKeyDone;
-    _searchBar.delegate = self;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
-    [self _resistorValueChanged:nil];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -260,8 +189,55 @@
     }
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+
+#pragma mark -
+#pragma mark Setup/Teardown
+
+- (void) _loadBarImages;
+{
+    // this could probably all be done with gradients instead of images...
+	NSMutableDictionary *bi =  [[NSMutableDictionary alloc] init];
+	
+	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:@"black"];
+	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:@"blue"];
+	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:@"brown"];
+	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:@"gold"];
+	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:@"gray"];
+	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:@"green"];
+	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:@"orange"];
+	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:@"red"];
+	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:@"silver"];
+	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:@"violet"];
+	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:@"white"];
+	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:@"yellow"];
+	
+	_barImages = (NSDictionary*)bi;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	// Return YES for supported orientations
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    if (_searchBar.hidden == NO) {
+        [self _toggleSearchBar];
+    }
+}
+
+- (void) viewDidLoad
+{
+    _searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+//    _searchBar.returnKeyType = UIReturnKeyDone;
+    _searchBar.delegate = self;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         NSNull* n = [NSNull null];
         _colorBars = [[NSMutableArray alloc] initWithObjects: n, n, n, n, nil];
         
@@ -274,6 +250,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_colorBars release];
     [_barImages release];
+    [_picker release];
 	[super dealloc];
 }
 

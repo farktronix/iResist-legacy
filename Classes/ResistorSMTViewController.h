@@ -12,6 +12,10 @@
 @interface ResistorSMTViewController : UIViewController {
     IBOutlet UILabel *_ohms;
     IBOutlet UILabel *_smtLabel;
+    
+    UIPickerView *_picker;
 }
+
+@property (nonatomic, retain) UIPickerView *picker;
 
 @end

@@ -14,6 +14,11 @@
 }
 
 - (void) randomSpin:(UIPickerView *)picker;
+
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker;
+- (double) getOhmValueForPicker:(UIPickerView *)picker;
+
+- (void) setTolerance:(double)tolerance forPicker:(UIPickerView *)picker;
+- (double) getToleranceForPicker:(UIPickerView *)picker;
 
 @end

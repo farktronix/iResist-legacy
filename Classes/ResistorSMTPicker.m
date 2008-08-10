@@ -32,4 +32,9 @@
     }
 }
 
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
+}
+
 @end

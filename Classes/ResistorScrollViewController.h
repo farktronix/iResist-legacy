@@ -10,10 +10,15 @@
 
 extern NSString * const kResistorViewChanged;
 
-@class ResistorColorViewController, ResistorSMTViewController;
+@class ResistorValuePicker, ResistorColorPicker, ResistorSMTPicker, ResistorColorViewController, ResistorSMTViewController;
 
 @interface ResistorScrollViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *_scrollView;
+    
+    UIPickerView *_picker;
+    ResistorColorPicker *_colorPicker;
+    ResistorSMTPicker *_SMTPicker;
+    ResistorValuePicker *_currentValuePicker;
     
     ResistorColorViewController *_resistorColorController;
     ResistorSMTViewController *_resistorSMTController;
@@ -25,8 +30,9 @@ extern NSString * const kResistorViewChanged;
     BOOL _scrollBug;
 }
 
+@property (nonatomic, retain) UIPickerView *picker;
 @property (readonly) int page;
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void) randomSpin;
 
 @end

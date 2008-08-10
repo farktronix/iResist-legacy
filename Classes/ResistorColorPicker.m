@@ -158,15 +158,18 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
-    [self _setupColorViews];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([keyPath isEqualToString:kShowLabelsKey]) {
+        _showLabels = [[defaults valueForKey:kShowLabelsKey] boolValue];
+        [self _setupColorViews];
+    }
 }
 
 - (id) init
 {
     if ((self = [super init])) {
-        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ShowLabels"] boolValue];
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"ShowLabels" options:0 context:nil];
+        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:kShowLabelsKey] boolValue];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kShowLabelsKey options:0 context:nil];
         
 		[self _setupColorDictionary];
 		
@@ -180,7 +183,7 @@
 
 - (void) dealloc
 {
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowLabels"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kShowLabelsKey];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_colorViews release];
 	[_endImg release];
@@ -212,7 +215,7 @@
     else if (ohms < 1.0) {
         firstNum = (int)(ohms * 10);
         secondNum = (int)(ohms * 100) % (10 * (firstNum == 0 ? 1 : firstNum));
-        exp = 10;
+        exp = 9;
     }
     else if (ohms < 10) {
         firstNum = (int)ohms;
@@ -230,29 +233,125 @@
         secondNum = (int)((ohms / pow(10, exp)) * 10) % (10 * firstNum);
     }
     
-    [picker selectRow:firstNum + 1 inComponent:0 animated:YES];
-    [picker selectRow:secondNum + 1 inComponent:1 animated:YES];
-    [picker selectRow:exp inComponent:2 animated:YES];
+    _manualUpdate = YES;
+    NSLog(@"Setting ohms value to %f (%d %d %d)", ohms, firstNum, secondNum, exp);
+    [picker selectRow:firstNum + 1 inComponent:0 animated:NO];
+    [picker selectRow:secondNum + 1 inComponent:1 animated:NO];
+    [picker selectRow:exp inComponent:2 animated:NO];
+    _manualUpdate = NO;
+}
+
+- (double) getOhmValueForPicker:(UIPickerView *)picker;
+{
+    double ohms = (([picker selectedRowInComponent:0] - 1) * 10) + ([picker selectedRowInComponent:1] - 1);
+    NSUInteger mult = ([picker selectedRowInComponent:2] - 1);
+    
+    if (mult < 7) {
+        ohms *= pow(10, mult);
+    } 
+    else if (mult == 7) {
+        ohms *= 0.1;
+    } 
+    else if (mult == 8) {
+        ohms *= 0.01;
+    }
+    
+    return ohms;
+}
+
+- (void) setTolerance:(double)tolerance forPicker:(UIPickerView *)picker
+{
+    _manualUpdate = YES;
+    if (tolerance == 0.0) {
+        [picker selectRow:1 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 1.0) {
+        [picker selectRow:2 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 2.0) {
+        [picker selectRow:3 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 0.5) {
+        [picker selectRow:4 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 0.25) {
+        [picker selectRow:5 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 0.1) {
+        [picker selectRow:6 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 0.05) {
+        [picker selectRow:7 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 5.00) {
+        [picker selectRow:8 inComponent:3 animated:YES];
+    }
+    else if (tolerance == 10.00) {
+        [picker selectRow:9 inComponent:3 animated:YES];
+    }
+    _manualUpdate = NO;
+}
+
+- (double) getToleranceForPicker:(UIPickerView *)picker
+{
+    NSUInteger tol = ([picker selectedRowInComponent:3] - 1);
+    double tolPercent = 0.0;
+    
+    switch (tol) {
+        case 1:		// brown, 1%
+        case 2:		// red, 2%
+            tolPercent = (float)tol;
+            break;
+            
+        case 3:		// green, 0.5%
+            tolPercent = 0.5f;
+            break;
+            
+        case 4:		// blue, 0.25%
+            tolPercent = 0.25f;
+            break;
+            
+        case 5:		// violet, 0.10%
+            tolPercent = 0.10f;
+            break;
+            
+        case 6:		// grey, 0.05%
+            tolPercent = 0.05f;
+            break;
+            
+        case 7:		// gold
+            tolPercent = 5;
+            break;
+            
+        case 8:		// silver
+            tolPercent = 10;
+            break;
+    }
+    return tolPercent;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    NSLog(@"Row %d selected in component %d", row, component);
+    if (_manualUpdate) return;
 	if (row == 0 || row == (component < 2 ? 11 : 10)) {
 		// if the user selects one of the end-component sentinel images, just slide them to the one they really wanted
 		NSInteger nRow = row + (!row ? 1 : -1);
 		
-		[pickerView selectRow: nRow inComponent: component animated: NO];
-		[self pickerView: pickerView didSelectRow: nRow inComponent: component];
+        NSLog(@"Fixing up row to %d", nRow);
+		[pickerView selectRow:nRow inComponent:component animated:NO];
+        [self pickerView:pickerView didSelectRow:nRow inComponent:component];
 	}
 	else {
-        [[NSUserDefaults standardUserDefaults] setValue:[NSArray arrayWithObjects:
-                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:0]],
-                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:1]],
-                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:2]],
-                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:3]],
-                                                         nil]
-                                                 forKey:@"components"];
-        
+        NSNumber *ohms = [NSNumber numberWithDouble:[self getOhmValueForPicker:pickerView]];
+        NSNumber *tolerance = [NSNumber numberWithDouble:[self getToleranceForPicker:pickerView]];
+        NSLog(@"Setting ohmage from pickerView: %@ +/- %@", ohms, tolerance);
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if (component < 3) {
+            [defaults setValue:ohms forKey:kOhmsKey];
+        } else {
+            [defaults setValue:tolerance forKey:kToleranceKey];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
 	}
 }

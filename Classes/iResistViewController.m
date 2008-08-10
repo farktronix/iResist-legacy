@@ -7,9 +7,6 @@
 //
 
 #import "iResistViewController.h"
-#import "ResistorValuePicker.h"
-#import "ResistorColorPicker.h"
-#import "ResistorSMTPicker.h"
 #import "ResistorScrollViewController.h"
 #import "SettingsViewController.h"
 
@@ -18,10 +15,8 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([keyPath isEqualToString:@"ShowLabels"]) {
-        [_valuePickerView reloadAllComponents];
-    } else if ([keyPath isEqualToString:@"UseAccelerometer"]) {
-        _useAccel = [[defaults valueForKey:@"UseAccelerometer"] boolValue];
+    if ([keyPath isEqualToString:kUseAccelerometerKey]) {
+        _useAccel = [[defaults valueForKey:kUseAccelerometerKey] boolValue];
         if (_useAccel) {
             [UIAccelerometer sharedAccelerometer].delegate = self;
         } else {
@@ -30,38 +25,16 @@
     }
 }
 
-- (void) pageDidChange:(NSNotification *)notif
-{
-    if (_resistorScrollViewController.page == 0) {
-        _currentValuePicker = _colorPicker;
-        _valuePickerView.dataSource = _colorPicker;
-        _valuePickerView.delegate = _colorPicker;
-    } else {    
-        _currentValuePicker = _SMTPicker;
-        _valuePickerView.dataSource = _SMTPicker;
-        _valuePickerView.delegate = _SMTPicker;
-    }
-    [_valuePickerView reloadAllComponents];
-}
-
 - (void) viewDidLoad
 {    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
     _resistorScrollViewController = [[ResistorScrollViewController alloc] initWithNibName:@"ResistorScrollView" bundle:nil];
-    
-    _colorPicker = [[ResistorColorPicker alloc] init];
-    _SMTPicker = [[ResistorSMTPicker alloc] init];
-    
-    _currentValuePicker = _colorPicker;
-    _valuePickerView.dataSource = _colorPicker;
-    _valuePickerView.delegate = _colorPicker;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pageDidChange:) name:kResistorViewChanged object:nil];
+    _resistorScrollViewController.picker = _valuePickerView;
 	
     _useAccel = NO;
-    NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
+    NSNumber *useAccel = [defaults valueForKey:kUseAccelerometerKey];
     if (useAccel != nil) {
         _useAccel = [useAccel boolValue];
     }
@@ -69,22 +42,12 @@
 	UIAccelerometer* sAccel = [UIAccelerometer sharedAccelerometer];
 	sAccel.updateInterval = 0.5;
     if (_useAccel) sAccel.delegate = self;
-	    
-    NSArray *components = [defaults objectForKey:@"components"];
-    if (components == nil) components = [NSArray arrayWithObjects:[NSNumber numberWithInt:5], [NSNumber numberWithInt:3], [NSNumber numberWithInt:1], [NSNumber numberWithInt:1], nil];
-    int component = 0;
-    for (NSNumber *row in components) {
-        [_valuePickerView selectRow:[row intValue] inComponent:component animated:YES];
-        component++;
-    }
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];    
-    
+        
     [self _toggleSettingsButtonPressed:self];
     
-    [defaults addObserver:self forKeyPath:@"ShowLabels" options:0 context:nil];
-    [defaults addObserver:self forKeyPath:@"UseAccelerometer" options:0 context:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:) name:@"SearchTextChanged" object:nil];
+    [defaults addObserver:self forKeyPath:kUseAccelerometerKey options:0 context:nil];
 }
  
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -95,22 +58,9 @@
 - (void)dealloc {
     [_resistorScrollViewController release];
     [_settingsViewController release];
-    [_colorPicker release];
-    [_SMTPicker release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kUseAccelerometerKey];
 	[super dealloc];
-}
-
-- (void) _doRandomSpin;
-{
-    [_currentValuePicker randomSpin: _valuePickerView];
-}
-
-- (void) searchTextChanged:(NSNotification *)notif
-{
-    NSString *searchText = [[notif userInfo] objectForKey:@"SearchText"];
-    if ([searchText length] == 0) return;
-    [_currentValuePicker setOhmValue:[searchText doubleValue] forPicker:_valuePickerView];
 }
 
 - (IBAction) _toggleSettingsButtonPressed: (id) sender
@@ -153,7 +103,7 @@
         
         if (add > 4.0)
         {
-            [self _doRandomSpin];
+            [_resistorScrollViewController randomSpin];
         }
     }
 }

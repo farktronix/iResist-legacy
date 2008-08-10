@@ -8,13 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class ResistorValuePicker, ResistorColorPicker, ResistorSMTPicker, ResistorScrollViewController, SettingsViewController;
+@class ResistorScrollViewController, SettingsViewController;
 
 @interface iResistViewController : UIViewController <UISearchBarDelegate, UIAccelerometerDelegate, UIScrollViewDelegate> {
     IBOutlet UIPickerView *_valuePickerView;
-    ResistorColorPicker *_colorPicker;
-    ResistorSMTPicker *_SMTPicker;
-    ResistorValuePicker *_currentValuePicker;
     
     IBOutlet UIButton *_toggleSettingsButton;
     IBOutlet UIView *_contentView;

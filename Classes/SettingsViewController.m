@@ -13,22 +13,22 @@
 
 - (IBAction) showLabelsValueChanged
 {
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_showLabelsSwitch.on] forKey:@"ShowLabels"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_showLabelsSwitch.on] forKey:kShowLabelsKey];
 }
 
 - (IBAction) useAccelerometerSwitchChanged
 {
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_useAccelerometerSwitch.on] forKey:@"UseAccelerometer"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:_useAccelerometerSwitch.on] forKey:kUseAccelerometerKey];
 }
 
 - (void)viewDidLoad 
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL showLabels = [[defaults valueForKey:@"ShowLabels"] boolValue];
+    BOOL showLabels = [[defaults valueForKey:kShowLabelsKey] boolValue];
     _showLabelsSwitch.on = showLabels;
     
     BOOL accel = NO;
-    NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
+    NSNumber *useAccel = [defaults valueForKey:kUseAccelerometerKey];
     if (useAccel) accel = [useAccel boolValue];
     _useAccelerometerSwitch.on = accel;
 }

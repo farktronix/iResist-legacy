@@ -19,13 +19,33 @@
 	{
 		int r = (rand() % [self pickerView: pView numberOfRowsInComponent: c]);
 		[pView selectRow: r inComponent: c animated: YES];
-		[self pickerView: pView didSelectRow: r inComponent: c];
+//		[self pickerView: pView didSelectRow: r inComponent: c];
 	}
 }
 
-- (void) setOhmValue:(double)ohms
+- (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
 {
     return;
+}
+
+- (double) getOhmValueForPicker:(UIPickerView *)picker
+{
+    return 0.0;
+}
+
+- (void) setTolerance:(double)tolerance forPicker:(UIPickerView *)picker
+{
+    return;
+}
+
+- (double) getToleranceForPicker:(UIPickerView *)picker
+{
+    return 0.0;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 1;
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

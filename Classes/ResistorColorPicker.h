@@ -20,8 +20,12 @@
 	IBOutlet iResistViewController *_viewController;
     
     BOOL _showLabels;
+    
+    BOOL _manualUpdate;
 }
 
 + (NSString *) colorNameForRow:(int)row inComponent:(int)component;
+
+- (double) getToleranceForPicker:(UIPickerView *)picker;
 
 @end
