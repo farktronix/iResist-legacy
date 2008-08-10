@@ -14,7 +14,7 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([keyPath isEqualToString:@"ShowLabels"]) {
-        [_colorPickerView reloadAllComponents];
+        [_valuePickerView reloadAllComponents];
     } else if ([keyPath isEqualToString:@"UseAccelerometer"]) {
         _useAccel = [[defaults valueForKey:@"UseAccelerometer"] boolValue];
         if (_useAccel) {
@@ -28,9 +28,9 @@
 - (void) viewDidLoad
 {    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    _resistorViewController = [[ResistorValueViewController alloc] initWithNibName:@"ResistorValueView" bundle:nil];
+    
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
+    _resistorScrollViewController = [[ResistorScrollViewController alloc] initWithNibName:@"ResistorScrollView" bundle:nil];
 	
     _useAccel = NO;
     NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
@@ -46,10 +46,10 @@
     if (components == nil) components = [NSArray arrayWithObjects:[NSNumber numberWithInt:5], [NSNumber numberWithInt:3], [NSNumber numberWithInt:1], [NSNumber numberWithInt:1], nil];
     int component = 0;
     for (NSNumber *row in components) {
-        [_colorPickerView selectRow:[row intValue] inComponent:component animated:YES];
+        [_valuePickerView selectRow:[row intValue] inComponent:component animated:YES];
         component++;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];    
     
     [self _toggleSettingsButtonPressed:self];
     
@@ -65,7 +65,7 @@
 }
 
 - (void)dealloc {
-    [_resistorViewController release];
+    [_resistorScrollViewController release];
     [_settingsViewController release];
 	[super dealloc];
 }
@@ -73,86 +73,19 @@
 
 - (void) _doRandomSpin;
 {
-	for (int i = 0; i < 2; i++)
-	{
-		[_colorPicker _randomSpin: _colorPickerView];
-	}
+    [_valuePicker randomSpin: _valuePickerView];
 }
 
 - (void) searchTextChanged:(NSNotification *)notif
 {
     NSString *searchText = [[notif userInfo] objectForKey:@"SearchText"];
     if (searchText == nil || [searchText length] == 0) return;
-    int firstNum = 0;
-    int secondNum = 0;
-    int multiplier = 0;
-    
-    int idx = 0;
-    
-    NSString *firstChar = nil;
-    
-    // Warning: here be skank. I'm too lazy to write this in an elegant way.
-    
-    do {
-        firstChar = [searchText substringWithRange:NSMakeRange(idx, 1)];
-        if ([firstChar isEqualToString:@"."] || [firstChar isEqualToString:@"0"]) {
-            idx++;
-        } else {
-            break;
-        }
-    } while (idx < [searchText length]);
-    if ([searchText length] == idx) {
-        return;
-    } else {
-        firstNum = [[searchText substringWithRange:NSMakeRange(idx++, 1)] intValue];
-        if ([searchText length] > idx) {
-            NSString *secondChar = [searchText substringWithRange:NSMakeRange(idx++, 1)];
-            if ([secondChar isEqualToString:@"."]) { 
-                if ([searchText length] > idx) {
-                    secondNum = [[searchText substringWithRange:NSMakeRange(idx, 1)] intValue];
-                } else {
-                    secondNum = firstNum;
-                    firstNum = 0;
-                }
-            } else {
-                secondNum = [secondChar intValue];
-            }
-        } else {
-            secondNum = firstNum;
-            firstNum = 0;
-        }
-    }
-    
-    double ohms = [searchText doubleValue];
-    // yeah, i could do Math here, but this is probably faster anyway
-    if (ohms < 1.0) {
-        multiplier = 8;
-    } else if (ohms < 10.0) {
-        multiplier = 7;
-    } else if (ohms < 100.0) {
-        multiplier = 0;
-    } else if (ohms < 1000.0) {
-        multiplier = 1;
-    } else if (ohms < 10000.0) {
-        multiplier = 2;
-    } else if (ohms < 100000.0) {
-        multiplier = 3;
-    } else if (ohms < 1000000.0) {
-        multiplier = 4;
-    } else if (ohms < 10000000.0) {
-        multiplier = 5;
-    } else {
-        multiplier = 6;
-    }
-    
-    [_colorPickerView selectRow:firstNum + 1 inComponent:0 animated:YES];
-    [_colorPickerView selectRow:secondNum + 1 inComponent:1 animated:YES];
-    [_colorPickerView selectRow:multiplier + 1 inComponent:2 animated:YES];
+    [_valuePicker setOhmValue:[searchText doubleValue] forPicker:_valuePickerView];
 }
 
 - (IBAction) _toggleSettingsButtonPressed: (id) sender
 {
-    UIView *resistorView = _resistorViewController.view;
+    UIView *resistorView = _resistorScrollViewController.view;
     UIView *settingsView = _settingsViewController.view;
 
     [UIView beginAnimations:nil context:NULL];
@@ -162,20 +95,20 @@
     if ([resistorView superview] != nil) {
         // switch to settings view
         [_settingsViewController viewWillAppear:YES];
-        [_resistorViewController viewWillDisappear:YES];
+        [_resistorScrollViewController viewWillDisappear:YES];
         [resistorView removeFromSuperview];
         [_contentView insertSubview:settingsView belowSubview:_toggleSettingsButton];
-        [_resistorViewController viewDidDisappear:YES];
+        [_resistorScrollViewController viewDidDisappear:YES];
         [_settingsViewController viewDidAppear:YES];
         
     } else {
         // switch to resistor view
-        [_resistorViewController viewWillAppear:YES];
+        [_resistorScrollViewController viewWillAppear:YES];
         [_settingsViewController viewWillDisappear:YES];
         [settingsView removeFromSuperview];
         [_contentView insertSubview:resistorView belowSubview:_toggleSettingsButton];
         [_settingsViewController viewDidDisappear:YES];
-        [_resistorViewController viewDidAppear:YES];
+        [_resistorScrollViewController viewDidAppear:YES];
     }
     [UIView commitAnimations];
 

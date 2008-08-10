@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ResistorValuePicker.h"
+
 @class iResistViewController;
 
-@interface ResistorColorPicker : NSObject <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface ResistorColorPicker : ResistorValuePicker {
     NSArray *_colorViews;
 	NSDictionary *_colors;
 	UIImage *_endImg;
@@ -22,7 +24,4 @@
 
 + (NSString *) colorNameForRow:(int)row inComponent:(int)component;
 
-- (void) _randomSpin:(UIPickerView*)pView;
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
 @end

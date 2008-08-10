@@ -1,15 +1,15 @@
 //
-//  ResistorValueViewController.m
+//  ResistorColorViewController.m
 //  iResist
 //
 //  Created by Jacob Farkas on 7/27/08.
 //  Copyright 2008 Flying Monkey Enterprises. All rights reserved.
 //
 
-#import "ResistorValueViewController.h"
+#import "ResistorColorViewController.h"
 #import "ResistorColorPicker.h"
 
-@implementation ResistorValueViewController
+@implementation ResistorColorViewController
 
 - (void) _loadBarImages;
 {
@@ -159,6 +159,8 @@
 
 - (void) _toggleSearchBar
 {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
     _searchBar.hidden = !_searchBar.hidden;
     CGFloat searchBarHeight = 25.0 * (_searchBar.hidden ? -1 : 1);
     _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
@@ -172,6 +174,7 @@
     }
 
     [self _resistorValueChanged:nil];
+    [UIView commitAnimations];
 }
 
 - (IBAction) _expandButtonPressed: (id) sender;

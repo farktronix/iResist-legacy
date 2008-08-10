@@ -8,17 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ResistorColorPicker.h"
-#import "ResistorValueViewController.h"
+#import "ResistorScrollViewController.h"
 #import "SettingsViewController.h"
 
-@interface iResistViewController : UIViewController <UISearchBarDelegate, UIAccelerometerDelegate> {
-    IBOutlet UIPickerView *_colorPickerView;
-    IBOutlet ResistorColorPicker *_colorPicker;
+@interface iResistViewController : UIViewController <UISearchBarDelegate, UIAccelerometerDelegate, UIScrollViewDelegate> {
+    IBOutlet UIPickerView *_valuePickerView;
+    IBOutlet ResistorValuePicker *_valuePicker;
     
     IBOutlet UIButton *_toggleSettingsButton;
     IBOutlet UIView *_contentView;
     
-    ResistorValueViewController *_resistorViewController;
+    ResistorScrollViewController *_resistorScrollViewController;
     SettingsViewController *_settingsViewController;
     
     BOOL _useAccel;

@@ -60,18 +60,6 @@
     return [view autorelease];
 }
 
-- (void) _randomSpin:(UIPickerView*)pView;
-{
-	int c;
-	
-	for (c = 0; c < 4; c++)
-	{
-		int r = (rand() % [self pickerView: pView numberOfRowsInComponent: c]);
-		[pView selectRow: r inComponent: c animated: YES];
-		[self pickerView: pView didSelectRow: r inComponent: c];
-	}
-}
-
 - (void) _setupColorDictionary;
 {
 	NSMutableDictionary *tDict = [[NSMutableDictionary alloc] init];
@@ -201,30 +189,38 @@
     [super dealloc];
 }
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 4;
-}
-
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return (component < 2 ? 12 : 11);
-}
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
-{
-    return 70;
-}
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
-{
-    return 40;
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view;
 
 {
     return [[_colorViews objectAtIndex:component] objectAtIndex:row];
+}
+
+- (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
+{
+    int exp = (int)log10(ohms);
+    int firstNum = 0;
+    int secondNum = 0;
+    
+    if (ohms > 10) {
+        firstNum = (int)(ohms / pow(10, exp));
+        secondNum = (int)(ohms / pow(10, exp-1));
+    } else {
+        firstNum = (int)ohms;
+    }
+    
+    if (firstNum == 0) {
+        firstNum = secondNum;
+        secondNum = 0;
+    }
+    
+    [picker selectRow:firstNum + 1 inComponent:0 animated:YES];
+    [picker selectRow:secondNum + 1 inComponent:1 animated:YES];
+    [picker selectRow:exp + 1 inComponent:2 animated:YES];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component

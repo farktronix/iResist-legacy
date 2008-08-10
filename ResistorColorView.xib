@@ -30,7 +30,7 @@
 					<object class="IBUILabel" id="301340859">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{20, 98}, {280, 84}}</string>
+						<string key="NSFrame">{{20, 106}, {280, 84}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -56,7 +56,7 @@
 					<object class="IBUILabel" id="863481707">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{20, 181}, {280, 21}}</string>
+						<string key="NSFrame">{{20, 193}, {280, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -214,9 +214,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="645625958"/>
 							<reference ref="649550432"/>
+							<reference ref="953668148"/>
 							<reference ref="301340859"/>
 							<reference ref="863481707"/>
-							<reference ref="953668148"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
@@ -274,7 +274,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>ResistorValueViewController</string>
+					<string>ResistorColorViewController</string>
 					<string>UIResponder</string>
 					<string>{{400, 479}, {320, 243}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -311,7 +311,7 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">ResistorValueViewController</string>
+					<string key="className">ResistorColorViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">_expandButtonPressed:</string>
@@ -338,7 +338,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/ResistorValueViewController.h</string>
+						<string key="minorKey">Classes/ResistorColorViewController.h</string>
 					</object>
 				</object>
 			</object>
