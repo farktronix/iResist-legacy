@@ -7,6 +7,11 @@
 //
 
 #import "iResistViewController.h"
+#import "ResistorValuePicker.h"
+#import "ResistorColorPicker.h"
+#import "ResistorSMTPicker.h"
+#import "ResistorScrollViewController.h"
+#import "SettingsViewController.h"
 
 @implementation iResistViewController
 
@@ -31,6 +36,13 @@
     
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
     _resistorScrollViewController = [[ResistorScrollViewController alloc] initWithNibName:@"ResistorScrollView" bundle:nil];
+    
+    _colorPicker = [[ResistorColorPicker alloc] init];
+    _SMTPicker = [[ResistorSMTPicker alloc] init];
+    
+    _currentValuePicker = _colorPicker;
+    _valuePickerView.dataSource = _colorPicker;
+    _valuePickerView.delegate = _colorPicker;
 	
     _useAccel = NO;
     NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
@@ -67,20 +79,21 @@
 - (void)dealloc {
     [_resistorScrollViewController release];
     [_settingsViewController release];
+    [_colorPicker release];
+    [_SMTPicker release];
 	[super dealloc];
 }
 
-
 - (void) _doRandomSpin;
 {
-    [_valuePicker randomSpin: _valuePickerView];
+    [_currentValuePicker randomSpin: _valuePickerView];
 }
 
 - (void) searchTextChanged:(NSNotification *)notif
 {
     NSString *searchText = [[notif userInfo] objectForKey:@"SearchText"];
     if (searchText == nil || [searchText length] == 0) return;
-    [_valuePicker setOhmValue:[searchText doubleValue] forPicker:_valuePickerView];
+    [_currentValuePicker setOhmValue:[searchText doubleValue] forPicker:_valuePickerView];
 }
 
 - (IBAction) _toggleSettingsButtonPressed: (id) sender
