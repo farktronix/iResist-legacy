@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const kResistorViewChanged;
+
 @class ResistorColorViewController, ResistorSMTViewController;
 
 @interface ResistorScrollViewController : UIViewController <UIScrollViewDelegate> {
@@ -15,7 +17,15 @@
     
     ResistorColorViewController *_resistorColorController;
     ResistorSMTViewController *_resistorSMTController;
+    
+    int _page;
+    int _lastPage;
+    
+    CGPoint _oldOffset;
+    BOOL _scrollBug;
 }
+
+@property (readonly) int page;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 

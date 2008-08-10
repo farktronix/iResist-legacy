@@ -206,21 +206,33 @@
     int firstNum = 0;
     int secondNum = 0;
     
-    if (ohms > 10) {
-        firstNum = (int)(ohms / pow(10, exp));
-        secondNum = (int)(ohms / pow(10, exp-1));
-    } else {
-        firstNum = (int)ohms;
+    if (ohms == 0) {
+        exp = 8;
     }
-    
-    if (firstNum == 0) {
-        firstNum = secondNum;
-        secondNum = 0;
+    else if (ohms < 1.0) {
+        firstNum = (int)(ohms * 10);
+        secondNum = (int)(ohms * 100) % (10 * (firstNum == 0 ? 1 : firstNum));
+        exp = 10;
+    }
+    else if (ohms < 10) {
+        firstNum = (int)ohms;
+        secondNum = (int)(ohms * 10) % (10 * firstNum);
+        if (secondNum == 0) {
+            secondNum = firstNum;
+            firstNum = 0;
+            exp = 1;
+        } else {
+            exp = 8;
+        }
+    } 
+    else {
+        firstNum = (int)(ohms / pow(10, exp));
+        secondNum = (int)((ohms / pow(10, exp)) * 10) % (10 * firstNum);
     }
     
     [picker selectRow:firstNum + 1 inComponent:0 animated:YES];
     [picker selectRow:secondNum + 1 inComponent:1 animated:YES];
-    [picker selectRow:exp + 1 inComponent:2 animated:YES];
+    [picker selectRow:exp inComponent:2 animated:YES];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -232,14 +244,14 @@
 		[pickerView selectRow: nRow inComponent: component animated: NO];
 		[self pickerView: pickerView didSelectRow: nRow inComponent: component];
 	}
-	else {        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSArray *componentValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:[pickerView selectedRowInComponent:0]],
-                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:1]],
-                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:2]],
-                                                             [NSNumber numberWithInt:[pickerView selectedRowInComponent:3]],
-                                                             nil];
-        [defaults setValue:componentValues forKey:@"components"];
+	else {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSArray arrayWithObjects:
+                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:0]],
+                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:1]],
+                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:2]],
+                                                         [NSNumber numberWithInt:[pickerView selectedRowInComponent:3]],
+                                                         nil]
+                                                 forKey:@"components"];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
 	}

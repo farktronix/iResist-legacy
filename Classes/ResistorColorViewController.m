@@ -11,6 +11,8 @@
 
 @implementation ResistorColorViewController
 
+@synthesize searchBar = _searchBar;
+
 - (void) _loadBarImages;
 {
     // this could probably all be done with gradients instead of images...
@@ -119,24 +121,26 @@
     if (component == 3) cBarRect.origin.x += 5.0;
     
 	UIImage* img = [_barImages valueForKey: color];	
-	id tView = nil;
+	UIImageView *bView = nil;
 	
 	if (img && component < [_colorBars count])
 	{
-		tView = [_colorBars objectAtIndex: component];
+		id existingBar = [_colorBars objectAtIndex: component];
 		
 		// if there was a color we need to replace, remove it from the superview
-		if (![tView isKindOfClass: [NSNull class]]) {
-			[tView removeFromSuperview];
-			[tView release];
+		if ((NSNull *)existingBar != [NSNull null] && [((UIImageView *)existingBar).image isEqual:img]) {
+            bView = existingBar;
+        } else {
+			if ((NSNull *)existingBar != [NSNull null]) {
+                [(UIView *)existingBar removeFromSuperview];
+            }
+            [existingBar release];
+            bView = [[UIImageView alloc] initWithImage:img];
+            [_colorBars replaceObjectAtIndex:component withObject:bView];
+            [self.view insertSubview:bView belowSubview:_searchBar];
 		}
 		
-		[_colorBars removeObjectAtIndex: component];
-		
-		tView = [[UIImageView alloc] initWithImage: img];
-		((UIView*)tView).frame = cBarRect;
-		[_colorBars insertObject:tView atIndex:component];
-		[self.view addSubview: tView];
+        bView.frame = cBarRect;
 	}
 }
 
@@ -160,7 +164,7 @@
 - (void) _toggleSearchBar
 {
     [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
+    [UIView setAnimationTransition:_searchBar.hidden == YES ? UIViewAnimationTransitionCurlDown : UIViewAnimationTransitionCurlUp forView:_searchBar cache:YES];
     _searchBar.hidden = !_searchBar.hidden;
     CGFloat searchBarHeight = 25.0 * (_searchBar.hidden ? -1 : 1);
     _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
@@ -172,7 +176,7 @@
     } else {
         [_searchBar becomeFirstResponder];
     }
-
+    
     [self _resistorValueChanged:nil];
     [UIView commitAnimations];
 }
@@ -180,6 +184,13 @@
 - (IBAction) _expandButtonPressed: (id) sender;
 {
     [self _toggleSearchBar];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    if (_searchBar.hidden == NO) {
+        [self _toggleSearchBar];
+    }
 }
 
 //// search bar delegate functions
@@ -209,16 +220,20 @@
     
     if (_updatingText == NO) {
         _updatingText = YES;
+        if ([_searchBar.text doubleValue] == 0.0 && [_searchBar.text length] > 1) {
+            _searchBar.text = [_searchBar.text substringToIndex:[_searchBar.text length] - 1];
+        }
+        
         if ([searchText length]) {
             _searchBar.text = [[searchText stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
         }
-        if ([_searchBar.text length] > 8) {
-            _searchBar.text = [_searchBar.text substringToIndex:8];
+        if ([_searchBar.text doubleValue] > 99000000.0) {
+            _searchBar.text = [_searchBar.text substringToIndex:[_searchBar.text length] - 1];
         }
         _updatingText = NO;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchTextChanged" object:nil userInfo:[NSDictionary dictionaryWithObject:searchText forKey:@"SearchText"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchTextChanged" object:nil userInfo:[NSDictionary dictionaryWithObject:_searchBar.text forKey:@"SearchText"]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

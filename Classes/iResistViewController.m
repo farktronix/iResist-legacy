@@ -30,6 +30,20 @@
     }
 }
 
+- (void) pageDidChange:(NSNotification *)notif
+{
+    if (_resistorScrollViewController.page == 0) {
+        _currentValuePicker = _colorPicker;
+        _valuePickerView.dataSource = _colorPicker;
+        _valuePickerView.delegate = _colorPicker;
+    } else {    
+        _currentValuePicker = _SMTPicker;
+        _valuePickerView.dataSource = _SMTPicker;
+        _valuePickerView.delegate = _SMTPicker;
+    }
+    [_valuePickerView reloadAllComponents];
+}
+
 - (void) viewDidLoad
 {    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -43,6 +57,8 @@
     _currentValuePicker = _colorPicker;
     _valuePickerView.dataSource = _colorPicker;
     _valuePickerView.delegate = _colorPicker;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pageDidChange:) name:kResistorViewChanged object:nil];
 	
     _useAccel = NO;
     NSNumber *useAccel = [defaults valueForKey:@"UseAccelerometer"];
@@ -81,6 +97,7 @@
     [_settingsViewController release];
     [_colorPicker release];
     [_SMTPicker release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super dealloc];
 }
 
@@ -92,7 +109,7 @@
 - (void) searchTextChanged:(NSNotification *)notif
 {
     NSString *searchText = [[notif userInfo] objectForKey:@"SearchText"];
-    if (searchText == nil || [searchText length] == 0) return;
+    if ([searchText length] == 0) return;
     [_currentValuePicker setOhmValue:[searchText doubleValue] forPicker:_valuePickerView];
 }
 

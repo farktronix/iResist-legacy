@@ -20,6 +20,8 @@
 	NSDictionary *_barImages;
 }
 
+@property (readonly) UISearchBar *searchBar;
+
 - (IBAction) _expandButtonPressed: (id) sender;
 
 @end
