@@ -49,7 +49,6 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     [_picker reloadAllComponents];
 } 
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {

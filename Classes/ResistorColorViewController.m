@@ -19,7 +19,6 @@
 
 - (void) _updateOhmsString:(double)ohms
 {
-    // this is bad. copied from ResistorColorPicker
     int exp = (int)log10(ohms);
     double displayOhms = ohms;
     
