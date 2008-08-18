@@ -20,6 +20,42 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 
 @synthesize page = _page;
 
+// TODO: this should move somewhere where it can be shared with the settings view
+- (NSArray *) _allCurrentVoltages
+{
+    NSArray *allVoltages = [[NSUserDefaults standardUserDefaults] valueForKey:@"CurrentVoltages"];
+    if (allVoltages == nil) {
+        allVoltages = [NSArray arrayWithObjects:[NSNumber numberWithDouble:5.0], [NSNumber numberWithDouble:3.3], nil];
+    }
+    return allVoltages;
+}
+
+- (NSString *) _prettyPrintAmerpage:(double)amps
+{
+    NSString *ampString = @"?";
+    if (amps < 0.001) {
+        ampString = [NSString stringWithFormat:@"%.3fµA", amps * 1000000];
+    }
+    else if (amps < 1.0) {
+        ampString = [NSString stringWithFormat:@"%.3fmA", amps * 1000];
+    } else {
+        ampString = [NSString stringWithFormat:@"%.2fA", amps];
+    }
+    return ampString;
+}
+
+- (void) _updateCurrentValuesForResistance:(double)ohms
+{
+    NSMutableString *currentString = [[NSMutableString alloc] init];
+    for (NSNumber *voltageNum in [self _allCurrentVoltages]) {
+        double voltage = [voltageNum doubleValue];
+        double amps = voltage / ohms;
+        [currentString appendFormat:@" %@ @ %.1fV ", [self _prettyPrintAmerpage:amps], voltage];
+    }
+    _virColorLabel.text = currentString;
+    _virSMTLabel.text = currentString;
+}
+
 - (void) resistorValueChanged:(NSNotification *)notif
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -32,6 +68,8 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     double tolerance = 0.0;
     if (toleranceNum) tolerance = [toleranceNum doubleValue];
     [_currentValuePicker setTolerance:tolerance forPicker:_picker];
+    
+    [self _updateCurrentValuesForResistance:ohms];
 }
 
 - (void) setupPickerDelegate
@@ -64,11 +102,13 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
         _resistorColorController = [[ResistorColorViewController alloc] initWithNibName:@"ResistorColorView" bundle:nil];
         frame.origin.x = 0;
         _resistorColorController.view.frame = frame;
+        [_resistorColorController.view addSubview:_virColorLabel];
         [_scrollView addSubview:_resistorColorController.view];
 
         _resistorSMTController = [[ResistorSMTViewController alloc] initWithNibName:@"ResistorSMTView" bundle:nil];
         frame.origin.x = 0 + _scrollView.frame.size.width;
         _resistorSMTController.view.frame = frame;
+        [_resistorSMTController.view addSubview:_virSMTLabel];
         [_scrollView addSubview:_resistorSMTController.view];
         
         NSNumber *pageNum = [[NSUserDefaults standardUserDefaults] valueForKey:kCurrentPageKey];

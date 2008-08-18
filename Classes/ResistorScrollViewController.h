@@ -15,6 +15,10 @@ extern NSString * const kResistorViewChanged;
 @interface ResistorScrollViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *_scrollView;
     
+    // this is ugly, but I think it's the easiest way to keep this label up to date.
+    IBOutlet UILabel *_virColorLabel;
+    IBOutlet UILabel *_virSMTLabel;
+    
     UIPickerView *_picker;
     ResistorColorPicker *_colorPicker;
     ResistorSMTPicker *_SMTPicker;
