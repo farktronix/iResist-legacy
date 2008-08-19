@@ -7,22 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResistorGenericViewController.h"
 
-@interface ResistorColorViewController : UIViewController <UISearchBarDelegate> {
+@interface ResistorColorViewController : ResistorGenericViewController <UISearchBarDelegate> {
     IBOutlet UILabel *_ohms;
 	IBOutlet UILabel *_tolerance;
 	IBOutlet UIImageView *_resistor;
 
 	IBOutlet UISearchBar *_searchBar;
 	IBOutlet UIButton *_expandSearchButton;
-    
-    UIPickerView *_picker;
 
 	NSMutableArray *_colorBars;
 	NSDictionary *_barImages;
 }
 
-@property (nonatomic, retain) UIPickerView *picker;
 @property (readonly) UISearchBar *searchBar;
 
 - (IBAction) _expandButtonPressed: (id) sender;

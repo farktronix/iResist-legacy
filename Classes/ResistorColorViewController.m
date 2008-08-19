@@ -121,8 +121,10 @@
     
     if (_searchBar.hidden) {
         [_searchBar resignFirstResponder];
+		_scrollView.pageControlEnabled = YES;
     } else {
         [_searchBar becomeFirstResponder];
+		_scrollView.pageControlEnabled = NO;
     }
     
     [self _resistorValueChanged:nil];

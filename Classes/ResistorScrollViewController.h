@@ -25,13 +25,14 @@ extern NSString * const kResistorViewChanged;
     
     int _page;
     int _lastPage;
-    
-    CGPoint _oldOffset;
+
     BOOL _scrollBug;
 }
 
 @property (nonatomic, retain) UIPickerView *picker;
 @property (readonly) int page;
+
+@property BOOL pageControlEnabled;
 
 - (void) randomSpin;
 

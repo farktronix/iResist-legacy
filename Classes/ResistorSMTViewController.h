@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ResistorGenericViewController.h"
 
-@interface ResistorSMTViewController : UIViewController {
+@interface ResistorSMTViewController : ResistorGenericViewController {
     IBOutlet UILabel *_ohms;
     IBOutlet UILabel *_smtLabel;
-    
-    UIPickerView *_picker;
 }
-
-@property (nonatomic, retain) UIPickerView *picker;
 
 @end

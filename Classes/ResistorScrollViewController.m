@@ -19,6 +19,7 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 @implementation ResistorScrollViewController
 
 @synthesize page = _page;
+@dynamic pageControlEnabled;
 
 - (void) resistorValueChanged:(NSNotification *)notif
 {
@@ -51,12 +52,6 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        _scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 2, self.view.frame.size.height);
-        _scrollView.alwaysBounceHorizontal = YES;
-        _scrollView.pagingEnabled = YES;
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
-        
         CGRect frame = self.view.frame;
         frame.origin.y = 0;
 		
@@ -75,6 +70,9 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 				frame.origin.x = _scrollView.frame.size.width * widthMult++;
 				vCtrl.view.frame = frame;
 				
+				if ([vCtrl isKindOfClass:[ResistorGenericViewController class]])
+					((ResistorGenericViewController*)vCtrl).scrollView = self;
+				
 				[_scrollView addSubview:vCtrl.view];
 				[_pageViews addObject:vCtrl];
 				
@@ -84,6 +82,12 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 				}
 			}
 		}
+		
+        _scrollView.contentSize = CGSizeMake(self.view.frame.size.width * [_pageViews count], self.view.frame.size.height);
+        _scrollView.alwaysBounceHorizontal = YES;
+        _scrollView.pagingEnabled = YES;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.showsVerticalScrollIndicator = NO;
         
         NSNumber *pageNum = [[NSUserDefaults standardUserDefaults] valueForKey:kCurrentPageKey];
         if (pageNum) {
@@ -93,12 +97,13 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
         }
         _lastPage = _page;
         
-        if (_page == 1) {
-            [_scrollView scrollRectToVisible:CGRectMake( _scrollView.frame.size.width, 0,  _scrollView.frame.size.width,  _scrollView.frame.size.height) animated:NO];
+        if (_page) {
+            [_scrollView scrollRectToVisible:CGRectMake(_scrollView.frame.size.width * _page, 0,  _scrollView.frame.size.width,  _scrollView.frame.size.height) animated:NO];
         }
 		
         [self setupPickerDelegate];
 		_pageControl.numberOfPages = [_pageViews count];
+		_pageControl.currentPage = _page;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
     }
@@ -120,24 +125,17 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 
 - (void) setPicker:(UIPickerView *)picker
 {
-	// thinking that .picker is going to have to be in a protocol...
-	
-//	if (_page <= [_pickers count] && (picker = [_pickers objectAtIndex:_page])) {
-		if (picker != _picker) {
-			_picker = picker;
-			/*
-			 [_picker release];
-			 _picker = [picker retain];
-			 if (_page == 0) {
-			 _resistorSMTController.picker = nil;
-			 _resisto_pickersrColorController.picker = _picker;
-			 } else {
-			 _resistorColorController.picker = nil;
-			 _resistorSMTController.picker = _picker;
-			 }
-			 */
+	if (picker != _picker) {
+		_picker = picker;
+		
+		ResistorGenericViewController *oldPage = [_pageViews objectAtIndex:_lastPage];
+		ResistorGenericViewController *newPage = [_pageViews objectAtIndex:_page];
+		
+		if (oldPage && newPage) {
+			oldPage.picker = nil;
+			newPage.picker = _picker;
 		}
-//	}
+	}
 	
     [self setupPickerDelegate];
 }
@@ -151,23 +149,18 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 
 - (void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    // This is a terrible hack for what appears to be a bug with the scroll view or the keyboard.
-    // If a view in the scroll view resigns being first responder, the scroll view animates to the position
-    // of that view. We don't want that, so we stash away the old offset before telling the controller that it 
-    // disappeared, and we set it here when the scroll view 
-    scrollView.contentOffset = _oldOffset;
-    _scrollBug = NO;
+	_scrollBug = NO;
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (_scrollBug) scrollView.contentOffset = _oldOffset;
-    
+	if (_scrollBug) scrollView.contentOffset = CGPointMake(scrollView.frame.size.width * _page, 0);
+	
     // Switch the picker when more than 50% of the previous/next page is visible
     CGFloat pageWidth = _scrollView.frame.size.width;
     int newPage = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-	UIViewController *newCtrl = nil;
-	UIViewController *oldCtrl = nil;
+	ResistorGenericViewController *newCtrl = nil;
+	ResistorGenericViewController *oldCtrl = nil;
 	
     if (newPage != _page && newPage <= [_pageViews count]) {
 		newCtrl = [_pageViews objectAtIndex:newPage];
@@ -185,15 +178,14 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     
     // full page transition complete
     if (_page != _lastPage && newCtrl && oldCtrl) {
-		_oldOffset = scrollView.contentOffset;
-		
-		//	??? if (_resistorColorController.searchBar.hidden == NO) _scrollBug = YES;
+		_scrollBug = ([oldCtrl isKindOfClass:[ResistorColorViewController class]] && ((ResistorColorViewController*)oldCtrl).searchBar.hidden == NO);
 		
 		[newCtrl viewDidAppear:YES];
 		[oldCtrl viewDidDisappear:YES];
 		
-		//oldCtrl.picker = nil;
-		//newCtrl.picker = _picker;
+		oldCtrl.picker = nil;
+		newCtrl.picker = _picker;
+		
 		_lastPage = _page;
 		_pageControl.currentPage = _page;
 		
@@ -201,10 +193,23 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     }
 }
 
-
 - (IBAction) pageControlChanged:(id)sender;
 {
-	// I have absolutely no idea how to get this to "scroll" the scroll view... too bad you can't just
-	// tell it to go to a damn page, no....
+	int newPage = _pageControl.currentPage;
+	
+	CGRect newFrame = _scrollView.frame;
+	newFrame.origin.x = (newFrame.size.width * newPage);
+	newFrame.origin.y = 0;
+	[_scrollView scrollRectToVisible:newFrame animated:YES];
+}
+
+- (BOOL) pageControlEnabled;
+{
+	return _pageControl.enabled;
+}
+
+- (void) setPageControlEnabled:(BOOL)set;
+{
+	_pageControl.hidden = !(_pageControl.enabled = set);
 }
 @end
