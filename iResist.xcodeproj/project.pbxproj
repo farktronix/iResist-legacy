@@ -26,6 +26,7 @@
 		43EC44830E2EA2A10035DD57 /* iResist.png in Resources */ = {isa = PBXBuildFile; fileRef = 43EC44820E2EA2A10035DD57 /* iResist.png */; };
 		43F1163D0E4E722000A912DA /* ResistorScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */; };
 		43F116C80E4E850A00A912DA /* ResistorScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43F116C70E4E850A00A912DA /* ResistorScrollView.xib */; };
+		940200500E5A92250049D052 /* ResistorInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9402004F0E5A92250049D052 /* ResistorInfoView.xib */; };
 		940D4C370E280A9C003733D4 /* checker.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 940D4C360E280A9C003733D4 /* checker.bmp */; };
 		940D4D730E282F3C003733D4 /* blackmag.png in Resources */ = {isa = PBXBuildFile; fileRef = 940D4D720E282F3C003733D4 /* blackmag.png */; };
 		94148A580E2C0E1B00986196 /* resistor_320.png in Resources */ = {isa = PBXBuildFile; fileRef = 94148A570E2C0E1B00986196 /* resistor_320.png */; };
@@ -77,6 +78,7 @@
 		43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorScrollViewController.m; sourceTree = "<group>"; };
 		43F116C70E4E850A00A912DA /* ResistorScrollView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResistorScrollView.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9402004F0E5A92250049D052 /* ResistorInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResistorInfoView.xib; sourceTree = "<group>"; };
 		940D4C360E280A9C003733D4 /* checker.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = checker.bmp; sourceTree = "<group>"; };
 		940D4D720E282F3C003733D4 /* blackmag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackmag.png; sourceTree = "<group>"; };
 		94148A570E2C0E1B00986196 /* resistor_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resistor_320.png; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				431ABB610E3D2728009EE3DE /* ResistorColorView.xib */,
 				432531600E4E8CFB00FFF897 /* ResistorSMTView.xib */,
 				43F116C70E4E850A00A912DA /* ResistorScrollView.xib */,
+				9402004F0E5A92250049D052 /* ResistorInfoView.xib */,
 				2899E5210DE3E06400AC0155 /* iResistViewController.xib */,
 				431ABB4B0E3D25CB009EE3DE /* SettingsView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -294,6 +297,7 @@
 				945705610E428D4B0097F793 /* Default.png in Resources */,
 				43F116C80E4E850A00A912DA /* ResistorScrollView.xib in Resources */,
 				432531610E4E8CFB00FFF897 /* ResistorSMTView.xib in Resources */,
+				940200500E5A92250049D052 /* ResistorInfoView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

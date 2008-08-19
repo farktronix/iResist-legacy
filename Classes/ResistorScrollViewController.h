@@ -14,14 +14,14 @@ extern NSString * const kResistorViewChanged;
 
 @interface ResistorScrollViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *_scrollView;
-    
+    IBOutlet UIPageControl *_pageControl;
+	
     UIPickerView *_picker;
-    ResistorColorPicker *_colorPicker;
-    ResistorSMTPicker *_SMTPicker;
     ResistorValuePicker *_currentValuePicker;
-    
-    ResistorColorViewController *_resistorColorController;
-    ResistorSMTViewController *_resistorSMTController;
+	UIViewController *_currentViewController;
+	
+	NSMutableArray *_pageViews;
+	NSMutableArray *_pickers;
     
     int _page;
     int _lastPage;
@@ -34,5 +34,7 @@ extern NSString * const kResistorViewChanged;
 @property (readonly) int page;
 
 - (void) randomSpin;
+
+- (IBAction) pageControlChanged:(id)sender;
 
 @end

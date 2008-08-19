@@ -36,15 +36,14 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 
 - (void) setupPickerDelegate
 {
-    if (_page == 0) {
-        _currentValuePicker = _colorPicker;
-        _picker.dataSource = _colorPicker;
-        _picker.delegate = _colorPicker;
-    } else {    
-        _currentValuePicker = _SMTPicker;
-        _picker.dataSource = _SMTPicker;
-        _picker.delegate = _SMTPicker;
-    }
+	ResistorValuePicker *picker = nil;
+	
+	if (_page <= [_pickers count] && (picker = [_pickers objectAtIndex:_page])) {
+		_currentValuePicker = picker;
+		_picker.dataSource = picker;
+		_picker.delegate = picker;
+	}
+	
     [self resistorValueChanged:nil];
     [_picker reloadAllComponents];
 } 
@@ -60,16 +59,31 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
         
         CGRect frame = self.view.frame;
         frame.origin.y = 0;
-        
-        _resistorColorController = [[ResistorColorViewController alloc] initWithNibName:@"ResistorColorView" bundle:nil];
-        frame.origin.x = 0;
-        _resistorColorController.view.frame = frame;
-        [_scrollView addSubview:_resistorColorController.view];
-
-        _resistorSMTController = [[ResistorSMTViewController alloc] initWithNibName:@"ResistorSMTView" bundle:nil];
-        frame.origin.x = 0 + _scrollView.frame.size.width;
-        _resistorSMTController.view.frame = frame;
-        [_scrollView addSubview:_resistorSMTController.view];
+		
+		_pageViews = [[NSMutableArray array] retain];
+		_pickers = [[NSMutableArray array] retain];
+		
+		int widthMult = 0;
+		Class cls = nil;
+		NSArray *starterArr = [NSArray arrayWithObjects:@"ResistorColor", @"ResistorSMT", @"ResistorInfo", nil];
+		
+		for (NSString *prefix in starterArr) {
+			NSString *view = [NSString stringWithFormat:@"%@View", prefix];
+			
+			if ((cls = [[NSBundle mainBundle] classNamed: [NSString stringWithFormat:@"%@Controller", view]])) {
+				UIViewController *vCtrl = [(UIViewController*)[cls alloc] initWithNibName:view bundle:nil];
+				frame.origin.x = _scrollView.frame.size.width * widthMult++;
+				vCtrl.view.frame = frame;
+				
+				[_scrollView addSubview:vCtrl.view];
+				[_pageViews addObject:vCtrl];
+				
+				if ((cls = [[NSBundle mainBundle] classNamed:[NSString stringWithFormat:@"%@Picker", prefix]])) {
+					ResistorValuePicker *vPicker = [[cls alloc] init];
+					[_pickers addObject:vPicker];
+				}
+			}
+		}
         
         NSNumber *pageNum = [[NSUserDefaults standardUserDefaults] valueForKey:kCurrentPageKey];
         if (pageNum) {
@@ -82,10 +96,9 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
         if (_page == 1) {
             [_scrollView scrollRectToVisible:CGRectMake( _scrollView.frame.size.width, 0,  _scrollView.frame.size.width,  _scrollView.frame.size.height) animated:NO];
         }
-        
-        _colorPicker = [[ResistorColorPicker alloc] init];
-        _SMTPicker = [[ResistorSMTPicker alloc] init];
+		
         [self setupPickerDelegate];
+		_pageControl.numberOfPages = [_pageViews count];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
     }
@@ -93,27 +106,39 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 }
 
 - (void) dealloc {
-    [_resistorColorController release];
-    [_resistorSMTController release];
-    [_colorPicker release];
-    [_SMTPicker release];
+	for (id view in _pageViews) {
+		[view release];
+	}
+	
+	for (id picker in _pickers) {
+		[picker release];
+	}
+	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 
 - (void) setPicker:(UIPickerView *)picker
 {
-    if (picker != _picker) {
-        [_picker release];
-        _picker = [picker retain];
-        if (_page == 0) {
-            _resistorSMTController.picker = nil;
-            _resistorColorController.picker = _picker;
-        } else {
-            _resistorColorController.picker = nil;
-            _resistorSMTController.picker = _picker;
-        }
-    }
+	// thinking that .picker is going to have to be in a protocol...
+	
+//	if (_page <= [_pickers count] && (picker = [_pickers objectAtIndex:_page])) {
+		if (picker != _picker) {
+			_picker = picker;
+			/*
+			 [_picker release];
+			 _picker = [picker retain];
+			 if (_page == 0) {
+			 _resistorSMTController.picker = nil;
+			 _resisto_pickersrColorController.picker = _picker;
+			 } else {
+			 _resistorColorController.picker = nil;
+			 _resistorSMTController.picker = _picker;
+			 }
+			 */
+		}
+//	}
+	
     [self setupPickerDelegate];
 }
 
@@ -141,45 +166,45 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     // Switch the picker when more than 50% of the previous/next page is visible
     CGFloat pageWidth = _scrollView.frame.size.width;
     int newPage = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    if (newPage != _page) {
-        if (newPage == 0) {
-            [_resistorColorController viewWillAppear:YES];
-            [_resistorSMTController viewWillDisappear:YES];
-        } else {
-            [_resistorColorController viewWillDisappear:YES];
-            [_resistorSMTController viewWillAppear:YES];
-        }
+	UIViewController *newCtrl = nil;
+	UIViewController *oldCtrl = nil;
+	
+    if (newPage != _page && newPage <= [_pageViews count]) {
+		newCtrl = [_pageViews objectAtIndex:newPage];
+		oldCtrl = [_pageViews objectAtIndex:_page];
+		
+        if (newCtrl && oldCtrl) {
+			[newCtrl viewWillAppear:YES];
+			[oldCtrl viewWillDisappear:YES];
+		}
+		
         _page = newPage;
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:_page] forKey:kCurrentPageKey];
         [[NSNotificationCenter defaultCenter] postNotificationName:kResistorViewChanged object:nil];
     }
     
     // full page transition complete
-    if (_page != _lastPage) {
-        if (_scrollView.contentOffset.x == 0) {
-            _oldOffset = scrollView.contentOffset;
-            [_resistorColorController viewDidAppear:YES];
-            [_resistorSMTController viewDidDisappear:YES];
-            
-            _resistorSMTController.picker = nil;
-            _resistorColorController.picker = _picker;
-            _lastPage = _page;
-            
-            [self setupPickerDelegate];
-        } else if (_scrollView.contentOffset.x == pageWidth) {
-            _oldOffset = scrollView.contentOffset;
-            if (_resistorColorController.searchBar.hidden == NO) _scrollBug = YES;
-            
-            [_resistorColorController viewDidDisappear:YES];
-            [_resistorSMTController viewDidAppear:YES];
-            
-            _resistorSMTController.picker = _picker;
-            _resistorColorController.picker = nil;
-            _lastPage = _page;
-            
-            [self setupPickerDelegate];
-        }
+    if (_page != _lastPage && newCtrl && oldCtrl) {
+		_oldOffset = scrollView.contentOffset;
+		
+		//	??? if (_resistorColorController.searchBar.hidden == NO) _scrollBug = YES;
+		
+		[newCtrl viewDidAppear:YES];
+		[oldCtrl viewDidDisappear:YES];
+		
+		//oldCtrl.picker = nil;
+		//newCtrl.picker = _picker;
+		_lastPage = _page;
+		_pageControl.currentPage = _page;
+		
+		[self setupPickerDelegate];
     }
 }
 
+
+- (IBAction) pageControlChanged:(id)sender;
+{
+	// I have absolutely no idea how to get this to "scroll" the scroll view... too bad you can't just
+	// tell it to go to a damn page, no....
+}
 @end
