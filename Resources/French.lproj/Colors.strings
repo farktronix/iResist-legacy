@@ -1,0 +1,18 @@
+﻿/* 
+   Colors.strings
+   iResist
+ */
+
+/* Colors */
+"Black" = "Noir";
+"Brown" = "Marron";
+"Red" = "Rouge";
+"Orange" = "Orange";
+"Yellow" = "Jaune";
+"Green" = "Vert";
+"Blue" = "Bleu";
+"Violet" = "Violet";
+"Gray" = "Gris";
+"White" = "Blanc";
+"Gold" = "Or";
+"Silver" = "Argent";

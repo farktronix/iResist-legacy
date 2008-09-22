@@ -15,7 +15,6 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* iResistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* iResistViewController.m */; };
 		430B96FF0E2695AF001F33CC /* ResistorColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 430B96FE0E2695AF001F33CC /* ResistorColorPicker.m */; };
-		431ABB4C0E3D25CB009EE3DE /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 431ABB4B0E3D25CB009EE3DE /* SettingsView.xib */; };
 		431ABB620E3D2728009EE3DE /* ResistorColorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 431ABB610E3D2728009EE3DE /* ResistorColorView.xib */; };
 		431ABB6B0E3D2892009EE3DE /* ResistorColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 431ABB6A0E3D2892009EE3DE /* ResistorColorViewController.m */; };
 		431ABB6E0E3D289A009EE3DE /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 431ABB6D0E3D289A009EE3DE /* SettingsViewController.m */; };
@@ -23,6 +22,8 @@
 		432531610E4E8CFB00FFF897 /* ResistorSMTView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 432531600E4E8CFB00FFF897 /* ResistorSMTView.xib */; };
 		432531E80E4EA80000FFF897 /* ResistorValuePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 432531E70E4EA80000FFF897 /* ResistorValuePicker.m */; };
 		432531EB0E4EA80C00FFF897 /* ResistorSMTPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 432531EA0E4EA80C00FFF897 /* ResistorSMTPicker.m */; };
+		43E859ED0E86DF1A007BC3E6 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43E859EC0E86DF1A007BC3E6 /* SettingsView.xib */; };
+		43E85A000E86E067007BC3E6 /* Colors.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43E859FF0E86E067007BC3E6 /* Colors.strings */; };
 		43EC44830E2EA2A10035DD57 /* iResist.png in Resources */ = {isa = PBXBuildFile; fileRef = 43EC44820E2EA2A10035DD57 /* iResist.png */; };
 		43F1163D0E4E722000A912DA /* ResistorScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */; };
 		43F116C80E4E850A00A912DA /* ResistorScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43F116C70E4E850A00A912DA /* ResistorScrollView.xib */; };
@@ -63,7 +64,7 @@
 		32CA4F630368D1EE00C91783 /* iResist_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iResist_Prefix.pch; sourceTree = "<group>"; };
 		430B96FD0E2695AF001F33CC /* ResistorColorPicker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = ResistorColorPicker.h; sourceTree = "<group>"; };
 		430B96FE0E2695AF001F33CC /* ResistorColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorColorPicker.m; sourceTree = "<group>"; };
-		431ABB4B0E3D25CB009EE3DE /* SettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
+		431ABB4B0E3D25CB009EE3DE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SettingsView.xib; sourceTree = "<group>"; };
 		431ABB610E3D2728009EE3DE /* ResistorColorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResistorColorView.xib; sourceTree = "<group>"; };
 		431ABB690E3D2892009EE3DE /* ResistorColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResistorColorViewController.h; sourceTree = "<group>"; };
 		431ABB6A0E3D2892009EE3DE /* ResistorColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorColorViewController.m; sourceTree = "<group>"; };
@@ -76,6 +77,13 @@
 		432531E70E4EA80000FFF897 /* ResistorValuePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorValuePicker.m; sourceTree = "<group>"; };
 		432531E90E4EA80C00FFF897 /* ResistorSMTPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResistorSMTPicker.h; sourceTree = "<group>"; };
 		432531EA0E4EA80C00FFF897 /* ResistorSMTPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorSMTPicker.m; sourceTree = "<group>"; };
+		43E859F00E86DF31007BC3E6 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = French.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		43E859F10E86DF34007BC3E6 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = German.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		43E859F20E86DF37007BC3E6 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Spanish; path = Spanish.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		43E859FD0E86E063007BC3E6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Colors.strings; sourceTree = "<group>"; };
+		43E85A010E86E06F007BC3E6 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Colors.strings; sourceTree = "<group>"; };
+		43E85A020E86E071007BC3E6 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Colors.strings; sourceTree = "<group>"; };
+		43E85A030E86E076007BC3E6 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Spanish; path = Spanish.lproj/Colors.strings; sourceTree = "<group>"; };
 		43EC44820E2EA2A10035DD57 /* iResist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iResist.png; sourceTree = "<group>"; };
 		43F1163B0E4E722000A912DA /* ResistorScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResistorScrollViewController.h; sourceTree = "<group>"; };
 		43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorScrollViewController.m; sourceTree = "<group>"; };
@@ -174,10 +182,11 @@
 				43F116C70E4E850A00A912DA /* ResistorScrollView.xib */,
 				9402004F0E5A92250049D052 /* ResistorInfoView.xib */,
 				2899E5210DE3E06400AC0155 /* iResistViewController.xib */,
-				431ABB4B0E3D25CB009EE3DE /* SettingsView.xib */,
+				43E859EC0E86DF1A007BC3E6 /* SettingsView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				945705600E428D4B0097F793 /* Default.png */,
+				43E859FF0E86E067007BC3E6 /* Colors.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -274,6 +283,13 @@
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iResist" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Spanish,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -306,13 +322,14 @@
 				94176FCE0E2E65A100763E7A /* orange.png in Resources */,
 				94176FCF0E2E65A100763E7A /* gray.png in Resources */,
 				43EC44830E2EA2A10035DD57 /* iResist.png in Resources */,
-				431ABB4C0E3D25CB009EE3DE /* SettingsView.xib in Resources */,
+				43E859ED0E86DF1A007BC3E6 /* SettingsView.xib in Resources */,
 				431ABB620E3D2728009EE3DE /* ResistorColorView.xib in Resources */,
 				94B8E9250E403FAD00C1B620 /* iResist-large.png in Resources */,
 				945705610E428D4B0097F793 /* Default.png in Resources */,
 				43F116C80E4E850A00A912DA /* ResistorScrollView.xib in Resources */,
 				432531610E4E8CFB00FFF897 /* ResistorSMTView.xib in Resources */,
 				940200500E5A92250049D052 /* ResistorInfoView.xib in Resources */,
+				43E85A000E86E067007BC3E6 /* Colors.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +357,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		43E859EC0E86DF1A007BC3E6 /* SettingsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				431ABB4B0E3D25CB009EE3DE /* English */,
+				43E859F00E86DF31007BC3E6 /* French */,
+				43E859F10E86DF34007BC3E6 /* German */,
+				43E859F20E86DF37007BC3E6 /* Spanish */,
+			);
+			name = SettingsView.xib;
+			sourceTree = "<group>";
+		};
+		43E859FF0E86E067007BC3E6 /* Colors.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43E859FD0E86E063007BC3E6 /* English */,
+				43E85A010E86E06F007BC3E6 /* French */,
+				43E85A020E86E071007BC3E6 /* German */,
+				43E85A030E86E076007BC3E6 /* Spanish */,
+			);
+			name = Colors.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {

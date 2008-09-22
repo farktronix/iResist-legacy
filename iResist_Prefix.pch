@@ -17,4 +17,6 @@
 #define kShowLabelsKey @"ShowLabels"
 #define kUseAccelerometerKey @"UseAccelerometer"
 
+#define LocColor(x) NSLocalizedStringFromTable(x, @"Colors", nil)
+
 #endif

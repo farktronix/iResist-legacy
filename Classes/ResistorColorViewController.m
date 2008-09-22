@@ -199,18 +199,18 @@
     // this could probably all be done with gradients instead of images...
 	NSMutableDictionary *bi =  [[NSMutableDictionary alloc] init];
 	
-	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:@"black"];
-	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:@"blue"];
-	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:@"brown"];
-	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:@"gold"];
-	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:@"gray"];
-	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:@"green"];
-	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:@"orange"];
-	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:@"red"];
-	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:@"silver"];
-	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:@"violet"];
-	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:@"white"];
-	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:@"yellow"];
+	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:LocColor(@"Black")];
+	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:LocColor(@"Blue")];
+	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:LocColor(@"Brown")];
+	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:LocColor(@"Gold")];
+	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:LocColor(@"Gray")];
+	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:LocColor(@"Green")];
+	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:LocColor(@"Orange")];
+	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:LocColor(@"Red")];
+	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:LocColor(@"Silver")];
+	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:LocColor(@"Violet")];
+	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:LocColor(@"White")];
+	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:LocColor(@"Yellow")];
 	
 	_barImages = (NSDictionary*)bi;
 }

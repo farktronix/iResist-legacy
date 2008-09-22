@@ -41,12 +41,12 @@
 					<object class="IBUILabel" id="419832750">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 20}, {143, 21}}</string>
+						<string key="NSFrame">{{20, 20}, {178, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Show Color Labels</string>
+						<string key="IBUIText">Demuestre las etiquetas del color</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -73,12 +73,12 @@
 					<object class="IBUILabel" id="973973871">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 75}, {145, 21}}</string>
+						<string key="NSFrame">{{20, 75}, {169, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Use Accelerometer</string>
+						<string type="base64-UTF8" key="IBUIText">VXRpbGljZSBlbCBhY2VsZXLDs21ldHJvA</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -159,10 +159,10 @@
 						<reference key="object" ref="191373211"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="419832750"/>
 							<reference ref="672636009"/>
 							<reference ref="773074439"/>
 							<reference ref="973973871"/>
+							<reference ref="419832750"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
@@ -257,12 +257,10 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>showLabelsValueChanged</string>
-							<string>showSearchBarChanged</string>
 							<string>useAccelerometerSwitchChanged</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -272,12 +270,10 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_showLabelsSwitch</string>
-							<string>_showSearchSwitch</string>
 							<string>_useAccelerometerSwitch</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UISwitch</string>
 							<string>UISwitch</string>
 							<string>UISwitch</string>
 						</object>
@@ -290,7 +286,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">iResist.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../iResist.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

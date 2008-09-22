@@ -2,7 +2,6 @@
 //  ResistorColorPicker.m
 //  iResist
 //
-//  Created by Jacob Farkas on 7/10/08.
 //  Copyright 2008 Flying Monkey Enterprises. All rights reserved.
 //
 
@@ -14,12 +13,12 @@
 {
 	// sometimes the accel. randomizer will pick row -1 while "spinning", causing a crash
 	if (row >= 0) {
-		NSArray* firstTwo = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-							 @"green", @"blue", @"violet", @"gray", @"white", nil];
-		NSArray* tol = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"green", @"blue", @"violet", @"gray",
-						@"gold", @"silver", nil];
-		NSArray* mult = [NSArray arrayWithObjects: @"black", @"brown", @"red", @"orange", @"yellow", 
-						 @"green", @"blue", @"gold", @"silver", nil];
+		NSArray* firstTwo = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Orange"), LocColor(@"Yellow"), 
+							 LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Violet"), LocColor(@"Gray"), LocColor(@"White"), nil];
+		NSArray* tol = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Violet"), LocColor(@"Gray"),
+						LocColor(@"Gold"), LocColor(@"Silver"), nil];
+		NSArray* mult = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Orange"), LocColor(@"Yellow"), 
+						 LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Gold"), LocColor(@"Silver"), nil];
 		
 		if (component < 2) {
 			return [firstTwo objectAtIndex: row];
@@ -46,7 +45,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.text = text;
         label.frame = view.frame;
-        if ([text isEqualToString:@"White"] || [text isEqualToString:@"Silver"] || [text isEqualToString:@"Yellow"]) {
+        if ([text isEqualToString:LocColor(@"White")] || [text isEqualToString:LocColor(@"Silver")] || [text isEqualToString:LocColor(@"Yellow")]) {
             label.textColor = [UIColor blackColor];
         } else {
             label.textColor = [UIColor whiteColor];
@@ -64,18 +63,18 @@
 {
 	NSMutableDictionary *tDict = [[NSMutableDictionary alloc] init];
 	
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:@"Black"];
-	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:@"Gray"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:@"White"];
-	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:@"Brown"];
-	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:@"Red"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:@"Orange"];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:@"Yellow"];
-	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:@"Green"];
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:@"Blue"];
-	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:@"Violet"];
-	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:@"Gold"];
-	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:@"Silver"];
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:LocColor(@"Black")];
+	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:LocColor(@"Gray")];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:LocColor(@"White")];
+	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:LocColor(@"Brown")];
+	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:LocColor(@"Red")];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:LocColor(@"Orange")];
+	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:LocColor(@"Yellow")];
+	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:LocColor(@"Green")];
+	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:LocColor(@"Blue")];
+	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:LocColor(@"Violet")];
+	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:LocColor(@"Gold")];
+	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:LocColor(@"Silver")];
 	
 	_colors = tDict;
 }
@@ -97,16 +96,16 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:@"Black"]];
-    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
-    [colors addObject: [self _colorViewWithColorString:@"Red"]];
-    [colors addObject: [self _colorViewWithColorString:@"Orange"]];
-    [colors addObject: [self _colorViewWithColorString:@"Yellow"]];
-    [colors addObject: [self _colorViewWithColorString:@"Green"]];
-    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
-    [colors addObject: [self _colorViewWithColorString:@"Violet"]];
-    [colors addObject: [self _colorViewWithColorString:@"Gray"]];
-    [colors addObject: [self _colorViewWithColorString:@"White"]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Orange")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Yellow")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Violet")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gray")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"White")]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -115,15 +114,15 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:@"Black"]];
-    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
-    [colors addObject: [self _colorViewWithColorString:@"Red"]];
-    [colors addObject: [self _colorViewWithColorString:@"Green"]];
-    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
-    [colors addObject: [self _colorViewWithColorString:@"Violet"]];
-    [colors addObject: [self _colorViewWithColorString:@"Gray"]];
-    [colors addObject: [self _colorViewWithColorString:@"Gold"]];
-    [colors addObject: [self _colorViewWithColorString:@"Silver"]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Violet")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gray")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gold")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Silver")]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
@@ -132,15 +131,15 @@
 {
     NSMutableArray *colors = [[NSMutableArray alloc] init];
 	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:@"Black"]];
-    [colors addObject: [self _colorViewWithColorString:@"Brown"]];
-    [colors addObject: [self _colorViewWithColorString:@"Red"]];
-    [colors addObject: [self _colorViewWithColorString:@"Orange"]];
-    [colors addObject: [self _colorViewWithColorString:@"Yellow"]];
-    [colors addObject: [self _colorViewWithColorString:@"Green"]];
-    [colors addObject: [self _colorViewWithColorString:@"Blue"]];
-    [colors addObject: [self _colorViewWithColorString:@"Gold"]];
-    [colors addObject: [self _colorViewWithColorString:@"Silver"]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Orange")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Yellow")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gold")]];
+    [colors addObject: [self _colorViewWithColorString:LocColor(@"Silver")]];
 	[colors addObject: [self _endPickerImageView]];
     return [colors autorelease];
 }
