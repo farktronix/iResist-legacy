@@ -46,7 +46,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Farbe Namen</string>
+						<string type="base64-UTF8" key="IBUIText">44Kr44Op44O844Op44OZ44Or44KS5L2/55So44GZ44KL44CCA</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -78,7 +78,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Benutzen Sie Beschleunigungssensor</string>
+						<string type="base64-UTF8" key="IBUIText">5Yqg6YCf5bqm6KiI44KS5L2/55So44GZ44KL44CCA</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -159,10 +159,10 @@
 						<reference key="object" ref="191373211"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="419832750"/>
 							<reference ref="672636009"/>
 							<reference ref="773074439"/>
 							<reference ref="973973871"/>
-							<reference ref="419832750"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
