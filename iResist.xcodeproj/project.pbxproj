@@ -66,6 +66,10 @@
 		430B96FE0E2695AF001F33CC /* ResistorColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorColorPicker.m; sourceTree = "<group>"; };
 		4311EBF40E8C89FF006EFCF8 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Colors.strings; sourceTree = "<group>"; };
 		4311EBF60E8C8A11006EFCF8 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Japanese; path = Japanese.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		4311EC490E8C9079006EFCF8 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_TW; path = zh_TW.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		4311EC4A0E8C908D006EFCF8 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/SettingsView.xib; sourceTree = "<group>"; };
+		4311EC4B0E8C9092006EFCF8 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Colors.strings; sourceTree = "<group>"; };
+		4311EC4C0E8C9096006EFCF8 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Colors.strings; sourceTree = "<group>"; };
 		431ABB4B0E3D25CB009EE3DE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SettingsView.xib; sourceTree = "<group>"; };
 		431ABB610E3D2728009EE3DE /* ResistorColorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResistorColorView.xib; sourceTree = "<group>"; };
 		431ABB690E3D2892009EE3DE /* ResistorColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResistorColorViewController.h; sourceTree = "<group>"; };
@@ -291,6 +295,11 @@
 				French,
 				German,
 				Spanish,
+				Hans,
+				Hant,
+				Chinese,
+				zh_TW,
+				zh_CN,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -369,6 +378,8 @@
 				43E859F10E86DF34007BC3E6 /* German */,
 				43E859F20E86DF37007BC3E6 /* Spanish */,
 				4311EBF60E8C8A11006EFCF8 /* Japanese */,
+				4311EC490E8C9079006EFCF8 /* zh_TW */,
+				4311EC4A0E8C908D006EFCF8 /* zh_CN */,
 			);
 			name = SettingsView.xib;
 			sourceTree = "<group>";
@@ -381,6 +392,8 @@
 				43E85A020E86E071007BC3E6 /* German */,
 				43E85A030E86E076007BC3E6 /* Spanish */,
 				4311EBF40E8C89FF006EFCF8 /* Japanese */,
+				4311EC4B0E8C9092006EFCF8 /* zh_CN */,
+				4311EC4C0E8C9096006EFCF8 /* zh_TW */,
 			);
 			name = Colors.strings;
 			sourceTree = "<group>";
