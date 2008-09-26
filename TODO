@@ -1,4 +1,8 @@
+Known bugs:
+ - Labels don't show/hide immediately when toggling "show color labels"
+ - Selecting 1ohm is impossible
+ - Pretty print amps and watts
+
 TODO:
  - Add tolerance values
- - Better pretty-printing of the ohmage
  - Superflous visual effects

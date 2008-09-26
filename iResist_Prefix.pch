@@ -6,17 +6,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-// I'm probably a bad person for stashing constants away in here...
-
-#define kResistorValueChangedNotification @"ResistorValueChanged"
-
-// User defaults
-#define kOhmsKey @"Ohms"
-#define kToleranceKey @"Tolerance"
-#define kCurrentPageKey @"CurrentPage"
-#define kShowLabelsKey @"ShowLabels"
-#define kUseAccelerometerKey @"UseAccelerometer"
-
-#define LocColor(x) NSLocalizedStringFromTable(x, @"Colors", nil)
+#import "Util.h"
 
 #endif

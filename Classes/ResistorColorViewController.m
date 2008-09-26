@@ -17,36 +17,6 @@
 #pragma mark -
 #pragma mark Ohm Display
 
-- (void) _updateOhmsString:(double)ohms
-{
-    int exp = (int)log10(ohms);
-    double displayOhms = ohms;
-    
-    if (ohms < 1.0) {
-        displayOhms = ((int)(ohms * 100) / 100.0);
-    }
-    else if (ohms < 10) {
-        displayOhms = ((int)(ohms * 10) / 10.0);
-    } 
-    else {
-        double power = pow(10, exp - 1);
-        displayOhms = ((int)(ohms / power) * power);  
-    }
-    
-    if (ohms < 1000) {
-        _ohms.text = [NSString stringWithFormat:(ohms < 1 ? @"%.2f Ω" : (ohms < 10 ? @"%.1f Ω" : @"%.0f Ω")), displayOhms];
-    }
-    else if (ohms < 1000000) {
-        _ohms.text = [NSString stringWithFormat:@"%.1f KΩ", displayOhms/1000.0];
-    }
-    else if (ohms < 1000000000) {
-        _ohms.text = [NSString stringWithFormat:@"%.1f MΩ", displayOhms/1000000.0];
-    }
-    else {
-        _ohms.text = [NSString stringWithFormat:@"%.1f GΩ", displayOhms/1000000000.0];
-    }
-}
-
 - (void) _updateToleranceString:(double)tolerance
 {
     _tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolerance];    
@@ -98,7 +68,7 @@
     double tolerance = 0.0;
     if (ohmsNum) ohms = [ohmsNum doubleValue];
     if (toleranceNum) tolerance = [toleranceNum doubleValue];
-    [self _updateOhmsString:ohms];
+    _ohms.text = prettyPrintOhms(ohms);
     [self _updateToleranceString:tolerance];
     
     for (int ii = 0; ii < 4; ii++) {

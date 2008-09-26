@@ -10,7 +10,7 @@
 
 extern NSString * const kResistorViewChanged;
 
-@class ResistorValuePicker, ResistorColorPicker, ResistorSMTPicker, ResistorColorViewController, ResistorSMTViewController;
+@class ResistorValuePicker;
 
 @interface ResistorScrollViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *_scrollView;

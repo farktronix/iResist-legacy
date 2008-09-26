@@ -39,11 +39,18 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 {
 	ResistorValuePicker *picker = nil;
 	
-	if (_page <= [_pickers count] && (picker = [_pickers objectAtIndex:_page])) {
+    picker = [_pickers objectAtIndex:_page];
+	if ((NSNull*)picker != [NSNull null]) {
 		_currentValuePicker = picker;
+        _picker.hidden = NO;
 		_picker.dataSource = picker;
 		_picker.delegate = picker;
-	}
+	} else {
+        _currentValuePicker = nil;
+        _picker.hidden = YES;
+        _picker.dataSource = nil;
+        _picker.delegate = nil;
+    }
 	
     [self resistorValueChanged:nil];
     [_picker reloadAllComponents];
@@ -79,7 +86,9 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 				if ((cls = [[NSBundle mainBundle] classNamed:[NSString stringWithFormat:@"%@Picker", prefix]])) {
 					ResistorValuePicker *vPicker = [[cls alloc] init];
 					[_pickers addObject:vPicker];
-				}
+				} else {
+                    [_pickers addObject:[NSNull null]];
+                }
 			}
 		}
 		
