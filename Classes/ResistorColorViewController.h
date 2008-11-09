@@ -10,6 +10,7 @@
 #import "ResistorGenericViewController.h"
 
 @interface ResistorColorViewController : ResistorGenericViewController <UISearchBarDelegate> {
+    IBOutlet UIView *_contentView;
     IBOutlet UILabel *_ohms;
 	IBOutlet UILabel *_tolerance;
 	IBOutlet UIImageView *_resistor;

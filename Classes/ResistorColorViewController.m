@@ -22,9 +22,6 @@
     _tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolerance];    
 }
 
-// This method is only tasked with calculating the correct CGRect for a color bar;
-// currently it's obviously done "by hand," but the idea was that since this class has
-// the ref to _resistor (the UIImageView), it should calculate rects programmatically. Should.
 - (void) _drawResistorBarWithColorName: (NSString*)color andComponent: (int)component;
 {	
     CGRect cBarRect = _resistor.frame;
@@ -87,9 +84,10 @@
     [UIView setAnimationTransition:_searchBar.hidden == YES ? UIViewAnimationTransitionCurlDown : UIViewAnimationTransitionCurlUp forView:_searchBar cache:YES];
     _searchBar.hidden = !_searchBar.hidden;
     CGFloat searchBarHeight = 25.0 * (_searchBar.hidden ? -1 : 1);
-    _resistor.frame = CGRectMake(_resistor.frame.origin.x, _resistor.frame.origin.y + searchBarHeight, _resistor.frame.size.width, _resistor.frame.size.height);
-    _ohms.frame = CGRectMake(_ohms.frame.origin.x, _ohms.frame.origin.y + searchBarHeight, _ohms.frame.size.width, _ohms.frame.size.height);
-    _tolerance.frame = CGRectMake(_tolerance.frame.origin.x, _tolerance.frame.origin.y + searchBarHeight, _tolerance.frame.size.width, _tolerance.frame.size.height);
+    CGRect contentFrame = _contentView.frame; 
+    contentFrame.origin.y += searchBarHeight;
+    contentFrame.size.height -= searchBarHeight;
+    _contentView.frame = contentFrame;
     
     if (_searchBar.hidden) {
         [_searchBar resignFirstResponder];

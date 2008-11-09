@@ -36,7 +36,6 @@
 		940D4D730E282F3C003733D4 /* blackmag.png in Resources */ = {isa = PBXBuildFile; fileRef = 940D4D720E282F3C003733D4 /* blackmag.png */; };
 		94148A580E2C0E1B00986196 /* resistor_320.png in Resources */ = {isa = PBXBuildFile; fileRef = 94148A570E2C0E1B00986196 /* resistor_320.png */; };
 		94176FC40E2E65A100763E7A /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FB80E2E65A100763E7A /* blue.png */; };
-		94176FC50E2E65A100763E7A /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FB90E2E65A100763E7A /* black.png */; };
 		94176FC60E2E65A100763E7A /* brown.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBA0E2E65A100763E7A /* brown.png */; };
 		94176FC70E2E65A100763E7A /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBB0E2E65A100763E7A /* yellow.png */; };
 		94176FC80E2E65A100763E7A /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBC0E2E65A100763E7A /* red.png */; };
@@ -324,7 +323,6 @@
 				940D4D730E282F3C003733D4 /* blackmag.png in Resources */,
 				94148A580E2C0E1B00986196 /* resistor_320.png in Resources */,
 				94176FC40E2E65A100763E7A /* blue.png in Resources */,
-				94176FC50E2E65A100763E7A /* black.png in Resources */,
 				94176FC60E2E65A100763E7A /* brown.png in Resources */,
 				94176FC70E2E65A100763E7A /* yellow.png in Resources */,
 				94176FC80E2E65A100763E7A /* red.png in Resources */,
