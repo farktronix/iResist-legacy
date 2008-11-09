@@ -12,20 +12,24 @@
 
 @class iResistViewController;
 
+extern NSString * const kColorNameKey;          // NSString - Localized name of the color
+extern NSString * const kColorColorKey;         // UIColor - The color itself
+extern NSString * const kColorValueKey;         // NSNumber - The value represented by this color (ohms, magnitude, or tolerance)
+extern NSString * const kColorTextInvertKey;    // NSNumber (BOOL) - YES if the text should display white to be visible on top of this color.
+
+#define kColorTensComponent         0
+#define kColorOnesComponent         1
+#define kColorMultiplierComponent   2
+#define kColorToleranceComponent    3
+
 @interface ResistorColorPicker : ResistorValuePicker {
-    NSArray *_componentInfo; // Array (component) of arrays (rows) of dicts (name, color, and value)
-    
-    NSArray *_colorViews;
-	NSDictionary *_colors;
-	UIImage *_endImg;
-	
-	IBOutlet iResistViewController *_viewController;
-    
+    UIImage *_endImg;
+	    
     BOOL _showLabels;
     
     BOOL _manualUpdate;
 }
 
-- (double) getToleranceForPicker:(UIPickerView *)picker;
-
++ (NSArray *) componentInfo; // NSArray (component) of NSArray (rows) of NSDictionaries with row information
++ (NSDictionary *) itemInfoForRow:(NSInteger)row inComponent:(NSInteger)component;
 @end

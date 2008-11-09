@@ -19,7 +19,7 @@
 - (void) setVolts:(double)volts
 {
     // I = V/R
-    double amps = volts/_ohms;
+    double amps = _ohms == 0 ? 0 : volts/_ohms;
     double watts = amps * volts;
     _voltLabel.text = [NSString stringWithFormat:@"%0.2fV", volts];
     _ampLabel.text = [NSString stringWithFormat:@"%0.6fA", amps];

@@ -13,13 +13,15 @@
     IBOutlet UIView *_contentView;
     IBOutlet UILabel *_ohms;
 	IBOutlet UILabel *_tolerance;
+    
 	IBOutlet UIImageView *_resistor;
+        IBOutlet UIView *_tensBar;
+        IBOutlet UIView *_onesBar;
+        IBOutlet UIView *_multiplierBar;
+        IBOutlet UIView *_toleranceBar;
 
 	IBOutlet UISearchBar *_searchBar;
 	IBOutlet UIButton *_expandSearchButton;
-
-	NSMutableArray *_colorBars;
-	NSDictionary *_barImages;
 }
 
 @property (readonly) UISearchBar *searchBar;

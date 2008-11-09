@@ -19,4 +19,10 @@
 
 #define LocColor(x) NSLocalizedStringFromTable(x, @"Colors", nil)
 
+#if DEBUG
+    #define DebugLog(fmt, ...)  NSLog(fmt, ## __VA_ARGS__)
+#else
+    #define DebugLog(fmt, ...)
+#endif
+
 NSString *prettyPrintOhms (double ohms);

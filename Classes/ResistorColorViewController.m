@@ -22,38 +22,28 @@
     _tolerance.text = [NSString stringWithFormat: @"±%.2f%%", tolerance];    
 }
 
-- (void) _drawResistorBarWithColorName: (NSString*)color andComponent: (int)component;
-{	
-    CGRect cBarRect = _resistor.frame;
-    cBarRect.size.width = 10;
-    cBarRect.size.height = 48.0;
-    if ((component % 3) == 0) cBarRect.size.width += 3;
-    cBarRect.origin.x += 128.0 + (20 * component);
-    if (component == 0) cBarRect.origin.x -= 5.0;
-    if (component == 3) cBarRect.origin.x += 5.0;
+- (void) _drawResistorColorBarForComponent:(NSInteger)component withInfo:(NSDictionary *)info
+{
+    UIView *barView = nil;
+    switch (component) {
+        case kColorTensComponent:
+            barView = _tensBar;
+            break;
+        case kColorOnesComponent:
+            barView = _onesBar;
+            break;
+        case kColorMultiplierComponent:
+            barView = _multiplierBar;
+            break;
+        case kColorToleranceComponent:
+            barView = _toleranceBar;
+            break;
+        default:
+            DebugLog(@"We were asked to update the resistor bar for an invalid component: %d", component);
+            break;
+    }
     
-	UIImage* img = [_barImages valueForKey: color];	
-	UIImageView *bView = nil;
-	
-	if (img && component < [_colorBars count])
-	{
-		id existingBar = [_colorBars objectAtIndex: component];
-		
-		// if there was a color we need to replace, remove it from the superview
-		if ((NSNull *)existingBar != [NSNull null] && [((UIImageView *)existingBar).image isEqual:img]) {
-            bView = existingBar;
-        } else {
-			if ((NSNull *)existingBar != [NSNull null]) {
-                [(UIView *)existingBar removeFromSuperview];
-            }
-            [existingBar release];
-            bView = [[UIImageView alloc] initWithImage:img];
-            [_colorBars replaceObjectAtIndex:component withObject:bView];
-            [self.view insertSubview:bView belowSubview:_searchBar];
-		}
-		
-        bView.frame = cBarRect;
-	}
+    barView.backgroundColor = [info objectForKey:kColorColorKey];
 }
 
 - (void) _resistorValueChanged:(NSNotification *)notif
@@ -68,10 +58,8 @@
     _ohms.text = prettyPrintOhms(ohms);
     [self _updateToleranceString:tolerance];
     
-    for (int ii = 0; ii < 4; ii++) {
-        // TODO: resistor color bar drawing is temporarily disabled
-        
-        //[self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([_picker selectedRowInComponent:ii] - 1) inComponent:ii] andComponent:ii];
+    for (int component = kColorTensComponent; component <= kColorToleranceComponent; component++) {
+        [self _drawResistorColorBarForComponent:component withInfo:[ResistorColorPicker itemInfoForRow:[_picker selectedRowInComponent:component] inComponent:component]];
     }
 }
 
@@ -139,11 +127,11 @@
         if ([_searchBar.text length]) {
             _searchBar.text = [[_searchBar.text stringByTrimmingCharactersInSet:invalidChars] stringByReplacingOccurrencesOfString:@".." withString:@"."];
         }
-        if ([_searchBar.text doubleValue] > 99000000.0) {
+        if ([_searchBar.text doubleValue] > 99000000000.0) {
             _searchBar.text = [_searchBar.text substringToIndex:[_searchBar.text length] - 1];
         }
         
-        NSLog(@"Search bar updated to %@ (%f)", _searchBar.text, [_searchBar.text doubleValue]);
+        DebugLog(@"Search bar updated to %@ (%f)", _searchBar.text, [_searchBar.text doubleValue]);
         [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithDouble:[_searchBar.text doubleValue]] forKey:kOhmsKey]; 
         [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
         
@@ -164,27 +152,6 @@
 #pragma mark -
 #pragma mark Setup/Teardown
 
-- (void) _loadBarImages;
-{
-    // this could probably all be done with gradients instead of images...
-	NSMutableDictionary *bi =  [[NSMutableDictionary alloc] init];
-	
-	[bi setObject:[UIImage imageNamed:@"black.png"]		forKey:LocColor(@"Black")];
-	[bi setObject:[UIImage imageNamed:@"blue.png"]		forKey:LocColor(@"Blue")];
-	[bi setObject:[UIImage imageNamed:@"brown.png"]		forKey:LocColor(@"Brown")];
-	[bi setObject:[UIImage imageNamed:@"gold.png"]		forKey:LocColor(@"Gold")];
-	[bi setObject:[UIImage imageNamed:@"gray.png"]		forKey:LocColor(@"Gray")];
-	[bi setObject:[UIImage imageNamed:@"green.png"]		forKey:LocColor(@"Green")];
-	[bi setObject:[UIImage imageNamed:@"orange.png"]	forKey:LocColor(@"Orange")];
-	[bi setObject:[UIImage imageNamed:@"red.png"]		forKey:LocColor(@"Red")];
-	[bi setObject:[UIImage imageNamed:@"silver.png"]	forKey:LocColor(@"Silver")];
-	[bi setObject:[UIImage imageNamed:@"violet.png"]	forKey:LocColor(@"Violet")];
-	[bi setObject:[UIImage imageNamed:@"white.png"]		forKey:LocColor(@"White")];
-	[bi setObject:[UIImage imageNamed:@"yellow.png"]	forKey:LocColor(@"Yellow")];
-	
-	_barImages = (NSDictionary*)bi;
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -199,32 +166,11 @@
 
 - (void) viewDidLoad
 {
-    _searchBar.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-//    _searchBar.returnKeyType = UIReturnKeyDone;
+    _searchBar.keyboardType = UIKeyboardTypeNumberPad;
     _searchBar.delegate = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorPickerChangedNotification object:nil];
 }
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        NSNull* n = [NSNull null];
-        _colorBars = [[NSMutableArray alloc] initWithObjects: n, n, n, n, nil];
-        
-        [self _loadBarImages];
-	}
-	return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_colorBars release];
-    [_barImages release];
-    [_picker release];
-	[super dealloc];
-}
-
 
 @end

@@ -27,6 +27,7 @@
 		43E859ED0E86DF1A007BC3E6 /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43E859EC0E86DF1A007BC3E6 /* SettingsView.xib */; };
 		43E85A000E86E067007BC3E6 /* Colors.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43E859FF0E86E067007BC3E6 /* Colors.strings */; };
 		43EC44830E2EA2A10035DD57 /* iResist.png in Resources */ = {isa = PBXBuildFile; fileRef = 43EC44820E2EA2A10035DD57 /* iResist.png */; };
+		43EC75E40EC7A95400670170 /* gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 43EC75E30EC7A95400670170 /* gradient.png */; };
 		43F1163D0E4E722000A912DA /* ResistorScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */; };
 		43F116C80E4E850A00A912DA /* ResistorScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43F116C70E4E850A00A912DA /* ResistorScrollView.xib */; };
 		940200500E5A92250049D052 /* ResistorInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9402004F0E5A92250049D052 /* ResistorInfoView.xib */; };
@@ -35,17 +36,6 @@
 		940D4C370E280A9C003733D4 /* checker.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 940D4C360E280A9C003733D4 /* checker.bmp */; };
 		940D4D730E282F3C003733D4 /* blackmag.png in Resources */ = {isa = PBXBuildFile; fileRef = 940D4D720E282F3C003733D4 /* blackmag.png */; };
 		94148A580E2C0E1B00986196 /* resistor_320.png in Resources */ = {isa = PBXBuildFile; fileRef = 94148A570E2C0E1B00986196 /* resistor_320.png */; };
-		94176FC40E2E65A100763E7A /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FB80E2E65A100763E7A /* blue.png */; };
-		94176FC60E2E65A100763E7A /* brown.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBA0E2E65A100763E7A /* brown.png */; };
-		94176FC70E2E65A100763E7A /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBB0E2E65A100763E7A /* yellow.png */; };
-		94176FC80E2E65A100763E7A /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBC0E2E65A100763E7A /* red.png */; };
-		94176FC90E2E65A100763E7A /* gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBD0E2E65A100763E7A /* gold.png */; };
-		94176FCA0E2E65A100763E7A /* violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBE0E2E65A100763E7A /* violet.png */; };
-		94176FCB0E2E65A100763E7A /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FBF0E2E65A100763E7A /* white.png */; };
-		94176FCC0E2E65A100763E7A /* green.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC00E2E65A100763E7A /* green.png */; };
-		94176FCD0E2E65A100763E7A /* silver.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC10E2E65A100763E7A /* silver.png */; };
-		94176FCE0E2E65A100763E7A /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC20E2E65A100763E7A /* orange.png */; };
-		94176FCF0E2E65A100763E7A /* gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 94176FC30E2E65A100763E7A /* gray.png */; };
 		945705610E428D4B0097F793 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 945705600E428D4B0097F793 /* Default.png */; };
 		94B8E9250E403FAD00C1B620 /* iResist-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 94EC96900E3F9AA9009A4CAF /* iResist-large.png */; };
 /* End PBXBuildFile section */
@@ -94,6 +84,7 @@
 		43E85A020E86E071007BC3E6 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Colors.strings; sourceTree = "<group>"; };
 		43E85A030E86E076007BC3E6 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Spanish; path = Spanish.lproj/Colors.strings; sourceTree = "<group>"; };
 		43EC44820E2EA2A10035DD57 /* iResist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iResist.png; sourceTree = "<group>"; };
+		43EC75E30EC7A95400670170 /* gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gradient.png; sourceTree = "<group>"; };
 		43F1163B0E4E722000A912DA /* ResistorScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResistorScrollViewController.h; sourceTree = "<group>"; };
 		43F1163C0E4E722000A912DA /* ResistorScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResistorScrollViewController.m; sourceTree = "<group>"; };
 		43F116C70E4E850A00A912DA /* ResistorScrollView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResistorScrollView.xib; sourceTree = "<group>"; };
@@ -106,18 +97,6 @@
 		940D4C360E280A9C003733D4 /* checker.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = checker.bmp; sourceTree = "<group>"; };
 		940D4D720E282F3C003733D4 /* blackmag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackmag.png; sourceTree = "<group>"; };
 		94148A570E2C0E1B00986196 /* resistor_320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resistor_320.png; sourceTree = "<group>"; };
-		94176FB80E2E65A100763E7A /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blue.png; path = bar_images/blue.png; sourceTree = "<group>"; };
-		94176FB90E2E65A100763E7A /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black.png; path = bar_images/black.png; sourceTree = "<group>"; };
-		94176FBA0E2E65A100763E7A /* brown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = brown.png; path = bar_images/brown.png; sourceTree = "<group>"; };
-		94176FBB0E2E65A100763E7A /* yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yellow.png; path = bar_images/yellow.png; sourceTree = "<group>"; };
-		94176FBC0E2E65A100763E7A /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = red.png; path = bar_images/red.png; sourceTree = "<group>"; };
-		94176FBD0E2E65A100763E7A /* gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gold.png; path = bar_images/gold.png; sourceTree = "<group>"; };
-		94176FBE0E2E65A100763E7A /* violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = violet.png; path = bar_images/violet.png; sourceTree = "<group>"; };
-		94176FBF0E2E65A100763E7A /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white.png; path = bar_images/white.png; sourceTree = "<group>"; };
-		94176FC00E2E65A100763E7A /* green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green.png; path = bar_images/green.png; sourceTree = "<group>"; };
-		94176FC10E2E65A100763E7A /* silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = silver.png; path = bar_images/silver.png; sourceTree = "<group>"; };
-		94176FC20E2E65A100763E7A /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = bar_images/orange.png; sourceTree = "<group>"; };
-		94176FC30E2E65A100763E7A /* gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gray.png; path = bar_images/gray.png; sourceTree = "<group>"; };
 		945705600E428D4B0097F793 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		94EC96900E3F9AA9009A4CAF /* iResist-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iResist-large.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -181,7 +160,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				94176FB20E2E659300763E7A /* Bar Images */,
+				43EC75E30EC7A95400670170 /* gradient.png */,
 				43EC44820E2EA2A10035DD57 /* iResist.png */,
 				94EC96900E3F9AA9009A4CAF /* iResist-large.png */,
 				94148A570E2C0E1B00986196 /* resistor_320.png */,
@@ -244,25 +223,6 @@
 			name = Pickers;
 			sourceTree = "<group>";
 		};
-		94176FB20E2E659300763E7A /* Bar Images */ = {
-			isa = PBXGroup;
-			children = (
-				94176FB80E2E65A100763E7A /* blue.png */,
-				94176FB90E2E65A100763E7A /* black.png */,
-				94176FBA0E2E65A100763E7A /* brown.png */,
-				94176FBB0E2E65A100763E7A /* yellow.png */,
-				94176FBC0E2E65A100763E7A /* red.png */,
-				94176FBD0E2E65A100763E7A /* gold.png */,
-				94176FBE0E2E65A100763E7A /* violet.png */,
-				94176FBF0E2E65A100763E7A /* white.png */,
-				94176FC00E2E65A100763E7A /* green.png */,
-				94176FC10E2E65A100763E7A /* silver.png */,
-				94176FC20E2E65A100763E7A /* orange.png */,
-				94176FC30E2E65A100763E7A /* gray.png */,
-			);
-			name = "Bar Images";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -322,17 +282,6 @@
 				940D4C370E280A9C003733D4 /* checker.bmp in Resources */,
 				940D4D730E282F3C003733D4 /* blackmag.png in Resources */,
 				94148A580E2C0E1B00986196 /* resistor_320.png in Resources */,
-				94176FC40E2E65A100763E7A /* blue.png in Resources */,
-				94176FC60E2E65A100763E7A /* brown.png in Resources */,
-				94176FC70E2E65A100763E7A /* yellow.png in Resources */,
-				94176FC80E2E65A100763E7A /* red.png in Resources */,
-				94176FC90E2E65A100763E7A /* gold.png in Resources */,
-				94176FCA0E2E65A100763E7A /* violet.png in Resources */,
-				94176FCB0E2E65A100763E7A /* white.png in Resources */,
-				94176FCC0E2E65A100763E7A /* green.png in Resources */,
-				94176FCD0E2E65A100763E7A /* silver.png in Resources */,
-				94176FCE0E2E65A100763E7A /* orange.png in Resources */,
-				94176FCF0E2E65A100763E7A /* gray.png in Resources */,
 				43EC44830E2EA2A10035DD57 /* iResist.png in Resources */,
 				43E859ED0E86DF1A007BC3E6 /* SettingsView.xib in Resources */,
 				431ABB620E3D2728009EE3DE /* ResistorColorView.xib in Resources */,
@@ -343,6 +292,7 @@
 				940200500E5A92250049D052 /* ResistorInfoView.xib in Resources */,
 				43E85A000E86E067007BC3E6 /* Colors.strings in Resources */,
 				4311EC850E8C944D006EFCF8 /* TODO in Resources */,
+				43EC75E40EC7A95400670170 /* gradient.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +445,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4597A260-9E8A-4E23-B80C-EFFE898C49B1";
 				SDKROOT = iphoneos2.0;
