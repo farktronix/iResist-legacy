@@ -7,6 +7,7 @@
 #import <Foundation/Foundation.h>
 
 #define kResistorValueChangedNotification @"ResistorValueChanged"
+#define kResistorPickerChangedNotification @"PickerValueChanged"
 
 // User defaults
 #define kOhmsKey @"Ohms"

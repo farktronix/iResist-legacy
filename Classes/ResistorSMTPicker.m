@@ -18,7 +18,7 @@
 
 - (double) getOhmValueForPicker:(UIPickerView *)picker
 {
-    
+    return 0.0;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component

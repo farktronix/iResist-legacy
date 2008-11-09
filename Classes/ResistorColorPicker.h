@@ -13,6 +13,8 @@
 @class iResistViewController;
 
 @interface ResistorColorPicker : ResistorValuePicker {
+    NSArray *_componentInfo; // Array (component) of arrays (rows) of dicts (name, color, and value)
+    
     NSArray *_colorViews;
 	NSDictionary *_colors;
 	UIImage *_endImg;
@@ -23,8 +25,6 @@
     
     BOOL _manualUpdate;
 }
-
-+ (NSString *) colorNameForRow:(int)row inComponent:(int)component;
 
 - (double) getToleranceForPicker:(UIPickerView *)picker;
 

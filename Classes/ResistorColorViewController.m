@@ -72,7 +72,9 @@
     [self _updateToleranceString:tolerance];
     
     for (int ii = 0; ii < 4; ii++) {
-        [self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([_picker selectedRowInComponent:ii] - 1) inComponent:ii] andComponent:ii];
+        // TODO: resistor color bar drawing is temporarily disabled
+        
+        //[self _drawResistorBarWithColorName:[ResistorColorPicker colorNameForRow:([_picker selectedRowInComponent:ii] - 1) inComponent:ii] andComponent:ii];
     }
 }
 
@@ -204,6 +206,7 @@
     _searchBar.delegate = self;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorPickerChangedNotification object:nil];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

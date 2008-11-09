@@ -8,44 +8,273 @@
 #import "ResistorColorPicker.h"
 #import "iResistViewController.h"
 
+NSString * const kColorNameKey       = @"Name";
+NSString * const kColorColorKey      = @"Color";
+NSString * const kColorValueKey      = @"Value";
+NSString * const kColorTextInvertKey = @"Invert";
+
+#define kColorTensComponent         0
+#define kColorOnesComponent         1
+#define kColorMultiplierComponent   2
+#define kColorToleranceComponent    3
+
+#define kBlackColor  [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0]
+#define kGrayColor   [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0]
+#define kWhiteColor  [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0]
+#define kBrownColor  [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0]
+#define kRedColor    [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0]
+#define kOrangeColor [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0]
+#define kYellowColor [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0]
+#define kGreenColor  [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0]
+#define kBlueColor   [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0]
+#define kVioletColor [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0]
+#define kGoldColor   [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0]
+#define kSilverColor [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0]
+#define kEndColor    [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:0.8]
+
+#define kEndImageName @"__END_IMAGE__"
+
+#define kNumPaddingCells 3
+
 @implementation ResistorColorPicker
-+ (NSString *) colorNameForRow:(int)row inComponent:(int)component
+- (void) _setupComponentInformation
 {
-	// sometimes the accel. randomizer will pick row -1 while "spinning", causing a crash
-	if (row >= 0) {
-		NSArray* firstTwo = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Orange"), LocColor(@"Yellow"), 
-							 LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Violet"), LocColor(@"Gray"), LocColor(@"White"), nil];
-		NSArray* tol = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Violet"), LocColor(@"Gray"),
-						LocColor(@"Gold"), LocColor(@"Silver"), nil];
-		NSArray* mult = [NSArray arrayWithObjects: LocColor(@"Black"), LocColor(@"Brown"), LocColor(@"Red"), LocColor(@"Orange"), LocColor(@"Yellow"), 
-						 LocColor(@"Green"), LocColor(@"Blue"), LocColor(@"Gold"), LocColor(@"Silver"), nil];
-		
-		if (component < 2) {
-			return [firstTwo objectAtIndex: row];
-		}
-		else if (component == 2) {
-			return [mult objectAtIndex: row];
-		}
-		else if (component == 3) {
-			return [tol objectAtIndex: row];
-		}
-	}
-	
-	return @"";
+    NSMutableArray *componentInfo = [[NSMutableArray alloc] initWithCapacity:kColorToleranceComponent + 1];
+    
+    // set up resistor number info
+    NSMutableArray *numberInfo = [[NSMutableArray alloc] init];
+    {
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Black"), kColorNameKey, 
+                               kBlackColor, kColorColorKey,
+                               [NSNumber numberWithInt:0], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Brown"), kColorNameKey, 
+                               kBrownColor, kColorColorKey,
+                               [NSNumber numberWithInt:1], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Red"), kColorNameKey, 
+                               kRedColor, kColorColorKey,
+                               [NSNumber numberWithInt:2], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Orange"), kColorNameKey, 
+                               kOrangeColor, kColorColorKey,
+                               [NSNumber numberWithInt:3], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Yellow"), kColorNameKey, 
+                               kYellowColor, kColorColorKey,
+                               [NSNumber numberWithInt:4], kColorValueKey,
+                               [NSNumber numberWithBool:YES], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Green"), kColorNameKey, 
+                               kGreenColor, kColorColorKey,
+                               [NSNumber numberWithInt:5], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Blue"), kColorNameKey, 
+                               kBlueColor, kColorColorKey,
+                               [NSNumber numberWithInt:6], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Violet"), kColorNameKey, 
+                               kVioletColor, kColorColorKey,
+                               [NSNumber numberWithInt:7], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"Gray"), kColorNameKey, 
+                               kGrayColor, kColorColorKey,
+                               [NSNumber numberWithInt:8], kColorValueKey,
+                               [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                               nil]];
+        [numberInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                               LocColor(@"White"), kColorNameKey, 
+                               kWhiteColor, kColorColorKey,
+                               [NSNumber numberWithInt:9], kColorValueKey,
+                               [NSNumber numberWithBool:YES], kColorTextInvertKey,
+                               nil]];
+    }
+    [componentInfo addObject:numberInfo]; // kColorTensComponent
+    [componentInfo addObject:numberInfo]; // kColorOnesComponent
+    
+    // set up multiplier info
+    NSMutableArray *multiplierInfo = [numberInfo mutableCopy];
+    {
+        // the multiplier has two extra components for 10^-1 and 10^-2
+        [multiplierInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                   LocColor(@"Gold"), kColorNameKey, 
+                                   kGoldColor, kColorColorKey,
+                                   [NSNumber numberWithInt:-1], kColorValueKey,
+                                   [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                   nil]];
+        [multiplierInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                   LocColor(@"Silver"), kColorNameKey, 
+                                   kSilverColor, kColorColorKey,
+                                   [NSNumber numberWithInt:-2], kColorValueKey,
+                                   [NSNumber numberWithBool:YES], kColorTextInvertKey,
+                                   nil]];
+    }
+    [componentInfo addObject:multiplierInfo]; // kColorMultiplierComponent
+    
+    [numberInfo release]; // retained by componentInfo
+    [multiplierInfo release]; // retained by componentInfo
+    
+    // set up tolerance info
+    NSMutableArray *toleranceInfo = [[NSMutableArray alloc] init];
+    {
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Silver"), kColorNameKey, 
+                                  kSilverColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:10.0], kColorValueKey,
+                                  [NSNumber numberWithBool:YES], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Gold"), kColorNameKey, 
+                                  kGoldColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:5.0], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Red"), kColorNameKey, 
+                                  kRedColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:2.0], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Brown"), kColorNameKey, 
+                                  kBrownColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:1.0], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Green"), kColorNameKey, 
+                                  kGreenColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:0.5], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Blue"), kColorNameKey, 
+                                  kBlueColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:0.25], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Violet"), kColorNameKey, 
+                                  kVioletColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:0.1], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+        [toleranceInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                  LocColor(@"Gray"), kColorNameKey, 
+                                  kGrayColor, kColorColorKey,
+                                  [NSNumber numberWithDouble:0.05], kColorValueKey,
+                                  [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                                  nil]];
+    }
+    [componentInfo addObject:toleranceInfo]; // kColorToleranceComponent
+    [toleranceInfo release]; // retained by componentInfo
+    
+    _componentInfo = componentInfo;
 }
 
-
-- (UIView*) _colorViewWithRect:(CGRect)rect color: (UIColor*)color label:(NSString *)text;
+- (id) init
 {
-    UIView *view = [[UIView alloc] init];
-    view.backgroundColor = color;
-    view.frame = rect;
+    if ((self = [super init])) {
+        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:kShowLabelsKey] boolValue];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kShowLabelsKey options:0 context:nil];
+        
+		[self _setupComponentInformation];
+		
+		_endImg = [[UIImage imageNamed: @"checker.bmp"] retain];
+    }
+	
+    return self;
+}
 
+- (void) dealloc
+{
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kShowLabelsKey];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_colorViews release];
+	[_endImg release];
+    [_componentInfo release];
+	
+    [super dealloc];
+}
+
+- (NSDictionary *) _itemInfoForRow:(NSUInteger)row inComponent:(NSUInteger)component
+{
+    if (component < 0 || component >= [_componentInfo count]) return nil;
+    
+    NSArray *curComponent = [_componentInfo objectAtIndex:component];
+    if (row < kNumPaddingCells || row >= [curComponent count] + kNumPaddingCells) {
+        // TODO: make this static or something
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                kEndImageName, kColorNameKey, 
+                kEndColor, kColorColorKey,
+                [NSNumber numberWithDouble:0], kColorValueKey,
+                [NSNumber numberWithBool:NO], kColorTextInvertKey,
+                nil];
+    }
+    
+    return [curComponent objectAtIndex:row - kNumPaddingCells];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([keyPath isEqualToString:kShowLabelsKey]) {
+        _showLabels = [[defaults valueForKey:kShowLabelsKey] boolValue];
+        
+        // TODO: do something to the picker to get it to reload all the items
+        
+    }
+}
+
+- (void) selectRow:(NSInteger)row inComponent:(NSInteger)component forPicker:(UIPickerView*)picker
+{
+    _manualUpdate = YES;
+    [picker selectRow:row inComponent:component animated:NO];
+    _manualUpdate = NO;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component < 0 || component >= [_componentInfo count]) return 0;
+    return [[_componentInfo objectAtIndex:component] count] + (kNumPaddingCells * 2); // add padding items to the count
+}
+
+- (UIView*) _viewForRow:(NSUInteger)row inComponent:(NSUInteger)component
+{
+    NSDictionary *itemInfo = [self _itemInfoForRow:row inComponent:component];
+    NSString *colorName = [itemInfo objectForKey:kColorNameKey];
+    
+    UIView *view = nil;
+    if ([colorName isEqualToString:kEndImageName]) {
+        view = [[UIImageView alloc] initWithImage:_endImg];
+        colorName = @"";
+    } else {
+        view = [[UIView alloc] init];
+        view.backgroundColor = [itemInfo objectForKey:kColorColorKey];
+    }
+    view.frame = CGRectMake(0, 0, 70, 40);
+    
     if (_showLabels) {
         UILabel *label = [[UILabel alloc] init];
-        label.text = text;
+        label.text = colorName;
         label.frame = view.frame;
-        if ([text isEqualToString:LocColor(@"White")] || [text isEqualToString:LocColor(@"Silver")] || [text isEqualToString:LocColor(@"Yellow")]) {
+        if ([[itemInfo objectForKey:kColorTextInvertKey] boolValue] == YES) {
             label.textColor = [UIColor blackColor];
         } else {
             label.textColor = [UIColor whiteColor];
@@ -59,299 +288,100 @@
     return [view autorelease];
 }
 
-- (void) _setupColorDictionary;
-{
-	NSMutableDictionary *tDict = [[NSMutableDictionary alloc] init];
-	
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.000 alpha:1.0] forKey:LocColor(@"Black")];
-	[tDict setValue: [UIColor colorWithRed:0.500 green:0.500 blue:0.500 alpha:1.0] forKey:LocColor(@"Gray")];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0] forKey:LocColor(@"White")];
-	[tDict setValue: [UIColor colorWithRed:0.396 green:0.263 blue:0.129 alpha:1.0] forKey:LocColor(@"Brown")];
-	[tDict setValue: [UIColor colorWithRed:0.878 green:0.141 blue:0.063 alpha:1.0] forKey:LocColor(@"Red")];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:0.500 blue:0.000 alpha:1.0] forKey:LocColor(@"Orange")];
-	[tDict setValue: [UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.0] forKey:LocColor(@"Yellow")];
-	[tDict setValue: [UIColor colorWithRed:0.133 green:0.545 blue:0.133 alpha:1.0] forKey:LocColor(@"Green")];
-	[tDict setValue: [UIColor colorWithRed:0.000 green:0.000 blue:0.804 alpha:1.0] forKey:LocColor(@"Blue")];
-	[tDict setValue: [UIColor colorWithRed:0.580 green:0.000 blue:0.827 alpha:1.0] forKey:LocColor(@"Violet")];
-	[tDict setValue: [UIColor colorWithRed:0.780 green:0.603 blue:0.235 alpha:1.0] forKey:LocColor(@"Gold")];
-	[tDict setValue: [UIColor colorWithRed:0.800 green:0.800 blue:0.800 alpha:1.0] forKey:LocColor(@"Silver")];
-	
-	_colors = tDict;
-}
-
-- (UIView *) _colorViewWithColorString: (NSString*)color;
-{
-	return [self _colorViewWithRect: CGRectMake(0, 0, 70, 40) color: [_colors objectForKey:color] label:color];
-}
-
-- (UIImageView*) _endPickerImageView;
-{
-	UIImageView* _endImgView = [[UIImageView alloc] initWithImage: _endImg];
-	_endImgView.frame = CGRectMake(0, 0, 70, 40);
-	
-	return [_endImgView autorelease];
-}
-
-- (NSArray *) _colorViewsForComponent
-{
-    NSMutableArray *colors = [[NSMutableArray alloc] init];
-	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Orange")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Yellow")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Violet")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gray")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"White")]];
-	[colors addObject: [self _endPickerImageView]];
-    return [colors autorelease];
-}
-
-- (NSArray *) _colorViewsForToleranceComponent
-{
-    NSMutableArray *colors = [[NSMutableArray alloc] init];
-	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Violet")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gray")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gold")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Silver")]];
-	[colors addObject: [self _endPickerImageView]];
-    return [colors autorelease];
-}
-
-- (NSArray *) _colorViewsForMultiplierComponent
-{
-    NSMutableArray *colors = [[NSMutableArray alloc] init];
-	[colors addObject: [self _endPickerImageView]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Black")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Brown")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Red")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Orange")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Yellow")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Green")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Blue")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Gold")]];
-    [colors addObject: [self _colorViewWithColorString:LocColor(@"Silver")]];
-	[colors addObject: [self _endPickerImageView]];
-    return [colors autorelease];
-}
-
-- (void) _setupColorViews
-{
-    NSMutableArray *colors = [[NSMutableArray alloc] init];
-    [colors addObject:[self _colorViewsForComponent]];
-    [colors addObject:[self _colorViewsForComponent]];
-    [colors addObject:[self _colorViewsForMultiplierComponent]];
-    [colors addObject:[self _colorViewsForToleranceComponent]];
-    [_colorViews release];
-    _colorViews = colors;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([keyPath isEqualToString:kShowLabelsKey]) {
-        _showLabels = [[defaults valueForKey:kShowLabelsKey] boolValue];
-        [self _setupColorViews];
-    }
-}
-
-- (id) init
-{
-    if ((self = [super init])) {
-        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:kShowLabelsKey] boolValue];
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kShowLabelsKey options:0 context:nil];
-        
-		[self _setupColorDictionary];
-		
-		_endImg = [[UIImage imageNamed: @"checker.bmp"] retain];
-        
-        [self _setupColorViews];
-    }
-	
-    return self;
-}
-
-- (void) dealloc
-{
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kShowLabelsKey];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_colorViews release];
-	[_endImg release];
-	[_colors release];
-	
-    [super dealloc];
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return (component < 2 ? 12 : 11);
-}
-
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view;
 
-{
-    return [[_colorViews objectAtIndex:component] objectAtIndex:row];
+{ 
+    // (fark): Using the cached view seems to cause all kinds of weird display problems. It's disabled for now. Hopefully this doesn't screw our memory use
+//    if (view) return [[view retain] autorelease];
+    return [self _viewForRow:row inComponent:component];
 }
 
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
 {
-    int exp = (int)log10(ohms);
-    int firstNum = 0;
-    int secondNum = 0;
+    int mult = (int)log10(ohms);
+    int relativeOhms = ohms / pow(10, mult);
+    int tens = (int)(relativeOhms / 10);
+    int ones = (int)(relativeOhms % 10);
     
-    if (ohms == 0) {
-        exp = 8;
-    }
-    else if (ohms < 1.0) {
-        firstNum = (int)(ohms * 10);
-        secondNum = (int)(ohms * 100) % (10 * (firstNum == 0 ? 1 : firstNum));
-        exp = 9;
-    }
-    else if (ohms < 10) {
-        firstNum = (int)ohms;
-        secondNum = (int)(ohms * 10) % (10 * firstNum);
-        if (secondNum == 0) {
-            secondNum = firstNum;
-            firstNum = 0;
-            exp = 1;
-        } else {
-            exp = 8;
-        }
-    } 
-    else {
-        firstNum = (int)(ohms / pow(10, exp));
-        secondNum = (int)((ohms / pow(10, exp)) * 10) % (10 * firstNum);
-    }
-    
-    _manualUpdate = YES;
-    NSLog(@"Setting ohms value to %f (%d %d %d)", ohms, firstNum, secondNum, exp);
-    [picker selectRow:firstNum + 1 inComponent:0 animated:NO];
-    [picker selectRow:secondNum + 1 inComponent:1 animated:NO];
-    [picker selectRow:exp inComponent:2 animated:NO];
-    _manualUpdate = NO;
+    NSLog(@"Setting ohms value to %f (%d %d %d)", ohms, tens, ones, mult);
+    [self selectRow:tens + kNumPaddingCells inComponent:kColorTensComponent forPicker:picker];
+    [self selectRow:ones + kNumPaddingCells inComponent:kColorOnesComponent forPicker:picker];
+    [self selectRow:mult + kNumPaddingCells inComponent:kColorMultiplierComponent forPicker:picker];
 }
 
 - (double) getOhmValueForPicker:(UIPickerView *)picker;
 {
-    double ohms = (([picker selectedRowInComponent:0] - 1) * 10) + ([picker selectedRowInComponent:1] - 1);
-    NSUInteger mult = ([picker selectedRowInComponent:2] - 1);
+    double ohms = 0.0;
+    NSDictionary *tensInfo = [self _itemInfoForRow:[picker selectedRowInComponent:kColorTensComponent] inComponent:kColorTensComponent];
+    NSDictionary *onesInfo = [self _itemInfoForRow:[picker selectedRowInComponent:kColorOnesComponent] inComponent:kColorOnesComponent];
+    NSDictionary *multInfo = [self _itemInfoForRow:[picker selectedRowInComponent:kColorMultiplierComponent] inComponent:kColorMultiplierComponent];
     
-    if (mult < 7) {
-        ohms *= pow(10, mult);
-    } 
-    else if (mult == 7) {
-        ohms *= 0.1;
-    } 
-    else if (mult == 8) {
-        ohms *= 0.01;
-    }
+    ohms = ([[tensInfo objectForKey:kColorValueKey] intValue] * 10) + [[onesInfo objectForKey:kColorValueKey] intValue];
+    ohms *= pow(10, [[multInfo objectForKey:kColorValueKey] intValue]);
     
     return ohms;
 }
 
 - (void) setTolerance:(double)tolerance forPicker:(UIPickerView *)picker
 {
-    _manualUpdate = YES;
-    if (tolerance == 0.0) {
-        [picker selectRow:1 inComponent:3 animated:YES];
+    NSArray *tolComponent = [_componentInfo objectAtIndex:kColorToleranceComponent];
+    // Searching isn't exactly efficient, but it's more flexible. 
+    // Not like we're going to add new tolerances, but whatever.
+    int ii = 0;
+    for (ii = 0; ii < [tolComponent count]; ii++) {
+        NSDictionary *curInfo = [tolComponent objectAtIndex:ii];
+        if ([[curInfo objectForKey:kColorValueKey] doubleValue] == tolerance) {
+            break;
+        }
     }
-    else if (tolerance == 1.0) {
-        [picker selectRow:2 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 2.0) {
-        [picker selectRow:3 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 0.5) {
-        [picker selectRow:4 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 0.25) {
-        [picker selectRow:5 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 0.1) {
-        [picker selectRow:6 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 0.05) {
-        [picker selectRow:7 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 5.00) {
-        [picker selectRow:8 inComponent:3 animated:YES];
-    }
-    else if (tolerance == 10.00) {
-        [picker selectRow:9 inComponent:3 animated:YES];
-    }
-    _manualUpdate = NO;
+    if (ii == [tolComponent count]) ii = 0; // we didn't find it. aww crap.
+    [self selectRow:ii inComponent:kColorToleranceComponent forPicker:picker];
 }
 
 - (double) getToleranceForPicker:(UIPickerView *)picker
 {
-    NSUInteger tol = ([picker selectedRowInComponent:3] - 1);
-    double tolPercent = 0.0;
+    NSDictionary *tolInfo = [self _itemInfoForRow:[picker selectedRowInComponent:kColorToleranceComponent] inComponent:kColorToleranceComponent];
+    return [[tolInfo objectForKey:kColorValueKey] doubleValue];
+}
+
+- (NSInteger) _fixRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component < 0 || component >= [_componentInfo count]) return row;
     
-    switch (tol) {
-        case 1:		// brown, 1%
-        case 2:		// red, 2%
-            tolPercent = (float)tol;
-            break;
-            
-        case 3:		// green, 0.5%
-            tolPercent = 0.5f;
-            break;
-            
-        case 4:		// blue, 0.25%
-            tolPercent = 0.25f;
-            break;
-            
-        case 5:		// violet, 0.10%
-            tolPercent = 0.10f;
-            break;
-            
-        case 6:		// grey, 0.05%
-            tolPercent = 0.05f;
-            break;
-            
-        case 7:		// gold
-            tolPercent = 5;
-            break;
-            
-        case 8:		// silver
-            tolPercent = 10;
-            break;
-    }
-    return tolPercent;
+    // Don't allow selection of the padding item
+    if (row < kNumPaddingCells) return kNumPaddingCells;
+    
+    // Figure out if we're selecting the padding item for this component
+    int componentCount = [[_componentInfo objectAtIndex:component] count];
+    if (row >= componentCount + kNumPaddingCells) return componentCount + kNumPaddingCells - 1;
+    return row;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     NSLog(@"Row %d selected in component %d", row, component);
-    if (_manualUpdate) return;
-	if (row == 0 || row == (component < 2 ? 11 : 10)) {
+    if (_manualUpdate) 
+        return;
+    
+    NSInteger fixedRow = [self _fixRow:row inComponent:component];
+	if (fixedRow != row) {
 		// if the user selects one of the end-component sentinel images, just slide them to the one they really wanted
-		NSInteger nRow = row + (!row ? 1 : -1);
-		
-        NSLog(@"Fixing up row to %d", nRow);
-		[pickerView selectRow:nRow inComponent:component animated:NO];
-        [self pickerView:pickerView didSelectRow:nRow inComponent:component];
+        NSLog(@"Fixing up row %d to %d", row, fixedRow);
+		[self selectRow:fixedRow inComponent:component forPicker:pickerView];
+        // call ourself recursively with the fixed up value
+        [self pickerView:pickerView didSelectRow:fixedRow inComponent:component];
 	}
 	else {
         NSNumber *ohms = [NSNumber numberWithDouble:[self getOhmValueForPicker:pickerView]];
         NSNumber *tolerance = [NSNumber numberWithDouble:[self getToleranceForPicker:pickerView]];
         NSLog(@"Setting ohmage from pickerView: %@ +/- %@", ohms, tolerance);
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        if (component < 3) {
+        if (component < kColorToleranceComponent) {
             [defaults setValue:ohms forKey:kOhmsKey];
         } else {
             [defaults setValue:tolerance forKey:kToleranceKey];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kResistorValueChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResistorPickerChangedNotification object:nil];
 	}
 }
 @end
