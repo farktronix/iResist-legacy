@@ -283,9 +283,22 @@ static NSArray *sComponentInfo = nil;
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
 {
     int mult = (int)log10(ohms) - 1;
+    if (ohms < 10 && ohms > 1) mult = 0; // hack :(
     int relativeOhms = ohms / pow(10, mult);
     int tens = (int)(relativeOhms / 10);
     int ones = (int)(relativeOhms % 10);
+    
+    // hardcode silver and gold multiplers
+    if (mult < 0) {
+        int numMults = [[[ResistorColorPicker componentInfo] objectAtIndex:kColorMultiplierComponent] count];
+        if (ohms < 0.1) {
+            mult = numMults - 1;
+        } else if (ohms < 1) {
+            mult = numMults - 2;
+        } else {
+            mult = 0;
+        }
+    }
     
     DebugLog(@"Setting ohms value to %f (%d %d %d)", ohms, tens, ones, mult);
     [self selectRow:tens + kNumPaddingCells inComponent:kColorTensComponent forPicker:picker];
