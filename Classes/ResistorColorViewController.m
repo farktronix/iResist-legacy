@@ -11,11 +11,10 @@
 
 @implementation ResistorColorViewController
 
-@synthesize picker = _picker;
 @synthesize searchBar = _searchBar;
 
 #pragma mark -
-#pragma mark Ohm Display
+#pragma mark Resistor Display
 
 - (void) _updateToleranceString:(double)tolerance
 {
@@ -148,6 +147,18 @@
     }
 }
 
+#pragma mark -
+#pragma mark Color Picker
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:kShowLabelsKey]) {
+        [(ResistorColorPicker*)_scrollView.currentValuePicker setShowLabels:[[NSUserDefaults standardUserDefaults] boolForKey:kShowLabelsKey]];
+        for (int component = kColorTensComponent; component <= kColorToleranceComponent; component++) {
+            [_picker reloadComponent:component];
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark Setup/Teardown
@@ -171,6 +182,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorPickerChangedNotification object:nil];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kShowLabelsKey options:0 context:nil];
 }
 
 @end

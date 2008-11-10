@@ -30,6 +30,7 @@ extern NSString * const kResistorViewChanged;
 }
 
 @property (nonatomic, retain) UIPickerView *picker;
+@property (readonly) ResistorValuePicker *currentValuePicker;
 @property (readonly) int page;
 
 @property BOOL pageControlEnabled;

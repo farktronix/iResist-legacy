@@ -32,6 +32,9 @@ NSString * const kColorTextInvertKey = @"Invert";
 #define kNumPaddingCells 3
 
 @implementation ResistorColorPicker
+
+@synthesize showLabels = _showLabels;
+
 static NSArray *sComponentInfo = nil;
 + (NSArray *) componentInfo
 {
@@ -190,9 +193,7 @@ static NSArray *sComponentInfo = nil;
 - (id) init
 {
     if ((self = [super init])) {
-        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:kShowLabelsKey] boolValue];
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:kShowLabelsKey options:0 context:nil];
-        		
+        _showLabels = [[[NSUserDefaults standardUserDefaults] valueForKey:kShowLabelsKey] boolValue];        		
 		_endImg = [[UIImage imageNamed: @"checker.bmp"] retain];
     }
 	
@@ -201,10 +202,7 @@ static NSArray *sComponentInfo = nil;
 
 - (void) dealloc
 {
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:kShowLabelsKey];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_endImg release];
-	
     [super dealloc];
 }
 
@@ -225,17 +223,6 @@ static NSArray *sComponentInfo = nil;
     }
     
     return [curComponent objectAtIndex:row - kNumPaddingCells];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([keyPath isEqualToString:kShowLabelsKey]) {
-        _showLabels = [[defaults valueForKey:kShowLabelsKey] boolValue];
-        
-        // TODO: do something to the picker to get it to reload all the items
-        
-    }
 }
 
 - (void) selectRow:(NSInteger)row inComponent:(NSInteger)component forPicker:(UIPickerView*)picker
@@ -295,7 +282,7 @@ static NSArray *sComponentInfo = nil;
 
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
 {
-    int mult = (int)log10(ohms);
+    int mult = (int)log10(ohms) - 1;
     int relativeOhms = ohms / pow(10, mult);
     int tens = (int)(relativeOhms / 10);
     int ones = (int)(relativeOhms % 10);
@@ -324,15 +311,15 @@ static NSArray *sComponentInfo = nil;
     NSArray *tolComponent = [[ResistorColorPicker componentInfo] objectAtIndex:kColorToleranceComponent];
     // Searching isn't exactly efficient, but it's more flexible. 
     // Not like we're going to add new tolerances, but whatever.
-    int ii = 0;
-    for (ii = 0; ii < [tolComponent count]; ii++) {
-        NSDictionary *curInfo = [tolComponent objectAtIndex:ii];
+    int component = 0;
+    for (component = 0; component < [tolComponent count]; component++) {
+        NSDictionary *curInfo = [tolComponent objectAtIndex:component];
         if ([[curInfo objectForKey:kColorValueKey] doubleValue] == tolerance) {
             break;
         }
     }
-    if (ii == [tolComponent count]) ii = 0; // we didn't find it. aww crap.
-    [self selectRow:ii inComponent:kColorToleranceComponent forPicker:picker];
+    if (component == [tolComponent count]) component = 0; // we didn't find it. aww crap.
+    [self selectRow:component + kNumPaddingCells inComponent:kColorToleranceComponent forPicker:picker];
 }
 
 - (double) getToleranceForPicker:(UIPickerView *)picker

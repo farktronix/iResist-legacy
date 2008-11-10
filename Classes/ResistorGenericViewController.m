@@ -14,4 +14,10 @@
 @synthesize picker = _picker;
 @synthesize scrollView = _scrollView;
 
+- (void) dealloc
+{
+    [_picker release];
+    [super dealloc];
+}
+
 @end

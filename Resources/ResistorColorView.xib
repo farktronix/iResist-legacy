@@ -99,7 +99,7 @@
 									<object class="IBUIView" id="322379370">
 										<reference key="NSNextResponder" ref="655342071"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{112, 25}, {16, 48}}</string>
+										<string key="NSFrame">{{109, 25}, {16, 48}}</string>
 										<reference key="NSSuperview" ref="655342071"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
@@ -110,7 +110,7 @@
 									<object class="IBUIView" id="871168415">
 										<reference key="NSNextResponder" ref="655342071"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{164, 25}, {12, 48}}</string>
+										<string key="NSFrame">{{161, 25}, {12, 48}}</string>
 										<reference key="NSSuperview" ref="655342071"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
@@ -124,7 +124,7 @@
 									<object class="IBUIView" id="414041055">
 										<reference key="NSNextResponder" ref="655342071"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{194, 25}, {16, 48}}</string>
+										<string key="NSFrame">{{188, 25}, {16, 48}}</string>
 										<reference key="NSSuperview" ref="655342071"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
@@ -135,7 +135,7 @@
 									<object class="IBUIView" id="275846794">
 										<reference key="NSNextResponder" ref="655342071"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{140, 25}, {12, 48}}</string>
+										<string key="NSFrame">{{137, 25}, {12, 48}}</string>
 										<reference key="NSSuperview" ref="655342071"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
@@ -146,7 +146,7 @@
 									<object class="IBUIImageView" id="584070387">
 										<reference key="NSNextResponder" ref="655342071"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{98, 26}, {130, 48}}</string>
+										<string key="NSFrame">{{97, 26}, {130, 48}}</string>
 										<reference key="NSSuperview" ref="655342071"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -374,8 +374,8 @@
 							<reference ref="953668148"/>
 							<reference ref="275846794"/>
 							<reference ref="301340859"/>
-							<reference ref="584070387"/>
 							<reference ref="871168415"/>
+							<reference ref="584070387"/>
 						</object>
 						<reference key="parent" ref="550423728"/>
 					</object>

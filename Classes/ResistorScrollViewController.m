@@ -19,6 +19,8 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 @implementation ResistorScrollViewController
 
 @synthesize page = _page;
+@synthesize currentValuePicker = _currentValuePicker;
+
 @dynamic pageControlEnabled;
 
 - (void) resistorValueChanged:(NSNotification *)notif

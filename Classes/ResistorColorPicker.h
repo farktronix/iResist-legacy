@@ -30,6 +30,8 @@ extern NSString * const kColorTextInvertKey;    // NSNumber (BOOL) - YES if the 
     BOOL _manualUpdate;
 }
 
+@property (nonatomic) BOOL showLabels;
+
 + (NSArray *) componentInfo; // NSArray (component) of NSArray (rows) of NSDictionaries with row information
 + (NSDictionary *) itemInfoForRow:(NSInteger)row inComponent:(NSInteger)component;
 @end

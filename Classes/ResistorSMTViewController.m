@@ -11,8 +11,6 @@
 
 @implementation ResistorSMTViewController
 
-@synthesize picker = _picker;
-
 - (void) _resistorValueChanged:(NSNotification *)notif
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
