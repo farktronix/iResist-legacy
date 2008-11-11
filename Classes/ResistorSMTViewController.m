@@ -18,6 +18,11 @@
     double ohms = 0.0;
     if (ohmsNum) ohms = [ohmsNum doubleValue];
     _ohms.text = prettyPrintOhms(ohms);
+    
+    _smtLabel1.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:0] forComponent:0];
+    _smtLabel2.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:1] forComponent:1];
+    _smtLabel3.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:2] forComponent:2];
+    _smtLabel4.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:3] forComponent:3];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

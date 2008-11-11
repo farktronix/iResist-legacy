@@ -12,7 +12,10 @@
 
 @interface ResistorSMTViewController : ResistorGenericViewController {
     IBOutlet UILabel *_ohms;
-    IBOutlet UILabel *_smtLabel;
+    IBOutlet UILabel *_smtLabel1;
+    IBOutlet UILabel *_smtLabel2;
+    IBOutlet UILabel *_smtLabel3;
+    IBOutlet UILabel *_smtLabel4;
 }
 
 @end
