@@ -30,6 +30,7 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
     
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorValueChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_resistorValueChanged:) name:kResistorPickerChangedNotification object:nil];
     }
     return self;
 }

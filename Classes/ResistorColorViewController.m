@@ -175,6 +175,11 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self _resistorValueChanged:nil];
+}
+
 - (void) viewDidLoad
 {
     _searchBar.keyboardType = UIKeyboardTypeNumberPad;
