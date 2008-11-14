@@ -13,7 +13,7 @@
 {
     NSNumber *ohmsNum = [[NSUserDefaults standardUserDefaults] valueForKey:kOhmsKey];
     _ohms = [ohmsNum doubleValue];
-    _ohmsLabel.text = prettyPrintOhms(_ohms);
+    _ohmsLabel.text = prettyPrintOhms(_ohms, 2);
 }
 
 - (void) setVolts:(double)volts

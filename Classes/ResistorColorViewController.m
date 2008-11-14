@@ -54,7 +54,7 @@
     double tolerance = 0.0;
     if (ohmsNum) ohms = [ohmsNum doubleValue];
     if (toleranceNum) tolerance = [toleranceNum doubleValue];
-    _ohms.text = prettyPrintOhms(ohms);
+    _ohms.text = prettyPrintOhms(ohms, 1);
     [self _updateToleranceString:tolerance];
     
     for (int component = kColorTensComponent; component <= kColorToleranceComponent; component++) {

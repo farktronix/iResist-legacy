@@ -17,7 +17,7 @@
     NSNumber *ohmsNum = [defaults valueForKey:kOhmsKey];
     double ohms = 0.0;
     if (ohmsNum) ohms = [ohmsNum doubleValue];
-    _ohms.text = prettyPrintOhms(ohms);
+    _ohms.text = prettyPrintOhms(ohms, 2);
     
     _smtLabel1.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:0] forComponent:0];
     _smtLabel2.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:1] forComponent:1];
