@@ -26,8 +26,6 @@ extern NSString * const kColorTextInvertKey;    // NSNumber (BOOL) - YES if the 
     UIImage *_endImg;
 	    
     BOOL _showLabels;
-    
-    BOOL _manualUpdate;
 }
 
 @property (nonatomic) BOOL showLabels;

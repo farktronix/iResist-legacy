@@ -23,6 +23,13 @@
 	}
 }
 
+- (void) selectRow:(NSInteger)row inComponent:(NSInteger)component forPicker:(UIPickerView*)picker
+{
+    _manualUpdate = YES;
+    [picker selectRow:row inComponent:component animated:NO];
+    _manualUpdate = NO;
+}
+
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker
 {
     return;

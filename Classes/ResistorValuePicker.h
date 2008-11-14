@@ -10,10 +10,12 @@
 
 
 @interface ResistorValuePicker : NSObject  <UIPickerViewDataSource, UIPickerViewDelegate> {
-
+    BOOL _manualUpdate;
 }
 
 - (void) randomSpin:(UIPickerView *)picker;
+
+- (void) selectRow:(NSInteger)row inComponent:(NSInteger)component forPicker:(UIPickerView*)picker;
 
 - (void) setOhmValue:(double)ohms forPicker:(UIPickerView *)picker;
 - (double) getOhmValueForPicker:(UIPickerView *)picker;

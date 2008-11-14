@@ -25,6 +25,11 @@
     _smtLabel4.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:3] forComponent:3];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self _resistorValueChanged:nil];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {

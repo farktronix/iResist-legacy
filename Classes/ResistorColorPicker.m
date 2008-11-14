@@ -225,13 +225,6 @@ static NSArray *sComponentInfo = nil;
     return [curComponent objectAtIndex:row - kNumPaddingCells];
 }
 
-- (void) selectRow:(NSInteger)row inComponent:(NSInteger)component forPicker:(UIPickerView*)picker
-{
-    _manualUpdate = YES;
-    [picker selectRow:row inComponent:component animated:NO];
-    _manualUpdate = NO;
-}
-
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     NSArray *componentInfo = [ResistorColorPicker componentInfo];
