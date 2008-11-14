@@ -63,4 +63,9 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self viewDidLoad];
+}
+
 @end

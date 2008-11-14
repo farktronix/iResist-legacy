@@ -191,9 +191,6 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
     if (_page != _lastPage && newCtrl && oldCtrl) {
 		_scrollBug = ([oldCtrl isKindOfClass:[ResistorColorViewController class]] && ((ResistorColorViewController*)oldCtrl).searchBar.hidden == NO);
 		
-		[newCtrl viewDidAppear:YES];
-		[oldCtrl viewDidDisappear:YES];
-		
 		oldCtrl.picker = nil;
 		newCtrl.picker = _picker;
 		
@@ -201,6 +198,9 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 		_pageControl.currentPage = _page;
 		
 		[self setupPickerDelegate];
+        
+		[newCtrl viewDidAppear:YES];
+		[oldCtrl viewDidDisappear:YES];
     }
 }
 

@@ -175,7 +175,7 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [self _resistorValueChanged:nil];
 }
