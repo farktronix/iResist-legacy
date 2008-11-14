@@ -25,4 +25,4 @@
     #define DebugLog(fmt, ...)
 #endif
 
-NSString *prettyPrintOhms (double ohms);
+NSString *prettyPrintOhms (double ohms, int precision);
