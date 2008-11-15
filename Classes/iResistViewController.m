@@ -25,9 +25,37 @@
     }
 }
 
+- (void) rmVEqIRLabel:(NSNotification*)notify;
+{
+	[[self.view viewWithTag:42] removeFromSuperview];
+}
+
+- (void) addVEqIRLabel:(NSNotification*)notify;
+{
+	static UILabel* vEqIRLabel = nil;
+	
+	if (!vEqIRLabel)
+	{
+		vEqIRLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 243, 320, 200)];
+		vEqIRLabel.textAlignment = UITextAlignmentCenter;
+		vEqIRLabel.textColor = [UIColor whiteColor];
+		vEqIRLabel.backgroundColor = [UIColor clearColor];
+		vEqIRLabel.font = [UIFont boldSystemFontOfSize:72.0];
+		vEqIRLabel.text = @"V = IR";
+		vEqIRLabel.tag = 42;
+	}
+	
+	[self.view addSubview:vEqIRLabel];
+	vEqIRLabel.hidden = !(vEqIRLabel.enabled = YES);
+}
+
 - (void) viewDidLoad
 {    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSLog(@"%@", NSStringFromCGRect(self.view.frame));
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addVEqIRLabel:) name:@"addVEqIRLabel" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rmVEqIRLabel:) name:@"rmVEqIRLabel" object:nil];
     
     _settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
     _resistorScrollViewController = [[ResistorScrollViewController alloc] initWithNibName:@"ResistorScrollView" bundle:nil];

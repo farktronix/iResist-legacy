@@ -25,6 +25,13 @@
     _smtLabel4.text = [_picker.delegate pickerView:_picker titleForRow:[_picker selectedRowInComponent:3] forComponent:3];
 }
 
+- (void)viewDidLoad;
+{
+	_smtLabel1.font = _smtLabel2.font = _smtLabel3.font = _smtLabel4.font =
+		[UIFont fontWithName:@"CourierNewPS-BoldMT" size:40.0];
+	[super viewDidLoad];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [self _resistorValueChanged:nil];

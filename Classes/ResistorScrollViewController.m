@@ -41,6 +41,8 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
 {
 	ResistorValuePicker *picker = nil;
 	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"rmVEqIRLabel" object:nil];
+	
     picker = [_pickers objectAtIndex:_page];
 	if ((NSNull*)picker != [NSNull null]) {
 		_currentValuePicker = picker;
@@ -52,6 +54,8 @@ NSString * const kResistorViewChanged = @"ResistorViewChanged";
         _picker.hidden = YES;
         _picker.dataSource = nil;
         _picker.delegate = nil;
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"addVEqIRLabel" object:nil];
     }
 	
     [self resistorValueChanged:nil];
