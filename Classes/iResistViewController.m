@@ -53,7 +53,6 @@
 {    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
-	NSLog(@"%@", NSStringFromCGRect(self.view.frame));
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addVEqIRLabel:) name:@"addVEqIRLabel" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rmVEqIRLabel:) name:@"rmVEqIRLabel" object:nil];
     
