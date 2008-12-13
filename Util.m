@@ -10,9 +10,20 @@ NSString *prettyPrintOhms (double ohms, int precision)
 {
 	NSMutableString *prettyStr = [[NSMutableString alloc] init];
 	
-	int exp = 0;
-	if (ohms >= 1000) exp = (int)log10(ohms);
-	double sigOhms = ohms / pow(10.0, (double)exp);
+	int exp = (int)log10(ohms);
+    int curPow = 0;
+	NSString *magStr = @"";
+	if (exp >= 9) {
+		magStr = @"G";
+        curPow = 9;
+	} else if (exp >= 6) {
+		magStr = @"M";
+        curPow = 6;
+	} else if (exp >= 3) {
+		magStr = @"K";
+        curPow = 3;
+	}
+	double sigOhms = ohms / pow(10.0, (double)curPow);
 	
 	int precisionNeeded = precision;
 	int ii;
@@ -30,15 +41,7 @@ NSString *prettyPrintOhms (double ohms, int precision)
 		NSString *formatString = [NSString stringWithFormat:@"%%.\%df", precisionNeeded];
 		[prettyStr appendFormat:formatString, sigOhms];
 	}
-	
-	NSString *magStr = @"";
-	if (exp >= 9) {
-		magStr = @"G";
-	} else if (exp >= 6) {
-		magStr = @"M";
-	} else if (exp >= 3) {
-		magStr = @"K";
-	}
+        
 	[prettyStr appendFormat:@" %@Ω", magStr];
 	
 	return [prettyStr autorelease];
